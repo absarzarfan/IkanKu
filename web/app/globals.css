@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* Design tokens (Figma: Design System + Web frames). Brand colors are used in the web frames. */
+@theme inline {
+  --color-brand: #177bcd;
+  --color-brand-dark: #0072a7;
+  --color-accent: #ff8038;
+  --color-ink: #050315;
+  --color-surface: #eeeeee;
+  --color-surface-2: #e6e6e6;
+  --color-muted: #444444;
+  --color-dot: #d9d9d9;
+
+  --color-cerulean-50: #f0f5fe;
+  --color-cerulean-500: #4373ee;
+  --color-cerulean-600: #3157e3;
+  --color-malibu-500: #06b1f1;
+  --color-malibu-700: #0072a7;
+  --color-malachite-600: #299722;
+  --color-tree-poppy-500: #ff9a0c;
+  --color-red-orange-500: #ff4238;
+  --color-red-orange-600: #ed2015;
+
+  --font-poppins: var(--font-poppins);
+  --font-montserrat: var(--font-montserrat);
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+
+  --text-h1: 46px;
+  --text-h2: 34px;
+  --text-h3: 22px;
+  --text-h4: 18px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Scroll reveal (CSS + IntersectionObserver, see components/Reveal.tsx) */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
