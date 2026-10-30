@@ -48,13 +48,13 @@ export default function ProdukPage() {
       {/* Keunggulan */}
       <section className="bg-brand section-y">
         <h2 className="text-center text-3xl font-bold text-white md:text-[46px]">Keunggulan Produk</h2>
-        <ul className="container-page mt-16 flex snap-x gap-[29px] overflow-x-auto pb-4" aria-label="Keunggulan produk">
+        <ul className="container-page scrollbar-thin mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-6 pb-4 min-[900px]:grid min-[900px]:grid-cols-3 min-[900px]:overflow-visible" aria-label="Keunggulan produk">
           {adv.map((a) => (
-            <li key={a.t} className="relative h-[400px] w-[min(460px,85vw)] shrink-0 snap-center rounded-2xl bg-gradient-to-b from-white from-50% to-accent first:lg:ml-0">
-              <div className="absolute left-[39px] top-[53px] h-[300px] w-[141px] overflow-hidden rounded-xl shadow-[6px_4px_4px_rgba(0,0,0,.25)]">
+            <li key={a.t} className="flex h-[360px] w-[min(380px,78vw)] shrink-0 snap-start items-center gap-4 rounded-2xl border border-black/10 bg-white p-5 shadow-sm min-[900px]:w-auto min-[900px]:min-w-0 min-[900px]:gap-5">
+              <div className="relative aspect-[141/300] w-[38%] max-w-[141px] shrink-0 overflow-hidden rounded-xl shadow-[6px_4px_4px_rgba(0,0,0,.25)]">
                 <Image src={`/img/produk/${a.img}`} alt="" fill sizes="141px" className="object-cover" />
               </div>
-              <p className="absolute left-[230px] right-4 top-[90px] flex min-h-[84px] items-center justify-center text-center font-montserrat text-xl font-bold text-black">{a.t}</p>
+              <p className="min-w-0 flex-1 text-balance break-words text-center font-montserrat text-lg font-bold text-black lg:text-xl">{a.t}</p>
             </li>
           ))}
         </ul>

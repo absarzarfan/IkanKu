@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 type Errors = Partial<Record<"nama" | "email" | "telepon" | "layanan" | "pesan", string>>;
 
 const inputCls =
-  "h-10 w-full rounded-lg bg-white px-4 text-base text-ink placeholder:text-[#757575] focus:outline-2 focus:outline-accent";
+  "h-10 w-full rounded-lg bg-white px-4 text-base text-ink placeholder:text-[#757575] focus:outline-2 focus:outline-white";
 
 /** Front-end only: validates locally, sends nothing (no backend exists). */
 export default function ContactForm() {

@@ -67,6 +67,8 @@
   .btn-cta:active, .btn-primary:active, .btn-outline:active, .card-lift:hover { transform: none; }
 }
 
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.5) transparent; }
+
 /* Type scale (shared by all routes): h1 46 / h2 34 / h3 22, body 16 at 1.6, readable paragraph width. */
 @layer base {
   body { font-size: 1rem; line-height: 1.6; }

@@ -54,7 +54,7 @@ export default function Home() {
             <ol className="flex flex-col gap-10 lg:gap-[56px]">
               {steps.map((s, i) => (
                 <li key={s.t} className="relative pl-14">
-                  <span className="absolute left-0 top-0 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-accent text-[22px] font-bold leading-none">{i + 1}</span>
+                  <span className="absolute left-0 top-0 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white text-brand text-[22px] font-bold leading-none">{i + 1}</span>
                   <h3 className="text-[22px] font-bold">{s.t}</h3>
                   <p className="mt-3 max-w-[581px] text-justify">{s.d}</p>
                 </li>

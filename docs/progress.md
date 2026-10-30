@@ -39,3 +39,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 5 P2-3: ui brief, gradient tokens, buttons, type scale.
 - Phase 5 P4: contact data centralized in web/data/contact.ts.
 - Phase 5 P5-6: Tim Kami cards, ui-polish doc, verified.
+- Phase 6 P2-3: orange removed from non-button elements; Keunggulan Produk row fixed.

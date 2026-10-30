@@ -33,7 +33,7 @@ export default function Testimonials() {
       </div>
       <div className="mt-10 flex justify-center gap-3" role="tablist" aria-label="Halaman testimoni">
         {Array.from({ length: PAGES }, (_, i) => (
-          <button key={i} type="button" role="tab" aria-selected={page === i} aria-label={`Testimoni ${i + 1}`} onClick={() => setPage(i)} className={`h-[10px] w-12 rounded-lg ${page === i ? "bg-accent" : "bg-dot"}`} />
+          <button key={i} type="button" role="tab" aria-selected={page === i} aria-label={`Testimoni ${i + 1}`} onClick={() => setPage(i)} className={`h-[10px] w-12 rounded-lg ${page === i ? "bg-brand" : "bg-dot"}`} />
         ))}
       </div>
     </section>
