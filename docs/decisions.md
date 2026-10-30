@@ -76,3 +76,5 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - FAQ shipping: no delivery fee or time stated; confirm real values and whether "Jemput" is offered to all buyers.
 - FAQ registration: steps follow the Flutter mock flow (phone, 4-digit code, profile data); confirm it matches the production flow.
 - Phase 9a P4: Visi/Misi/Tujuan = DRAFT, needs team approval (data/visi-misi.ts; Visi sentence is original copy, Misi 5 and Tujuan 4 reuse existing ideas only).
+- Phase 9a P5: all 13 article images are already used, so 0 new articles. All 13 got AI-assisted bodies (aiGenerated=true, reviewStatus="draft", since the bodies are AI even though titles/dates/images are original). Article categories were assigned from the fixed list (Budidaya, Pasar & Ekonomi, Lingkungan, Tips), replacing the placeholder "Bisnis" badge. Bodies are 200-290 words (below the 250-400 target for most); flagged in docs/ai-articles.md. Dates are parsed from Indonesian strings for ordering.
+- Phase 9a P5 NEEDS CONFIRMATION: article images 5-jenis/5-fakta do not clearly match their titles; two images carry watermarks (Unsplash+, Tribun Kaltara).

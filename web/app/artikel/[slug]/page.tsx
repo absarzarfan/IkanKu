@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import SiteShell from "@/components/SiteShell";
-import { allArticles, articles, featured, featuredHeadings, getArticle } from "@/lib/articles";
+import { allArticles, articles, getArticle } from "@/lib/articles";
 
 export function generateStaticParams() {
   return allArticles.map((a) => ({ slug: a.slug }));
@@ -22,7 +22,7 @@ export default async function ArticleDetail({ params }: PageProps<"/artikel/[slu
   const a = getArticle(slug);
   if (!a) notFound();
   const related = articles.filter((x) => x.slug !== a.slug).slice(0, 3);
-  const headings = a.slug === featured.slug ? featuredHeadings : [];
+  const headings: string[] = [];
 
   return (
     <SiteShell>
