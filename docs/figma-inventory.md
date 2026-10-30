@@ -39,7 +39,7 @@ HiFi - Website Umum + Admin login/profil (page FigmaDesainxWEB)
 | Card Artickel 3 | `678:1284` | 494x210 |  |
 | Card Artickel 5 | `678:1285` | 494x210 |  |
 | Card Artickel 4 | `678:1286` | 494x210 |  |
-| Tentang Kami | `432:1620` | 1440x4463 | Mitra Kami; Tibelat Farm - Batam; Designer; Programer; Hustler & Scrum Master; Surya Fahriandi |
+| Tentang Kami | `432:1620` | 1440x4463 | Mitra Kami; Tibelat Farm - Batam; Designer; Programer; Hustler; Surya Fahriandi |
 | Produk non animate | `875:4930` | 1440x3657 | Mari Bergabung Bersama Kami; Transparansi Harga & Produk Yang Detail; Sistem Review Yang Terpercaya; Opsi Pembayaran Yang Fleksibel; Keunggulan Produk; Cara Kerja Aplikasi Kami |
 | Hubungi Kami non animate | `875:4969` | 1440x3754 | Satu Klik Berhubung Dengan Kami; Apa Itu IkanKu ?; Pertanyaan Yang Sering Diajukan; Beranda; - Hubungi Kami; Hubungi Kami |
 | Tentang Kami non animate | `875:5067` | 1440x4439 | Developer; Andi; Zia Djulyanza; Muhammad Dzakwan Naufal; Muhammad Dzaky Naufal; Mitra Kami |

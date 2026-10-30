@@ -1,4 +1,4 @@
-export type TeamRole = "Hustler & Scrum Master" | "Designer" | "Programmer";
+export type TeamRole = "Hustler" | "Designer" | "Programmer";
 
 export type TeamMember = {
   name: string;
@@ -18,7 +18,7 @@ export type TeamMember = {
 
 // One-line summaries, shortened from the previous role paragraphs.
 export const roles: { role: TeamRole; desc: string }[] = [
-  { role: "Hustler & Scrum Master", desc: "Memimpin tim dan memastikan setiap tahapan proyek berjalan lancar." },
+  { role: "Hustler", desc: "Mendukung pertumbuhan ekonomi lokal dan meningkatkan nilai jual ikan air tawar." },
   { role: "Designer", desc: "Merancang antarmuka UX/UI yang intuitif bagi pengguna." },
   { role: "Programmer", desc: "Mengembangkan fitur web dan aplikasi mobile dengan optimal." },
 ];
@@ -31,9 +31,9 @@ const m = (name: string, role: TeamRole, focus?: string, zoom?: number, origin?:
 
 // Names and roles come from the existing /tentang-kami page (no placeholders needed).
 export const team: TeamMember[] = [
-  m("Surya Fahriandi", "Hustler & Scrum Master", "50% 0%", 3, "47% 40%"),
-  m("Mohamad Feby", "Hustler & Scrum Master", "50% 50%", 1.2, "47% 22%"),
-  m("Naufal Fadhilah", "Hustler & Scrum Master", "50% 50%", 2.6, "51% 50%"),
+  m("Surya Fahriandi", "Hustler", "50% 0%", 3, "47% 40%"),
+  m("Mohamad Feby", "Hustler", "50% 50%", 1.2, "47% 22%"),
+  m("Naufal Fadhilah", "Hustler", "50% 50%", 2.6, "51% 50%"),
   m("Dicky Aryadi", "Designer", "50% 50%", 1.15, "47% 28%"),
   m("Hafid Daris F", "Designer", "50% 50%", 2.6, "47% 37%"),
   m("Ririn Fitri Wulandari", "Designer", "50% 50%", 1.9, "58% 40%"),

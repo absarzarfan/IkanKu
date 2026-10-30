@@ -21,3 +21,6 @@ Direction: docs/ui-direction.md. Shared: .band-white/.band-tint/.band-blue, .cur
 ## Performance (npm run build + start -p 3100, local)
 Next 16.4.3, Turbopack is already the default for dev/build (no change). Response time cold/warm: / 52/5 ms, /produk 23/4, /artikel 41/4, article detail 31/4, /tentang-kami 19/5, /hubungi-kami 295/5 (first hit), /admin/login 37/4, /icon.png 25/5. HTML 10-67 KB; 18 JS chunks, 693 KB total on disk (this Next version prints no First Load JS table). No "before" build was measured.
 **Images:** >500 KB or >1600 px: artikel/a1,a2,a3, hubungi/map, produk/hero,pixel7a, tentang/hero, tentang/zia + team/zia-djulyanza (2000x3008). Backed up to D:\Tools\image-backup, but re-encoding with System.Drawing made the PNGs LARGER (e.g. 3.0 -> 4.8 MB), so originals were restored; next/image already serves resized WebP/AVIF to browsers. Recommend compressing these with an external tool (squoosh/pngquant) manually.
+
+## Phase 8 (feature/ui-redesign-v2)
+**Role rename:** "Hustler & Scrum Master" -> "Hustler" (data/team.ts, docs/figma-inventory.md; heading, pill and group order derive from the same data). Summary before: "Memimpin tim dan memastikan setiap tahapan proyek berjalan lancar." -> after: "Mendukung pertumbuhan ekonomi lokal dan meningkatkan nilai jual ikan air tawar." (both phrases already in /tentang-kami copy).
