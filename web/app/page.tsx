@@ -44,7 +44,7 @@ export default function Home() {
           <Reveal className="relative w-full max-w-[460px] shrink-0">
             <div aria-hidden className="absolute -bottom-4 -left-4 h-full w-full rounded-3xl bg-brand/15" />
             <div className="relative aspect-[419/300] overflow-hidden rounded-3xl shadow-[0_18px_40px_-20px_rgba(23,123,205,.5)]">
-              <Image src="/img/home/fish-box.png" alt="Ikan segar dalam boks" fill sizes="460px" className="object-cover" />
+              <Image src="/img/home/fish-box.jpg" alt="Ikan segar dalam boks" fill sizes="460px" className="object-cover" />
             </div>
           </Reveal>
           <Reveal delay={80}>

@@ -21,7 +21,7 @@ export default function ProdukPage() {
     <SiteShell>
       {/* Hero */}
       <section className="curve-b relative isolate overflow-hidden">
-        <Image src="/img/produk/hero.png" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
+        <Image src="/img/produk/hero.jpg" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand/0 from-20% to-brand" />
         <div className="container-page flex flex-col items-center pb-16 pt-32 text-center lg:pt-[360px]">
           <h1 className="max-w-[800px] text-4xl font-extrabold leading-tight text-white md:text-display">Dapatkan Ikan Segar Dengan Mudah Dimana Saja</h1>

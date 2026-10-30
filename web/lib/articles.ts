@@ -15,7 +15,7 @@ export const featured: Article = {
   title: "Mendukung Ketahanan Pangan Melalui Agribisnis Perikanan Air Tawar",
   date: "11 Januari 2024",
   category: "Bisnis",
-  image: "/img/artikel/featured.png",
+  image: "/img/artikel/featured.jpeg",
   excerpt:
     "Agribisnis perikanan air tawar menjadi sektor yang semakin strategis dalam mendukung ketahanan pangan di berbagai negara. Dengan sumb...",
 };
@@ -38,7 +38,7 @@ export const articles: Article[] = [
   a("ikan-laut-atau-air-tawar", "Mana yang Lebih Bergizi: Ikan Laut A....", "5 Agustus 2023", "/img/artikel/b1.jpg"),
   a("ikan-lele-jenis-air-tawar", "Ikan Lele Jenis Ikan Air Tawar yang Po....", "21 Juli 2023", "/img/artikel/b2.jpg"),
   a("perbedaan-perikanan-air-payau", "Perbedaan Perikanan Air Pay....", "11 Januari 2024", "/img/artikel/b3.jpg"),
-  a("inovasi-teknologi-budidaya", "Inovasi Teknologi dalam Budidaya....", "21 Agustus 2024", "/img/artikel/b4.jpg"),
+  a("inovasi-teknologi-budidaya", "Inovasi Teknologi dalam Budidaya....", "21 Agustus 2024", "/img/artikel/b4.jpeg"),
   a("purwakarta-perkuat-posisi", "Purwakarta Perkuat Posisi Sebagai Pen....", "2 Mei 2024", "/img/artikel/b5.jpg"),
   a("pokdakan-dan-poklahsar", "Pokdakan dan Poklahsar Dapat B....", "13 Sep 2024", "/img/artikel/b6.jpg"),
 ];
