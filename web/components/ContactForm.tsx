@@ -51,7 +51,7 @@ export default function ContactForm() {
           {fe("pesan")}
         </label>
       </div>
-      <button type="submit" className="mt-6 h-[38px] rounded-lg bg-accent px-[42px] text-white transition hover:brightness-95">Submit</button>
+      <button type="submit" className="mt-6 h-[38px] btn-cta rounded-lg px-[42px] text-white">Submit</button>
       {sent && <p role="status" className="mt-4 text-sm">Terima kasih! Saran Anda tercatat (demo: belum dikirim ke server).</p>}
     </form>
   );

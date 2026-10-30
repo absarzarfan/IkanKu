@@ -28,7 +28,7 @@ export default function ProdukPage() {
             </div>
             <div className="flex flex-col items-center gap-10">
               <Image src="/img/produk/qr.png" alt="Kode QR unduh aplikasi" width={200} height={200} className="rounded-lg bg-white" />
-              <a href="#" className="inline-flex items-center rounded-lg bg-accent px-[42px] py-[7px] text-white transition hover:brightness-95">Unduh Aplikasi</a>
+              <a href="#" className="inline-flex items-center btn-cta rounded-lg px-[42px] py-[7px] text-white">Unduh Aplikasi</a>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@ export default function ProdukPage() {
 
       <section className="bg-white section-y text-center">
         <p className="text-2xl md:text-[34px]">Mari Bergabung Bersama Kami</p>
-        <a href="#" className="mt-8 inline-flex h-12 items-center rounded-lg bg-accent px-[42px] text-white transition hover:brightness-95">Unduh Aplikasi</a>
+        <a href="#" className="mt-8 inline-flex h-12 items-center btn-cta rounded-lg px-[42px] text-white">Unduh Aplikasi</a>
       </section>
     </SiteShell>
   );

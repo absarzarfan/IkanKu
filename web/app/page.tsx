@@ -24,7 +24,7 @@ export default function Home() {
         <div className="container-page flex flex-col items-center gap-8 pt-12 md:flex-row md:justify-between lg:pt-0">
           <div className="text-white">
             <h1 className="text-3xl leading-[1.5] md:text-[46px] md:leading-[79px]">Belanja Ikan Mudah<br />Dengan IkanKu</h1>
-            <a href="#" className="mt-6 inline-flex h-10 items-center rounded-lg bg-accent px-[42px] text-base transition hover:brightness-95">Download on Google Play</a>
+            <a href="#" className="mt-6 inline-flex h-10 items-center btn-cta rounded-lg px-[42px] text-base">Download on Google Play</a>
           </div>
           <div className="relative h-[300px] w-[260px] shrink-0 overflow-hidden rounded-t-3xl shadow-[4px_0_4px_rgba(0,0,0,.25)] lg:mt-6 lg:h-[380px] lg:w-[325px]">
             <Image src="/img/home/phone.png" alt="Tampilan aplikasi IkanKu" fill sizes="325px" className="object-cover object-top" priority />
@@ -87,7 +87,7 @@ export default function Home() {
       <section className="bg-surface-2">
         <div className="container-page flex flex-col items-center justify-between gap-4 py-8 text-center sm:flex-row sm:text-left">
           <p className="text-2xl lg:text-4xl">Mari Bergabung Bersama Kami</p>
-          <a href="#" className="inline-flex h-12 items-center rounded-lg bg-accent px-[42px] text-white transition hover:brightness-95 lg:mr-[156px]">Unduh Aplikasi</a>
+          <a href="#" className="inline-flex h-12 items-center btn-cta rounded-lg px-[42px] text-white lg:mr-[156px]">Unduh Aplikasi</a>
         </div>
       </section>
     </SiteShell>

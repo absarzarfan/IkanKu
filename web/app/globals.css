@@ -31,6 +31,50 @@
   --text-h4: 18px;
 }
 
+/* Gradient tokens: same hue as the flat brand colors, about +/-6% lightness. */
+:root {
+  --grad-primary: linear-gradient(135deg, hsl(207 80% 51%), hsl(207 80% 39%));
+  --grad-primary-hover: linear-gradient(135deg, hsl(207 80% 47%), hsl(207 80% 35%));
+  --grad-cta: linear-gradient(135deg, hsl(25 100% 67%), hsl(19 100% 55%));
+  --grad-cta-hover: linear-gradient(135deg, hsl(25 100% 63%), hsl(19 100% 51%));
+  --grad-nav: linear-gradient(90deg, #ffffff 0%, #f6fafd 100%);
+  --grad-outline-hover: linear-gradient(135deg, #f3f8fd, #e6f0fa);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Buttons: subtle gradient fill, 150-200ms ease-out, press scale, visible focus. */
+@layer components {
+  .btn-cta, .btn-primary, .btn-outline {
+    cursor: pointer;
+    transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out), transform 150ms var(--ease-out);
+  }
+  .btn-cta { background-image: var(--grad-cta); }
+  .btn-cta:hover { background-image: var(--grad-cta-hover); }
+  .btn-primary { background-image: var(--grad-primary); color: #fff; }
+  .btn-primary:hover { background-image: var(--grad-primary-hover); }
+  .btn-outline { background-color: #fff; }
+  .btn-outline:hover { background-image: var(--grad-outline-hover); }
+  .btn-cta:active, .btn-primary:active, .btn-outline:active { transform: scale(0.98); }
+  .btn-cta:focus-visible, .btn-primary:focus-visible, .btn-outline:focus-visible {
+    outline: 2px solid var(--color-brand); outline-offset: 2px;
+  }
+  .nav-grad { background-image: var(--grad-nav); }
+  .card-lift { transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out); }
+  .card-lift:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(5, 3, 21, 0.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-cta, .btn-primary, .btn-outline, .card-lift { transition: none; }
+  .btn-cta:active, .btn-primary:active, .btn-outline:active, .card-lift:hover { transform: none; }
+}
+
+/* Type scale (shared by all routes): h1 46 / h2 34 / h3 22, body 16 at 1.6, readable paragraph width. */
+@layer base {
+  body { font-size: 1rem; line-height: 1.6; }
+  h1, h2, h3, h4 { line-height: 1.25; text-wrap: balance; }
+  p { max-width: 72ch; }
+  small { font-size: 0.875rem; }
+}
+
 /* Shared page grid: header, every section and footer use the same edges. */
 @layer components {
   .container-page { margin-inline: auto; width: 100%; max-width: 1440px; padding-inline: 1.5rem; }

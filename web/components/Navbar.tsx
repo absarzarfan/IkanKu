@@ -16,7 +16,7 @@ export default function Navbar() {
   const path = usePathname();
   const active = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="nav-grad sticky top-0 z-50 border-b border-black/10 shadow-sm">
       <div className="container-page flex h-20 items-center justify-between lg:h-24">
         <Link href="/" aria-label="IkanKu beranda">
           <Image src="/img/home/logo.png" alt="IkanKu" width={160} height={84} className="h-14 w-auto lg:h-[84px]" priority />
@@ -28,7 +28,7 @@ export default function Navbar() {
             </Link>
           ))}
         </nav>
-        <Link href="/hubungi-kami" className="hidden rounded-lg border border-black bg-white px-4 py-2 text-sm transition-colors hover:bg-brand hover:text-white md:block">
+        <Link href="/hubungi-kami" className="hidden btn-outline rounded-lg border border-black px-4 py-2 text-sm md:block">
           Hubungi Kami
         </Link>
         <button type="button" className="md:hidden p-2" aria-label="Buka menu" aria-expanded={open} onClick={() => setOpen(!open)}>

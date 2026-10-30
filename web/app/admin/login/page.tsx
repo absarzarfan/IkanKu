@@ -43,7 +43,7 @@ export default function AdminLogin() {
             <label className="flex items-center gap-2"><input type="checkbox" checked={show} onChange={(e) => setShow(e.target.checked)} /> Show password</label>
             <span className="text-brand">Forgot password?</span>
           </div>
-          <button type="submit" className="h-12 w-full rounded-lg bg-brand text-white transition hover:brightness-95">Log in</button>
+          <button type="submit" className="h-12 w-full btn-primary rounded-lg">Log in</button>
           <p className="text-xs text-muted">Demo: login tiruan, belum terhubung ke backend.</p>
         </form>
       </div>
