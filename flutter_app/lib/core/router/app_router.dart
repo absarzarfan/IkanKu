@@ -42,7 +42,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(authProvider, (_, _) => listenable.ping());
   ref.onDispose(listenable.dispose);
   final router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/home',
     refreshListenable: listenable,
     redirect: (context, state) => computeRedirect(ref.read(authProvider), state.uri.path),
     routes: [

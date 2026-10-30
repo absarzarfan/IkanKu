@@ -22,6 +22,9 @@ class AuthException implements Exception {
 /// Kontrak autentikasi. Implementasi mock: [MockAuthRepository].
 /// Backend nyata (REST/Firebase) cukup mengimplementasikan kelas ini.
 abstract class AuthRepository {
+  /// Pengguna saat aplikasi dibuka (sesi tersimpan); null = belum login. Backend nyata: pulihkan sesi di sini.
+  AppUser? get initialUser => null;
+
   /// [identifier] boleh nomor ponsel atau email.
   Future<AppUser> login(String identifier, String password);
   Future<AppUser> register({required String name, required String phone, required String password, String? email});

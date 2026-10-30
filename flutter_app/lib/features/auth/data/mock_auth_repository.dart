@@ -6,10 +6,16 @@ import 'package:ikanku/features/auth/domain/auth.dart';
 class MockAuthRepository implements AuthRepository {
   MockAuthRepository() {
     _accounts.addAll([
-      _Account(const AppUser(id: 'b1', name: 'Miftahul Fazra', email: 'fharaa@gmail.com', phone: '6285274088734', role: UserRole.buyer), 'Admin123'),
+      _Account(demoBuyer, 'Admin123'),
       _Account(const AppUser(id: 's1', name: 'Anna', email: 'penjual@ikanku.id', phone: '6281266680075', role: UserRole.seller), 'Admin123'),
     ]);
   }
+
+  /// Akun pembeli demo; aplikasi dibuka langsung sebagai akun ini (backend masih mock).
+  static const demoBuyer = AppUser(id: 'b1', name: 'Miftahul Fazra', email: 'fharaa@gmail.com', phone: '6285274088734', role: UserRole.buyer);
+
+  @override
+  AppUser? get initialUser => demoBuyer;
 
   final List<_Account> _accounts = [];
   static const validOtp = '1234';

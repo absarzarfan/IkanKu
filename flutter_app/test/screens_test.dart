@@ -13,8 +13,24 @@ import 'helpers.dart';
 void main() {
   setUpAll(loadAppFonts);
 
-  testWidgets('smoke: start di startup page, Masuk ke Login', (tester) async {
-    await pumpApp(tester);
+  testWidgets('startup: langsung ke beranda sebagai pembeli demo, tanpa welcome/login', (tester) async {
+    final c = await pumpApp(tester);
+    expect(c.read(routerProvider).state.uri.path, '/home');
+    expect(find.text('Jelajahi Website kami'), findsNothing);
+    expect(find.text('Hallo, Miftahul Fazra!'), findsOneWidget);
+    expect(c.read(authProvider)?.id, 'b1');
+  });
+
+  testWidgets('Keluar dari profil kembali ke login; startup page tetap dapat dibuka saat belum login', (tester) async {
+    final c = await pumpApp(tester);
+    c.read(routerProvider).go('/profile');
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Keluar'));
+    await tester.tap(find.text('Keluar'));
+    await tester.pumpAndSettle();
+    expect(c.read(routerProvider).state.uri.path, '/login');
+    c.read(routerProvider).go('/');
+    await tester.pumpAndSettle();
     expect(find.text('Jelajahi Website kami'), findsOneWidget);
     await tester.tap(find.text('Masuk'));
     await tester.pumpAndSettle();
@@ -22,7 +38,7 @@ void main() {
   });
 
   testWidgets('login: validasi kosong dan kredensial salah', (tester) async {
-    final c = await pumpApp(tester);
+    final c = await pumpAppSignedOut(tester);
     await tester.tap(find.text('Masuk'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Login').last);
@@ -38,7 +54,7 @@ void main() {
   });
 
   testWidgets('login pembeli masuk beranda; login penjual masuk beranda toko', (tester) async {
-    await pumpApp(tester);
+    await pumpAppSignedOut(tester);
     await tester.tap(find.text('Masuk'));
     await tester.pumpAndSettle();
     await loginAs(tester, 'fharaa@gmail.com');
@@ -47,7 +63,7 @@ void main() {
   });
 
   testWidgets('login penjual', (tester) async {
-    await pumpApp(tester);
+    await pumpAppSignedOut(tester);
     await tester.tap(find.text('Masuk'));
     await tester.pumpAndSettle();
     await loginAs(tester, 'penjual@ikanku.id');
@@ -56,7 +72,7 @@ void main() {
   });
 
   testWidgets('lupa kata sandi: email valid terdaftar menampilkan konfirmasi', (tester) async {
-    await pumpApp(tester);
+    await pumpAppSignedOut(tester);
     await tester.tap(find.text('Masuk'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Lupa kata sandi'));
@@ -68,7 +84,7 @@ void main() {
   });
 
   testWidgets('registrasi: nomor -> OTP salah ditolak -> OTP benar', (tester) async {
-    await pumpApp(tester);
+    await pumpAppSignedOut(tester);
     await tester.tap(find.text('Masuk'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Daftar'));

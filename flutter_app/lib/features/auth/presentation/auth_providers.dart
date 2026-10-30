@@ -7,7 +7,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) => MockAuthReposit
 /// State: pengguna yang login (null = belum login).
 class AuthController extends Notifier<AppUser?> {
   @override
-  AppUser? build() => null;
+  AppUser? build() => ref.read(authRepositoryProvider).initialUser;
 
   AuthRepository get _repo => ref.read(authRepositoryProvider);
 

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ikanku/core/router/app_router.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
+import 'package:ikanku/features/auth/presentation/auth_providers.dart';
 
 /// Menjalankan aplikasi penuh pada layar 412x917 dp.
 Future<ProviderContainer> pumpApp(WidgetTester tester, {ProviderContainer? container}) async {
@@ -16,6 +17,16 @@ Future<ProviderContainer> pumpApp(WidgetTester tester, {ProviderContainer? conta
     container: c,
     child: Consumer(builder: (context, ref, _) => MaterialApp.router(theme: buildTheme(), routerConfig: ref.watch(routerProvider))),
   ));
+  await tester.pumpAndSettle();
+  return c;
+}
+
+/// Aplikasi dibuka sebagai pembeli demo (langsung beranda); helper ini keluar dulu dan menampilkan startup page.
+Future<ProviderContainer> pumpAppSignedOut(WidgetTester tester) async {
+  final c = await pumpApp(tester);
+  c.read(authProvider.notifier).logout();
+  await tester.pumpAndSettle();
+  c.read(routerProvider).go('/');
   await tester.pumpAndSettle();
   return c;
 }
