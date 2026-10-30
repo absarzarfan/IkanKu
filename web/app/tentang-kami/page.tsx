@@ -50,6 +50,7 @@ export default function TentangKamiPage() {
       <section className="mx-auto max-w-[1100px] px-6 py-12 text-center">
         <h1 className="text-3xl font-bold leading-[52px] text-brand md:text-[45px]">Marketplace Ikan Tawar Inovatif<br />Visi Misi dan Tujuan Kami</h1>
         <p className="mx-auto mt-8 max-w-[670px]">Dengan fokus kepada kebutuhan pengguna, kami berkomitmen menghadirkan solusi inovatif yang meningkatkan nilai jual ikan air tawar, mendukung pertumbuhan ekonomi lokal dan kualitas di setiap transaksi. Kesuksesan anda dalam mendapatkan produk ikan segar adalah pencapaian tertinggi kami.</p>
+        <p className="mx-auto mt-4 max-w-[670px]">Tim IkanKu dipertemukan melalui program Magang dan Studi Independen Bersertifikat (MSIB) Batch 7 di Infinite Learning.</p>
       </section>
 
       <VisiMisi />

@@ -1,12 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const programs = [
+  { src: "/logos/msib.png", alt: "MSIB", w: 1024, h: 360 },
+  { src: "/logos/infinite-learning.png", alt: "Infinite Learning", w: 471, h: 125 },
+  { src: "/logos/kampus-merdeka.png", alt: "Kampus Merdeka", w: 1294, h: 680 },
+];
+
 export default function Footer() {
   return (
     <footer className="mt-auto bg-surface">
       <div className="mx-auto grid max-w-[1440px] gap-10 px-6 py-12 md:grid-cols-[1.2fr_1fr_auto] lg:px-[79px]">
         <div>
-          <Image src="/img/home/logo.png" alt="IkanKu" width={120} height={63} className="mb-10 h-[63px] w-auto" />
+          <Image src="/img/home/logo.png" alt="IkanKu" width={120} height={63} className="mb-6 h-[63px] w-auto" />
+          <ul className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Program">
+            {programs.map((l) => (<li key={l.src}><Image src={l.src} alt={l.alt} width={l.w} height={l.h} className="h-9 w-auto object-contain" /></li>))}
+          </ul>
           <div className="grid grid-cols-2 gap-x-10 gap-y-6 text-lg text-black">
             <div><p>Email</p><p className="mt-3 break-all">Ikanku@gmail.com</p></div>
             <div><p>Nomor telepon</p><p className="mt-3">+62 868-996-4445</p></div>
@@ -23,7 +32,7 @@ export default function Footer() {
           <Link href="/hubungi-kami#faq">FAQ</Link>
         </nav>
       </div>
-      <div className="bg-brand py-4 text-center text-white">© 2023 All rights reserved</div>
+      <div className="bg-brand py-4 text-center text-white">© 2024 All rights reserved.</div>
     </footer>
   );
 }

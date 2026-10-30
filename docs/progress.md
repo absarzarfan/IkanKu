@@ -22,3 +22,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Stage 1: selesai.
 - Stage 2-5: **menunggu ekspor**. `docs/figma-export/` masih kosong (0 file) pada 2026-10-30.
 - Catatan: ada perubahan tak ter-commit di `flutter_app/` (web platform ditambahkan lewat `flutter create`: `web/`, `.metadata`, `analysis_options.yaml`, `pubspec.lock`, dan `test/widget_test.dart` bawaan yang merujuk `MyApp` dan akan gagal). Bukan bagian dari pekerjaan ini; perlu keputusan sebelum Stage 3.
+
+- PART A (web: copyright 2024, favicon IkanKu, logo program di footer, teks MSIB Batch 7): selesai.
