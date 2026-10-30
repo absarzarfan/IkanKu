@@ -1,20 +1,23 @@
-# UI polish (Phase 5, branch feature/ui-polish)
-**Gradients** (tokens in web/app/globals.css; same hue, about +/-6% lightness)
-- --grad-primary: hsl(207 80% 51%) -> hsl(207 80% 39%), 135deg (flat #177BCD = hsl(207 80% 45%)).
-- --grad-cta: hsl(25 100% 67%) -> hsl(19 100% 55%) (flat #FF8038 = hsl(22 100% 61%); hue shift max 3deg).
-- --grad-nav: #FFFFFF -> #F6FAFD (4% blue tint), bottom divider kept. Outline hover fill: #F3F8FD -> #E6F0FA.
-- Buttons: .btn-cta, .btn-primary, .btn-outline (hover = slightly deeper gradient, active scale .98, focus-visible ring, 150-180ms ease-out, reduced-motion safe).
-**Type scale:** h1 46, h2 34, h3 22, body 16 / line-height 1.6, small 14; Poppins + Montserrat (unchanged); paragraphs capped at 72ch; headings line-height 1.25 + balanced wrap. Existing per-component sizes were kept.
-**Contrast (white text):** blue gradient 3.53 (light end) to 5.55 (deep end), flat 4.42; orange gradient 2.06 (light end) to 2.99 (deep end), flat 2.50. Orange was not darkened (per instruction); it is below AA, so consider dark text or a deeper orange later.
-**Copy changes (before -> after):** "apliaksi IkanKu Ini" -> "aplikasi IkanKu"; "dibawah ini" -> "di bawah ini"; "Kami disini" -> "Kami di sini"; "membantu anda" -> "membantu Anda"; "Kesuksesan anda" -> "Kesuksesan Anda"; "berpokus" -> "berfokus"; "antar muka" -> "antarmuka"; "kemanan" -> "keamanan"; "Programer" -> "Programmer". (9)
-**Contact data:** web/data/contact.ts used by Footer, /tentang-kami (new Kontak block) and /hubungi-kami.
-**Team:** web/data/team.ts (12 existing members, no placeholders); photos copied to web/public/team/<slug>.png; initials fallback.
-**Files:** globals.css, Navbar, Footer, ContactForm, Hubungi/Produk/Home/Tentang pages, admin login, data/*, public/team/*.
+﻿# UI polish log
+Earlier phases (details in git history): gradient tokens (--grad-primary/cta/surface/nav), button states, type scale, contact data in web/data/contact.ts, Tim Kami single-screen cards (A-Z per role, fits 1440x900 and 1920x1080), orange only on CTA buttons, blue surfaces via .surface-brand (worst-case white contrast 4.42).
 
-## Phase 6 (feature/ui-overhaul)
-**Orange removed** (it was in the original design, not from our polish: `git diff feature/flutter-web` shows only button-class changes in /produk): Keunggulan Produk cards (white->orange gradient, now flat white, rounded-2xl, 1px border + shadow-sm); Home step-number badges (now white with blue number); Testimonials active dot (now blue); VisiMisi active tab (now blue, white text); ContactForm focus outline (now white). Orange kept only on CTA buttons (incl. admin action buttons).
-**Keunggulan Produk:** >=900px 3-column equal grid (h 360px) inside the page container; <900px scroll-snap row (cards 78vw, next card peeks, thin scrollbar). No copy/image/color change.
-**Tim Kami** (#tim-kami, scroll-mt = navbar height 80/96px): role bands (heading + one-line summary), cards with --grad-primary, round photo (clamp(48px,6vh,88px), white 3px ring, object-position "50% 20%" via optional `focus`), name (2 lines max), role pill; grid 2/3/4/6 columns; members sorted A-Z per role, reading left-to-right then down. Verified fully visible at 1440x900 and 1920x1080 with the navbar. Faces in wide shots (Surya, Naufal F., Hafid, Miftahul) stay small; default focus kept.
-**Role summaries (before -> after):** Hustler: "Sebagai Hustler dan Scrum Master ... memasarkan produk." -> "Memimpin tim dan memastikan setiap tahapan proyek berjalan lancar."; Designer: "Para desainer berfokus pada UX dan UI ... aplikasi ini." -> "Merancang antarmuka UX/UI yang intuitif bagi pengguna."; Programmer: "Tim developer ... penggunaan aplikasi." -> "Mengembangkan fitur web dan aplikasi mobile dengan optimal."
-**Blue surfaces:** `.surface-brand` (--grad-surface hsl(207 80% 45%) -> hsl(207 80% 37%), 135deg) added next to bg-brand in 13 files: hero/sections, copyright bar, FAQ, contact form and cards, testimonial cards, Tibelat card, article banners, admin login panel, chips/tabs. Worst-case white contrast 4.42 (light stop = flat color), deep stop 6.0.
-**Files:** globals.css, produk/page, page (home), tentang-kami/page, data/team.ts, Testimonials, VisiMisi, ContactForm + files that got surface-brand.
+## Phase 7 redesign (feature/ui-redesign)
+Direction: docs/ui-direction.md. Shared: .band-white/.band-tint/.band-blue, .curve-b (soft curve under heroes), .section-title (gradient bar), .card, .badge, .glass-card, SectionHeader, CtaBand, Reveal with stagger. Surface tint is now #F3F8FD.
+**Visible changes vs before (screenshots in D:\Tools\shots\before / after):**
+- Home: hero is a 2-column blue gradient band with a curved base and a framed phone; "Apa itu" has an offset image frame on a tint band; "Kenapa" steps are glass cards with white number badges; Fitur are 2x2 white cards with tinted icon tiles; testimonials on tint; closing CTA band.
+- Produk: curved hero base; video card with rounded-3xl + soft shadow; Keunggulan is a 3+2 centered grid (scroll-snap row below 900px); CtaBand replaces the plain CTA.
+- Artikel: featured banner with image zoom on hover (shorter, 720px); list is now white cards with category badges, pill filters, styled search.
+- Tentang Kami: curved hero, Mitra and Kontak as cards, Tim Kami photos tuned (see below). Hubungi Kami: curved hero, rounded contact tiles, consistent shadows.
+- Navbar: animated active/hover underline, aria-current; footer: top divider and underline-on-hover links.
+**Team photos:** `zoom` and `origin` added to web/data/team.ts next to `focus`; every face is centered and large in the circle (wide shots Surya, Naufal F., Hafid, Miftahul zoomed 2.2-3x). Originals untouched.
+**Skills evidence**
+- ui-ux-pro-max: focus-visible rings + cursor-pointer on buttons/chips/nav (globals.css, Navbar, ArticleList); line-height 1.6 + 72ch measure (globals.css base); duration 150-300ms; no emoji icons (SVG only).
+- emil-design-eng: custom ease-out cubic-bezier(.23,1,.32,1) (--ease-out); :active scale .98 (.btn-*); explicit transition properties, no `transition: all`; hover effects gated by (hover:hover) and (pointer:fine) (.link-u, .img-zoom).
+- animate: gate by frequency (nav hover is subtle, none on keyboard-only actions); Reveal uses translateY(14px)+opacity, never scale(0); 60ms stagger (home steps/features); reduced-motion variant ships with each animation.
+- animation-performance: only transform/opacity/colour animated; nav underline uses scaleX; no animated CSS variables or blur; will-change not added (no measured need).
+- improve-animations: audit pass over existing motion (reveal 24px/600ms ease -> 14px/400ms ease-out; chips/tabs given explicit transitions); no plans/ folder written (audit applied directly).
+- frontend-design: one memorable element (curved hero base + gradient bar), limited palette from tokens, no stacked decoration; copy untouched.
+- review-animations: user-only skill, not invoked by design; the user will run /review-animations manually after this phase.
+## Performance (npm run build + start -p 3100, local)
+Next 16.4.3, Turbopack is already the default for dev/build (no change). Response time cold/warm: / 52/5 ms, /produk 23/4, /artikel 41/4, article detail 31/4, /tentang-kami 19/5, /hubungi-kami 295/5 (first hit), /admin/login 37/4, /icon.png 25/5. HTML 10-67 KB; 18 JS chunks, 693 KB total on disk (this Next version prints no First Load JS table). No "before" build was measured.
+**Images:** >500 KB or >1600 px: artikel/a1,a2,a3, hubungi/map, produk/hero,pixel7a, tentang/hero, tentang/zia + team/zia-djulyanza (2000x3008). Backed up to D:\Tools\image-backup, but re-encoding with System.Drawing made the PNGs LARGER (e.g. 3.0 -> 4.8 MB), so originals were restored; next/image already serves resized WebP/AVIF to browsers. Recommend compressing these with an external tool (squoosh/pngquant) manually.

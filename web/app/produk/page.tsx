@@ -50,9 +50,9 @@ export default function ProdukPage() {
       {/* Keunggulan */}
       <section className="band-blue section-y">
         <SectionHeader tone="dark" title="Keunggulan Produk" />
-        <ul className="container-page scrollbar-thin mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-6 pb-4 min-[900px]:grid min-[900px]:grid-cols-3 min-[900px]:overflow-visible" aria-label="Keunggulan produk">
-          {adv.map((a) => (
-            <li key={a.t} className="card-lift flex h-[360px] w-[min(380px,78vw)] shrink-0 snap-start items-center gap-4 rounded-2xl border border-black/10 bg-white p-5 shadow-sm min-[900px]:w-auto min-[900px]:min-w-0 min-[900px]:gap-5">
+        <ul className="container-page scrollbar-thin mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-6 pb-4 min-[900px]:grid min-[900px]:grid-cols-6 min-[900px]:overflow-visible" aria-label="Keunggulan produk">
+          {adv.map((a, i) => (
+            <li key={a.t} className={`${i === 3 ? "min-[900px]:col-start-2 " : ""}min-[900px]:col-span-2 card-lift flex h-[360px] w-[min(380px,78vw)] shrink-0 snap-start items-center gap-4 rounded-2xl border border-black/10 bg-white p-5 shadow-sm min-[900px]:w-auto min-[900px]:min-w-0 min-[900px]:gap-5`}>
               <div className="relative aspect-[141/300] w-[38%] max-w-[141px] shrink-0 overflow-hidden rounded-xl shadow-[6px_4px_4px_rgba(0,0,0,.25)]">
                 <Image src={`/img/produk/${a.img}`} alt="" fill sizes="141px" className="object-cover" />
               </div>

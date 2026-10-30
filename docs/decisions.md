@@ -55,3 +55,5 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Phase 5: contrast not chased for the orange CTA (already 2.5:1 flat); copy edits limited to typos/spacing; team members reused from existing /tentang-kami, photos copied (originals in public/img/tentang kept); watermark part skipped (input folder empty); only Emil Kowalski skills installed (ui-ux-pro-max already present globally).
 
 - Phase 6: 'diurut namanya' interpreted as A-Z by name within each role, row-major; Tim Kami role pill kept per card; no per-person focus tuning beyond the default (faces already inside the circle); skills not re-read in full (read during Phase 5).
+
+- Phase 7: review-animations skipped (user-only, per user); image downscale reverted because System.Drawing PNG re-encode increased size; Turbopack already default (no script change); surface colour changed to #F3F8FD as part of the redesign.
