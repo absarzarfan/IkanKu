@@ -26,3 +26,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART A (web: copyright 2024, favicon IkanKu, logo program di footer, teks MSIB Batch 7): selesai.
 
 - PART B (web: container/spasi bersama, footer grid, verifikasi 1440/390): selesai, lihat docs/web-layout-fixes.md.
+
+- PART C (Flutter: platform web dipertahankan, widget_test.dart ditulis ulang, 32 tes lolos): selesai.
