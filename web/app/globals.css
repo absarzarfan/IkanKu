@@ -222,7 +222,7 @@ body {
   .np-rule { border-top: 1px solid rgba(5,3,21,.7); }
   .np-rule-thick { border-top: 3px double rgba(5,3,21,.8); }
   .np-head { line-height: 1.12; letter-spacing: -.01em; text-wrap: balance; }
-  .dropcap > p:first-of-type::first-letter { float: left; font-family: var(--font-montserrat), sans-serif; font-weight: 700; font-size: 3.6em; line-height: .85; padding: .08em .12em 0 0; color: var(--color-brand); }
+  .dropcap > section:first-child > p:first-of-type::first-letter { float: left; font-family: var(--font-montserrat), sans-serif; font-weight: 700; font-size: 3.6em; line-height: .85; padding: .08em .12em 0 0; color: var(--color-brand); }
 }
 @media (hover: hover) and (pointer: fine) { .hc-btn:hover { background: rgba(255,255,255,.28); } }
 @media (prefers-reduced-motion: reduce) { .hc-btn { transition: none; } }

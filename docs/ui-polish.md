@@ -53,3 +53,11 @@ Skills loaded earlier in this same session (Phase 8) and re-applied; not re-invo
 - animation-performance: only transform/opacity animated (tab underline, panel cross-fade, chevron); no `transition: all`.
 - improve-animations: audit rule "frequency tier" applied: autoplay carousel gets pause button and is off under reduced motion.
 - frontend-design: newspaper structure (thin rules, small-caps kickers, dateline) from existing fonts only; no new fonts or colors.
+
+## Phase 9a summary
+- Kit: `components/kit` (Wave, Bubbles, Eyebrow, Timeline, IconList, Frame) applied to Home/Produk bands, CTA band, Tentang intro, Hubungi "Satu Klik".
+- FAQ: 11 items in `data/faq.ts`, two independent columns, 0fr to 1fr panels, category chips, steps lists.
+- Visi/Misi/Tujuan: tablist with arrow keys, moving underline (transform), cross-fade panel, numbered icon-chip cards (DRAFT).
+- Articles: 13 AI-assisted bodies, reading time, categories, AI label; HeadlineCarousel (autoplay 6s, pause button, reduced-motion off).
+- /artikel newspaper front page, /artikel/[slug] with drop cap, pull-quote (2 articles), related row.
+- Verified: build + lint pass, 6 routes + 13 slugs return 200, no horizontal scroll at 390 (5 pages + 1 article), screenshots in D:\Tools\shots\phase9a.

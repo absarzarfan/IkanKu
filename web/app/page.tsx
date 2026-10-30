@@ -50,7 +50,7 @@ export default function Home() {
           <Eyebrow>{articleUi.pageTitle}</Eyebrow>
           <h2 className="mb-8 text-3xl font-bold text-brand md:text-h2">{articleUi.headlines}</h2>
           <HeadlineCarousel items={latestArticles(5)} />
-          <p className="mt-6 text-center"><Link href="/artikel" className="btn-outline inline-flex min-h-11 items-center rounded-lg border border-black px-5 py-2 text-sm">{articleUi.allArticles}</Link></p>
+          <div className="mt-6 flex justify-center"><Link href="/artikel" className="btn-outline inline-flex min-h-11 items-center rounded-lg border border-black px-5 py-2 text-sm">{articleUi.allArticles}</Link></div>
         </div>
       </section>
 
