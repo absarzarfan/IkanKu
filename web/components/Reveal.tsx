@@ -1,13 +1,15 @@
 "use client";
 import { useEffect, useRef, type ReactNode } from "react";
 
-/** Fade/slide-in on scroll using IntersectionObserver (no animation library). */
+/** Fade/rise-in on scroll using IntersectionObserver (no animation library). `delay` staggers siblings (ms). */
 export default function Reveal({
   children,
   className = "",
+  delay = 0,
 }: {
   children: ReactNode;
   className?: string;
+  delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -26,7 +28,7 @@ export default function Reveal({
     return () => io.disconnect();
   }, []);
   return (
-    <div ref={ref} className={`reveal ${className}`}>
+    <div ref={ref} className={`reveal ${className}`} style={delay ? ({ "--d": `${delay}ms` } as React.CSSProperties) : undefined}>
       {children}
     </div>
   );

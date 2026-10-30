@@ -23,7 +23,7 @@ export default function Navbar() {
         </Link>
         <nav className="hidden items-center gap-10 text-[22px] md:flex lg:gap-[60px]" aria-label="Utama">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className={`transition-colors hover:text-brand ${active(l.href) ? "text-brand" : "text-ink"}`}>
+            <Link key={l.href} href={l.href} aria-current={active(l.href) ? "page" : undefined} className={`relative py-1 transition-colors duration-150 hover:text-brand after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:rounded after:bg-brand after:transition-transform after:duration-200 after:ease-out motion-reduce:after:transition-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand ${active(l.href) ? "text-brand after:scale-x-100" : "text-ink after:scale-x-0 hover:after:scale-x-100"}`}>
               {l.label}
             </Link>
           ))}

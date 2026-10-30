@@ -6,8 +6,8 @@
   --color-brand-dark: #0072a7;
   --color-accent: #ff8038;
   --color-ink: #050315;
-  --color-surface: #eeeeee;
-  --color-surface-2: #e6e6e6;
+  --color-surface: #f3f8fd;
+  --color-surface-2: #e8f1fa;
   --color-muted: #444444;
   --color-dot: #d9d9d9;
 
@@ -100,10 +100,32 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Scroll reveal (CSS + IntersectionObserver, see components/Reveal.tsx) */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+/* Section system: white / tint / blue-gradient bands, one soft curve under the hero. */
+@layer components {
+  .band-white { background: #fff; }
+  .band-tint { background: var(--color-surface); }
+  .band-blue { background-image: var(--grad-surface); color: #fff; position: relative; isolation: isolate; }
+  .band-blue::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(60% 80% at 85% 0%, rgba(255,255,255,.14), transparent 70%); pointer-events: none; }
+  .curve-b { border-bottom-left-radius: 50% clamp(24px, 4vw, 56px); border-bottom-right-radius: 50% clamp(24px, 4vw, 56px); }
+  .section-title { text-align: center; font-weight: 700; line-height: 1.15; font-size: clamp(1.75rem, 1.2rem + 2vw, 2.875rem); }
+  .section-title::after { content: ""; display: block; width: 56px; height: 4px; margin: 14px auto 0; border-radius: 4px; background-image: var(--grad-primary); }
+  .band-blue .section-title::after { background: #fff; opacity: .85; }
+  .card { background: #fff; border-radius: 24px; border: 1px solid rgba(23,123,205,.12); box-shadow: 0 1px 2px rgba(5,3,21,.04), 0 12px 28px -16px rgba(23,123,205,.28); }
+  .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 2px 12px; font-size: .875rem; color: var(--color-brand); background: color-mix(in srgb, var(--color-brand) 12%, white); }
+  .glass-card { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: 20px; }
+}
+
+/* Scroll reveal (CSS + IntersectionObserver, see components/Reveal.tsx): small rise + fade, staggered via --d. */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 400ms var(--ease-out) var(--d, 0ms), transform 400ms var(--ease-out) var(--d, 0ms); }
 .reveal.is-visible { opacity: 1; transform: none; }
+@media (hover: hover) and (pointer: fine) {
+  .link-u { background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size 200ms var(--ease-out); }
+  .link-u:hover { background-size: 100% 2px; }
+  .img-zoom img { transition: transform 300ms var(--ease-out); }
+  .img-zoom:hover img { transform: scale(1.03); }
+}
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
+  .link-u, .img-zoom img { transition: none; }
   html { scroll-behavior: auto; }
 }

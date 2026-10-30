@@ -11,7 +11,7 @@ const programs = [
 export default function Footer() {
   return (
     <footer className="mt-auto">
-      <div className="bg-white">
+      <div className="border-t border-brand/10 bg-white">
       <div className="container-page grid items-start gap-10 py-12 md:grid-cols-[1.2fr_1fr_auto]">
         <div>
           <Image src="/img/home/logo.png" alt="IkanKu" width={160} height={84} className="mb-6 h-[84px] w-auto" />
@@ -29,9 +29,9 @@ export default function Footer() {
           <a href="#" className="inline-flex h-12 items-center btn-cta rounded-lg px-[42px] text-white">Unduh Aplikasi</a>
         </div>
         <nav className="flex flex-col gap-6 text-[22px] text-black" aria-label="Footer">
-          <Link href="/tentang-kami">Tentang kami</Link>
-          <Link href="/produk">Produk</Link>
-          <Link href="/hubungi-kami#faq">FAQ</Link>
+          <Link className="link-u w-fit" href="/tentang-kami">Tentang kami</Link>
+          <Link className="link-u w-fit" href="/produk">Produk</Link>
+          <Link className="link-u w-fit" href="/hubungi-kami#faq">FAQ</Link>
         </nav>
       </div>
       </div>
