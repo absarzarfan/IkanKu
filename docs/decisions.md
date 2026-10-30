@@ -68,3 +68,10 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 
 - Phase 9a P0: the user had replaced images (renamed extensions: fish-box.jpg, produk/hero.jpg, tibelat.jpeg, artikel/featured.jpeg, b4.jpeg); committed them and updated references. Port 3100 was occupied by my own earlier server (will be stopped and restarted by me).
 - Phase 9a P1: the six skills were already loaded in this session; not re-invoked via the Skill tool to save context. Applied rules listed in ui-polish.md.
+- Phase 9a P3: FAQ redone (11 items, 5 new questions supported by the app: forgot password, seller add product, order rejected/cancelled, Kirim vs Jemput, order tracking). Panel height uses grid-template-rows (explicitly requested; not transform/opacity).
+
+## NEEDS CONFIRMATION (Phase 9a)
+- FAQ return/refund policy: written without specifics (contact form). Real policy needed.
+- FAQ payment: only Transfer and COD (from the app); no named banks/e-wallets/providers. Confirm availability on production.
+- FAQ shipping: no delivery fee or time stated; confirm real values and whether "Jemput" is offered to all buyers.
+- FAQ registration: steps follow the Flutter mock flow (phone, 4-digit code, profile data); confirm it matches the production flow.

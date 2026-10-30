@@ -51,3 +51,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 8b P0-2: single ContactInfo component, Kontak card removed, Batam map embed.
 - Phase 8b P3: verified build/lint, routes 200, map embed rendered Politeknik Negeri Batam.
 - Phase 9a P0-1: branch feature/web-content-i18n, image refs synced, skills evidence.
+- Phase 9a P2: enrichment kit (Wave, Bubbles, Eyebrow, Timeline, IconList, Frame) + docs/ui-enrichment.md.
+- Phase 9a P3: FAQ redo (data/faq.ts, 11 items, independent columns, 0fr/1fr panels, category chips).
