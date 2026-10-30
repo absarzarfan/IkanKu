@@ -200,3 +200,14 @@ body {
 }
 @media (hover: hover) and (pointer: fine) { .faq-chip[aria-pressed="false"]:hover { background: rgba(255,255,255,.16); } }
 @media (prefers-reduced-motion: reduce) { .faq-panel, .faq-chip { transition: none; } }
+
+/* Visi/Misi tabs (Phase 9a): underline moves with transform, panel cross-fades (opacity + 8px translate, 200ms). */
+@layer components {
+  .vm-underline { position: absolute; left: 0; bottom: -1px; width: calc(100% / 3); height: 3px; background: var(--color-brand); border-radius: 3px; transition: transform 250ms var(--ease-out); }
+  .vm-tab { transition: color 180ms var(--ease-out); }
+  .vm-tab:focus-visible { outline: 2px solid var(--color-brand); outline-offset: -2px; border-radius: 8px; }
+  .vm-panel { animation: vm-in 200ms var(--ease-out); }
+}
+@keyframes vm-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (hover: hover) and (pointer: fine) { .vm-tab:hover { color: var(--color-brand); } }
+@media (prefers-reduced-motion: reduce) { .vm-underline, .vm-tab { transition: none; } .vm-panel { animation: none; } }

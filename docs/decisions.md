@@ -75,3 +75,4 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - FAQ payment: only Transfer and COD (from the app); no named banks/e-wallets/providers. Confirm availability on production.
 - FAQ shipping: no delivery fee or time stated; confirm real values and whether "Jemput" is offered to all buyers.
 - FAQ registration: steps follow the Flutter mock flow (phone, 4-digit code, profile data); confirm it matches the production flow.
+- Phase 9a P4: Visi/Misi/Tujuan = DRAFT, needs team approval (data/visi-misi.ts; Visi sentence is original copy, Misi 5 and Tujuan 4 reuse existing ideas only).

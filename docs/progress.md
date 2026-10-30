@@ -53,3 +53,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 9a P0-1: branch feature/web-content-i18n, image refs synced, skills evidence.
 - Phase 9a P2: enrichment kit (Wave, Bubbles, Eyebrow, Timeline, IconList, Frame) + docs/ui-enrichment.md.
 - Phase 9a P3: FAQ redo (data/faq.ts, 11 items, independent columns, 0fr/1fr panels, category chips).
+- Phase 9a P4: Visi/Misi/Tujuan tablist with moving underline and icon-chip cards.
