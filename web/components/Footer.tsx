@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { IconChip } from "@/components/icons";
-import { contact } from "@/data/contact";
+import ContactInfo from "@/components/ContactInfo";
 
 const programs = [
   { src: "/logos/msib.png", alt: "MSIB", w: 1024, h: 360, cls: "h-[54px]" },
@@ -9,7 +8,7 @@ const programs = [
   { src: "/logos/kampus-merdeka.png", alt: "Kampus Merdeka", w: 1294, h: 680 },
 ];
 
-export default function Footer() {
+export default function Footer({ showContact = true }: { showContact?: boolean }) {
   return (
     <footer className="mt-auto">
       <div className="border-t border-brand/10 bg-white">
@@ -19,11 +18,7 @@ export default function Footer() {
           <ul className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-4" aria-label="Program">
             {programs.map((l) => (<li key={l.src}><Image src={l.src} alt={l.alt} width={l.w} height={l.h} className={`${l.cls ?? "h-9"} w-auto max-w-full object-contain`} /></li>))}
           </ul>
-          <div className="grid gap-x-10 gap-y-6 text-lg text-ink sm:grid-cols-2">
-            <div className="flex items-start gap-4"><IconChip name="mail" size={44} /><div><p>Email</p><a href={contact.emailHref} className="footer-link mt-1 block break-words">{contact.email}</a></div></div>
-            <div className="flex items-start gap-4"><IconChip name="phone" size={44} /><div><p>Nomor telepon</p><a href={contact.phoneHref} className="footer-link mt-1 block">{contact.phone}</a></div></div>
-            <div className="flex items-start gap-4 sm:col-span-2"><IconChip name="pin" size={44} /><div><p>Alamat</p><p className="mt-1">{contact.address}</p></div></div>
-          </div>
+          {showContact && <ContactInfo items={["email", "phone", "address"]} variant="compact" />}
         </div>
         <div>
           <p className="mb-6 text-h3 font-bold text-ink">Download Aplikasi</p>

@@ -42,3 +42,5 @@ Gradients: --grad-primary 43->35% L, hover 40->32, --grad-surface 43->36 (white 
 - animation-performance: transform/opacity only; fill-mode backwards so :active transform is not frozen; no CSS-variable animation; shadow change only on hover.
 - improve-animations: audit found ungated .card-lift hover and missing team/chip/footer states; fixed in the shared classes (no plans/ folder written).
 - frontend-design: one memorable element kept (curved hero + gradient bar), partner card uses existing card system, left-aligned copy at 60ch.
+
+**Contact consolidation:** data/contact.ts (+ map) is the only source; components/ContactInfo.tsx (compact/cards) is the only renderer: footer (compact) and /hubungi-kami tiles (cards). /tentang-kami Kontak card and the duplicate contact list in 'Bagaimana Cara Menghubungi Kami?' removed; footer hides its contact block on /hubungi-kami (SiteShell footerContact). Map is a Google embed of Politeknik Negeri Batam.
