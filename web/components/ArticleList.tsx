@@ -2,79 +2,68 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { articles } from "@/lib/articles";
+import { Kicker } from "@/components/ArticleMeta";
+import { articleUi } from "@/data/article-ui";
+import { ARTICLE_CATEGORIES, articlesByDate, readingMinutes } from "@/lib/articles";
 
-const PER_PAGE = 6;
-const chips = ["Terbaru", "Kesehatan", "Budidaya", "Bisnis"] as const;
-
+// One section per category (thin top rule, small-caps heading, 3-column card row); pills filter by category.
 export default function ArticleList() {
   const [q, setQ] = useState("");
-  const [chip, setChip] = useState<(typeof chips)[number]>("Terbaru");
-  const [page, setPage] = useState(1);
+  const [cat, setCat] = useState<string>(articleUi.filterAll);
 
-  const list = useMemo(
-    () =>
-      articles.filter(
-        (a) =>
-          (chip === "Terbaru" || a.category === chip) &&
-          a.title.toLowerCase().includes(q.trim().toLowerCase()),
-      ),
-    [q, chip],
-  );
-  const pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
-  const cur = Math.min(page, pages);
-  const shown = list.slice((cur - 1) * PER_PAGE, cur * PER_PAGE);
+  const sections = useMemo(() => {
+    const term = q.trim().toLowerCase();
+    return ARTICLE_CATEGORIES.map((c) => ({
+      c,
+      items: articlesByDate.filter((a) => a.category === c && (cat === articleUi.filterAll || cat === c) && a.title.toLowerCase().includes(term)),
+    })).filter((s) => s.items.length > 0);
+  }, [q, cat]);
 
   return (
     <section className="container-page section-y">
-      <h2 className="section-title text-brand">Artikel lainnya</h2>
-      <div className="relative mx-auto mt-10 max-w-[667px]">
-        <Image src="/img/artikel/search.svg" alt="" width={28} height={28} className="absolute left-5 top-4" />
+      <div className="relative mx-auto max-w-[667px]">
+        <Image src="/img/artikel/search.svg" alt="" width={28} height={28} className="pointer-events-none absolute left-5 top-4" />
         <input
           type="search"
           value={q}
-          onChange={(e) => { setQ(e.target.value); setPage(1); }}
-          placeholder="Search..."
-          aria-label="Cari artikel"
+          onChange={(e) => setQ(e.target.value)}
+          placeholder={articleUi.searchPlaceholder}
+          aria-label={articleUi.searchLabel}
           className="h-[60px] w-full rounded-3xl border border-brand/20 bg-white pl-[68px] pr-6 shadow-sm transition-shadow duration-200 placeholder:text-placeholder focus-visible:outline-2 focus-visible:outline-brand"
         />
       </div>
-      <div className="mt-6 flex flex-wrap justify-center gap-4 md:gap-12">
-        {chips.map((c) => (
-          <button key={c} type="button" onClick={() => { setChip(c); setPage(1); }} aria-pressed={chip === c} className={`h-10 min-w-[100px] cursor-pointer rounded-full border border-brand/30 px-5 text-base transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${chip === c ? "bg-brand surface-brand text-white" : "bg-white hover:bg-white/70"}`}>
+      <div role="group" aria-label={articleUi.filterLabel} className="mt-6 flex flex-wrap justify-center gap-3">
+        {[articleUi.filterAll, ...ARTICLE_CATEGORIES].map((c) => (
+          <button key={c} type="button" onClick={() => setCat(c)} aria-pressed={cat === c} className={`inline-flex min-h-11 cursor-pointer items-center rounded-full border border-brand/30 px-5 text-base transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${cat === c ? "bg-brand text-white" : "text-brand hover:bg-brand/10"}`}>
             {c}
           </button>
         ))}
       </div>
 
-      {shown.length === 0 ? (
-        <p className="mt-16 text-center">Tidak ada artikel yang cocok.</p>
-      ) : (
-        <ul className="mx-auto mt-12 grid max-w-[1000px] gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {shown.map((a) => (
-            <li key={a.slug}>
-              <Link href={`/artikel/${a.slug}`} className="card card-lift group block h-full p-3">
-                <div className="relative h-[200px] overflow-hidden rounded-2xl">
-                  <Image src={a.image} alt="" fill sizes="300px" className="object-cover transition-transform duration-300 group-hover:scale-105" />
-                </div>
-                <h3 className="mt-4 px-2 text-xl font-semibold text-ink">{a.title}</h3>
-                <span className="badge mx-2 mt-3">{a.category}</span>
-                <p className="mt-3 px-2 pb-2 text-body">{a.date}</p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <div className="mx-auto mt-14 flex max-w-[1000px] items-center justify-between text-h3 font-bold">
-        <button type="button" disabled={cur <= 1} onClick={() => setPage(cur - 1)} className="flex items-center gap-2 text-lg disabled:opacity-30 md:text-h3">
-          <Image src="/img/artikel/arrow.svg" alt="" width={24} height={24} /> Previous
-        </button>
-        <span className="whitespace-nowrap">Page {cur} of {pages}</span>
-        <button type="button" disabled={cur >= pages} onClick={() => setPage(cur + 1)} className="flex items-center gap-2 text-lg disabled:opacity-30 md:text-h3">
-          Next <Image src="/img/artikel/arrow.svg" alt="" width={24} height={24} className="rotate-180" />
-        </button>
-      </div>
+      {sections.length === 0 && <p className="mt-16 text-center">{articleUi.noResults}</p>}
+      {sections.map(({ c, items }) => (
+        <div key={c} className="mt-14">
+          <div className="np-rule flex items-baseline justify-between pt-3">
+            <h2 className="kit-eyebrow !mb-0 !text-base text-ink">{c}</h2>
+          </div>
+          <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((a) => (
+              <li key={a.slug}>
+                <Link href={`/artikel/${a.slug}`} className="card card-lift img-zoom group block h-full overflow-hidden">
+                  <div className="relative aspect-[3/2]">
+                    <Image src={a.image} alt="" fill sizes="(min-width:1024px) 380px, (min-width:640px) 45vw, 100vw" className="object-cover" />
+                  </div>
+                  <div className="p-5">
+                    <Kicker a={a} />
+                    <h3 className="np-head text-lg font-semibold text-ink">{a.title}</h3>
+                    <p className="mt-3 text-sm text-muted">{a.date} &middot; {readingMinutes(a)} {articleUi.minutesRead}</p>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </section>
   );
 }

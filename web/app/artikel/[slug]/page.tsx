@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import SiteShell from "@/components/SiteShell";
-import { allArticles, articles, getArticle } from "@/lib/articles";
+import { AiLabel, Byline, Kicker } from "@/components/ArticleMeta";
+import { articleUi } from "@/data/article-ui";
+import { allArticles, getArticle, relatedArticles } from "@/lib/articles";
 
 export function generateStaticParams() {
   return allArticles.map((a) => ({ slug: a.slug }));
@@ -15,42 +17,58 @@ export async function generateMetadata({ params }: PageProps<"/artikel/[slug]">)
   return { title: a ? `${a.title} - IkanKu` : "Artikel - IkanKu" };
 }
 
-// NOTE: the Figma detail frames could not be read (MCP rate limit), so this layout is an
-// extrapolation from the article list frames. Body copy is not available (see docs/decisions-web.md).
 export default async function ArticleDetail({ params }: PageProps<"/artikel/[slug]">) {
   const { slug } = await params;
   const a = getArticle(slug);
   if (!a) notFound();
-  const related = articles.filter((x) => x.slug !== a.slug).slice(0, 3);
-  const headings: string[] = [];
+  const related = relatedArticles(a, 3);
+  const sections = a.body ?? [];
 
   return (
     <SiteShell>
       <article className="mx-auto max-w-[900px] px-6 py-12">
-        <Link href="/artikel" className="text-brand underline">&larr; Artikel</Link>
-        <h1 className="mt-6 text-3xl font-bold md:text-h2">{a.title}</h1>
-        <div className="mt-6 flex items-center gap-4">
-          <Image src="/img/artikel/avatar.svg" alt="" width={50} height={50} />
-          <div className="text-lg"><p className="font-bold">IkanKu</p><p>{a.date}</p></div>
-          <span className="badge ml-auto">{a.category}</span>
-        </div>
-        <div className="relative mt-8 h-[260px] overflow-hidden rounded-3xl md:h-[480px]">
+        <Link href="/artikel" className="link-u text-brand">&larr; {articleUi.back}</Link>
+        <header className="np-rule mt-6 pt-6">
+          <Kicker a={a} />
+          <h1 className="np-head text-3xl font-bold text-ink md:text-h1">{a.title}</h1>
+          {a.excerpt && <p className="mt-4 max-w-[62ch] text-lg text-body md:text-xl">{a.excerpt}</p>}
+          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-y border-black/10 py-4 text-ink">
+            <Byline a={a} />
+            <span className="badge">{a.category}</span>
+            <span className="ml-auto text-muted"><AiLabel a={a} /></span>
+          </div>
+        </header>
+
+        <div className="kit-frame relative mt-8 aspect-[16/9]">
           <Image src={a.image} alt="" fill priority sizes="900px" className="object-cover" />
         </div>
-        {a.excerpt && <p className="mt-8 text-lg">{a.excerpt}</p>}
-        {headings.map((h) => <h2 key={h} className="mt-8 text-h3 font-bold">{h}</h2>)}
-        <p className="mt-8 rounded-lg bg-white p-4 text-sm text-muted">Isi lengkap artikel belum tersedia: teks badan artikel pada frame Figma tidak dapat diambil.</p>
+
+        <div className="dropcap mx-auto mt-10 max-w-[68ch] text-lg leading-[1.8] text-body">
+          {sections.map((s, k) => (
+            <section key={s.heading ?? `s${k}`} className={k === 0 ? "" : "mt-10"}>
+              {s.heading && <h2 className="np-head mb-3 text-h3 font-bold text-ink">{s.heading}</h2>}
+              {s.paragraphs.map((p) => <p key={p} className="mt-4 first:mt-0">{p}</p>)}
+              {k === 0 && a.pull && (
+                <blockquote className="my-10 border-l-4 border-brand pl-6 font-montserrat text-2xl font-semibold leading-snug text-ink">{a.pull}</blockquote>
+              )}
+            </section>
+          ))}
+        </div>
       </article>
-      <section className="band-blue px-6 py-12">
-        <div className="mx-auto max-w-[1000px]">
-          <h2 className="mb-8 text-2xl text-white md:text-h2">Artikel Terkait</h2>
-          <ul className="grid gap-6 sm:grid-cols-3">
+
+      <section className="band-tint section-y">
+        <div className="container-page">
+          <div className="np-rule pt-3"><h2 className="kit-eyebrow !mb-0 !text-base text-ink">{articleUi.related}</h2></div>
+          <ul className="mt-6 grid gap-6 sm:grid-cols-3">
             {related.map((r) => (
-              <li key={r.slug} className="card card-lift p-3">
-                <Link href={`/artikel/${r.slug}`}>
-                  <div className="relative h-[160px] overflow-hidden rounded-2xl"><Image src={r.image} alt="" fill sizes="300px" className="object-cover" /></div>
-                  <h3 className="mt-3 font-bold">{r.title}</h3>
-                  <p className="mt-2 text-sm">{r.date}</p>
+              <li key={r.slug}>
+                <Link href={`/artikel/${r.slug}`} className="card card-lift img-zoom block h-full overflow-hidden">
+                  <div className="relative aspect-[3/2]"><Image src={r.image} alt="" fill sizes="(min-width:640px) 300px, 100vw" className="object-cover" /></div>
+                  <div className="p-5">
+                    <Kicker a={r} />
+                    <h3 className="np-head text-lg font-semibold text-ink">{r.title}</h3>
+                    <p className="mt-3 text-sm text-muted">{r.date}</p>
+                  </div>
                 </Link>
               </li>
             ))}

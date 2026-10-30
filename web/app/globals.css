@@ -211,3 +211,18 @@ body {
 @keyframes vm-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (hover: hover) and (pointer: fine) { .vm-tab:hover { color: var(--color-brand); } }
 @media (prefers-reduced-motion: reduce) { .vm-underline, .vm-tab { transition: none; } .vm-panel { animation: none; } }
+
+/* Headline carousel + newspaper front page (Phase 9a). */
+@layer components {
+  .hc-track { scrollbar-width: none; overscroll-behavior-x: contain; }
+  .hc-track::-webkit-scrollbar { display: none; }
+  .hc-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; cursor: pointer; border-radius: 999px; background: rgba(255,255,255,.14); transition: background-color 180ms var(--ease-out), transform 150ms var(--ease-out); }
+  .hc-btn:active { transform: scale(0.96); }
+  .hc-btn:focus-visible, .slider-dot:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .np-rule { border-top: 1px solid rgba(5,3,21,.7); }
+  .np-rule-thick { border-top: 3px double rgba(5,3,21,.8); }
+  .np-head { line-height: 1.12; letter-spacing: -.01em; text-wrap: balance; }
+  .dropcap > p:first-of-type::first-letter { float: left; font-family: var(--font-montserrat), sans-serif; font-weight: 700; font-size: 3.6em; line-height: .85; padding: .08em .12em 0 0; color: var(--color-brand); }
+}
+@media (hover: hover) and (pointer: fine) { .hc-btn:hover { background: rgba(255,255,255,.28); } }
+@media (prefers-reduced-motion: reduce) { .hc-btn { transition: none; } }

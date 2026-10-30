@@ -21,6 +21,8 @@ const paths = {
   target: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" /></>,
   phoneApp: <><rect x="7" y="2.5" width="10" height="19" rx="2.5" /><path d="M11 18.5h2" /></>,
   quote: <><path d="M9 7H6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2.5c0 2-1 3-3 3.5" /><path d="M19 7h-3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2.5c0 2-1 3-3 3.5" /></>,
+  pause: <><path d="M9 5.5v13" /><path d="M15 5.5v13" /></>,
+  play: <path d="M8 5.5l10 6.5-10 6.5z" />,
   chevronLeft: <path d="M14.5 5.5L8 12l6.5 6.5" />,
   chevronRight: <path d="M9.5 5.5L16 12l-6.5 6.5" />,
   chevronDown: <path d="M5.5 9.5L12 16l6.5-6.5" />,

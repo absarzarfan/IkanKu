@@ -1,0 +1,26 @@
+// User-facing strings for the article pages and the headline carousel (Indonesian).
+export const articleUi = {
+  pageTitle: "Artikel",
+  dateline: "Artikel IkanKu",
+  headlines: "Berita Utama",
+  latest: "Terbaru",
+  allArticles: "Lihat semua artikel",
+  readMore: "Baca selengkapnya",
+  minutesRead: "menit baca",
+  searchPlaceholder: "Cari artikel...",
+  searchLabel: "Cari artikel",
+  filterLabel: "Filter kategori artikel",
+  filterAll: "Semua",
+  noResults: "Tidak ada artikel yang cocok.",
+  related: "Artikel terkait",
+  back: "Artikel",
+  carousel: {
+    label: "Berita utama",
+    slideLabel: (n: number, total: number) => `${n} dari ${total}`,
+    prev: "Slide sebelumnya",
+    next: "Slide berikutnya",
+    pause: "Jeda pergantian otomatis",
+    play: "Putar pergantian otomatis",
+    goTo: (n: number) => `Ke slide ${n}`,
+  },
+};

@@ -1,9 +1,14 @@
 import Image from "next/image";
+import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Reveal from "@/components/Reveal";
 import Testimonials from "@/components/Testimonials";
 import SectionHeader from "@/components/SectionHeader";
 import CtaBand from "@/components/CtaBand";
+import HeadlineCarousel from "@/components/HeadlineCarousel";
+import { Eyebrow } from "@/components/kit";
+import { articleUi } from "@/data/article-ui";
+import { latestArticles } from "@/lib/articles";
 import { IconChip, type IconName } from "@/components/icons";
 
 const steps: { t: string; d: string; icon: IconName }[] = [
@@ -35,6 +40,16 @@ export default function Home() {
               <Image src="/img/home/phone.png" alt="Tampilan aplikasi IkanKu" fill sizes="335px" className="object-cover object-top" priority />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Berita Utama (carousel could replace the hero on request, see docs/decisions.md) */}
+      <section className="band-white section-y">
+        <div className="container-page">
+          <Eyebrow>{articleUi.pageTitle}</Eyebrow>
+          <h2 className="mb-8 text-3xl font-bold text-brand md:text-h2">{articleUi.headlines}</h2>
+          <HeadlineCarousel items={latestArticles(5)} />
+          <p className="mt-6 text-center"><Link href="/artikel" className="btn-outline inline-flex min-h-11 items-center rounded-lg border border-black px-5 py-2 text-sm">{articleUi.allArticles}</Link></p>
         </div>
       </section>
 
