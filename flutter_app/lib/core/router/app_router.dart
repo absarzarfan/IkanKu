@@ -15,9 +15,9 @@ import 'package:ikanku/features/seller/presentation/seller_order_screens.dart';
 import 'package:ikanku/features/seller/presentation/seller_product_screens.dart';
 import 'package:ikanku/features/seller/presentation/seller_settings_screens.dart';
 
-const _publicPaths = {'/', '/login', '/register', '/register/otp', '/register/data', '/forgot', '/offline', '/pick-kecamatan'};
+const _publicPaths = {'/', '/login', '/register', '/register/otp', '/register/data', '/forgot', '/offline', '/pick-kecamatan', '/pick-location'};
 const _guestOnly = {'/', '/login', '/register', '/register/otp', '/register/data', '/forgot'};
-const _buyerPrefixes = ['/home', '/search', '/profile', '/cart', '/checkout', '/category', '/recommendations', '/product', '/payment', '/order-success', '/addresses'];
+const _buyerPrefixes = ['/home', '/search', '/profile', '/cart', '/checkout', '/category', '/recommendations', '/product', '/payment', '/order-success', '/addresses', '/shop'];
 
 String homeFor(UserRole r) => r == UserRole.seller ? '/seller' : '/home';
 
@@ -103,6 +103,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/seller/products/:id/edit', builder: (_, s) => ProductFormScreen(productId: s.pathParameters['id'])),
       GoRoute(path: '/seller/products/:id/variants', builder: (_, s) => VariantsScreen(productId: s.pathParameters['id']!)),
       GoRoute(path: '/seller/categories/new', builder: (_, _) => const AddCategoryScreen()),
+      GoRoute(path: '/seller/categories/:name/edit', builder: (_, s) => AddCategoryScreen(editing: s.pathParameters['name'])),
+      GoRoute(path: '/pick-location', builder: (_, _) => const PickLocationScreen()),
+      GoRoute(path: '/shop/:name', builder: (_, s) => ShopScreen(name: s.pathParameters['name']!)),
       GoRoute(path: '/seller/discount', builder: (_, _) => const DiscountScreen()),
       GoRoute(path: '/seller/ongkir', builder: (_, _) => const OngkirScreen()),
       GoRoute(path: '/seller/payment-methods', builder: (_, _) => const PaymentMethodsScreen()),

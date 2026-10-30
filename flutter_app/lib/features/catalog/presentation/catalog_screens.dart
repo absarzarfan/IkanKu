@@ -242,6 +242,42 @@ class CategoryScreen extends ConsumerWidget {
   }
 }
 
+/// Halaman toko ("Kunjungi Toko"): tidak ada frame di Figma/inventaris, versi paling sederhana (lihat decisions.md).
+class ShopScreen extends ConsumerWidget {
+  const ShopScreen({super.key, required this.name});
+  final String name;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final items = ref.watch(catalogProvider).products.where((p) => p.sellerName == name).toList();
+    return AppScaffold(
+      title: 'Toko',
+      onBack: () => context.canPop() ? context.pop() : context.go('/home'),
+      body: ListView(padding: const EdgeInsets.all(20), children: [
+        AppCard(
+          color: AppColors.field,
+          child: Row(children: [
+            const CircleAvatar(radius: 28, backgroundColor: Colors.white, child: Icon(Icons.storefront, color: AppColors.primary)),
+            const SizedBox(width: 14),
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(name, style: AppText.semi), Text('${items.length} produk', style: AppText.small)])),
+          ]),
+        ),
+        Text('Produk', style: AppText.semi),
+        const SizedBox(height: 8),
+        if (items.isEmpty)
+          const EmptyState('Belum ada produk di toko ini')
+        else
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 8, crossAxisSpacing: 20, mainAxisExtent: 245 + (MediaQuery.textScalerOf(context).scale(14) / 14 - 1).clamp(0.0, 1.0) * 60),
+            itemCount: items.length,
+            itemBuilder: (_, i) => ProductCard(product: items[i]),
+          ),
+      ]),
+    );
+  }
+}
+
 /// Rekomendasi untuk anda (Figma 2451:8597).
 class RecommendationsScreen extends ConsumerWidget {
   const RecommendationsScreen({super.key});
@@ -389,7 +425,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             const CircleAvatar(radius: 28, backgroundColor: Colors.white, child: Icon(Icons.storefront, color: AppColors.primary)),
             const SizedBox(width: 14),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(p.sellerName, style: AppText.semi), Text('Tempat Budidaya Ikan Air Tawar, Restoran, Kolam Pemancingan', style: AppText.small)])),
-            OutlinedButton(onPressed: () => showMsg(context, 'Halaman toko belum tersedia di Figma'), child: const Text('Kunjungi Toko', style: TextStyle(fontSize: 10, color: AppColors.danger))),
+            OutlinedButton(onPressed: () => context.push('/shop/${Uri.encodeComponent(p.sellerName)}'), child: const Text('Kunjungi Toko', style: TextStyle(fontSize: 10, color: AppColors.danger))),
           ]),
         ),
         Text('Penilaian & Ulasan Produk', style: AppText.semi),

@@ -52,3 +52,34 @@ class OfflineScreen extends StatelessWidget {
     );
   }
 }
+
+/// Sesuaikan lokasi (Figma "Daftar" 1769:8280): tata letak peta berupa placeholder statis, tanpa paket peta.
+class PickLocationScreen extends StatelessWidget {
+  const PickLocationScreen({super.key});
+  static const placeholderLabel = 'Lokasi pada peta (placeholder)';
+  @override
+  Widget build(BuildContext context) {
+    return AppScaffold(
+      title: 'Sesuaikan Lokasi',
+      body: Column(children: [
+        Expanded(
+          child: Container(
+            key: const Key('map-placeholder'),
+            width: double.infinity,
+            margin: const EdgeInsets.all(20),
+            decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)),
+            child: const Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(Icons.location_on, size: 56, color: AppColors.danger),
+              SizedBox(height: 8),
+              Text('Peta belum tersedia (placeholder statis)', textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: AppColors.grey)),
+            ]),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+          child: PillButton(label: 'Gunakan Lokasi Ini', onPressed: () => context.pop(placeholderLabel)),
+        ),
+      ]),
+    );
+  }
+}

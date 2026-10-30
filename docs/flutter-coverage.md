@@ -14,7 +14,7 @@ Status: **Figma-read** = layout/warna/teks dibaca dari Figma; **Inventory-only**
 | Pesanan Saya (tab) | 1044:5000 | `/orders` | Figma-read untuk kartu "Menunggu" + tab. Tab lain (Dikemas/Dikirim/Selesai/Ditolak) memakai kartu sama (Inventory-only) |
 | Start up page | 528:2181 | `/` | Inventory-only (hanya teks "Masuk", "Jelajahi Website kami") |
 | Sign in 1/2/10 (nomor, OTP) | 155:366, 155:402, 875:5578 | `/register`, `/register/otp` | Inventory-only |
-| Daftar / Lengkapi Data | 1769:8280 | `/register/data` | Inventory-only; "Sesuaikan lokasi" (peta) tidak dibuat: not done (Figma quota) |
+| Daftar / Lengkapi Data | 1769:8280 | `/register/data` | Inventory-only; field "Sesuaikan lokasi" membuka `/pick-location` (peta placeholder statis, tanpa paket peta); unverified vs Figma |
 | Lupa kata sandi | 108:415 | `/forgot` | Inventory-only |
 | Pilih Kategori | 378:7086 | `/category/:name` | Inventory-only |
 | Rekomendasi | 2451:8597 | `/recommendations` | Inventory-only |
@@ -41,11 +41,12 @@ Status: **Figma-read** = layout/warna/teks dibaca dari Figma; **Inventory-only**
 | Seller: ulasan | 2582:9601, 1121:17419 | `/seller/reviews` | Inventory-only |
 | Seller: produk, detail, tambah/edit, hapus | 1114:13648.., 1114:12754, 1114:13035.., 1114:13537, 1114:12791 | `/seller/products*` | Inventory-only |
 | Seller: variasi | 3118:6992, 3801:6924, 1114:12929 | `/seller/products/:id/variants` | Inventory-only |
-| Seller: tambah/ubah kategori | 3168:7137, 1114:14202, 1114:14301 | `/seller/categories/new` (ubah via hapus+tambah) | Inventory-only; foto kategori placeholder; rename UI: not done (Figma quota) |
+| Seller: tambah/ubah kategori | 3168:7137, 1114:14202, 1114:14301 | `/seller/categories/new`, `/seller/categories/:name/edit` | Inventory-only; foto kategori placeholder; tombol "Ubah Kategori" muncul bila kategori dipilih; unverified vs Figma |
 | Seller: diskon | 2583:10861 | `/seller/discount` | Inventory-only |
 | Seller: pengaturan, ongkir, metode pembayaran | 2583:10986, 2588:11577, 1804:14071/14023 | `/seller/settings`, `/seller/ongkir`, `/seller/payment-methods` | Inventory-only |
-| Seller: filter pesanan selesai | 1121:17361 | - | Not done (Figma quota) |
-| Kunjungi Toko (halaman toko) | - | - | Not done (tidak ada frame di inventory) |
+| Seller: filter pesanan selesai | 1121:17361 | `/seller/orders?tab=3` | Inventory-only: chip Semua / COD / NON COD (asumsi dari teks "NON COD" di inventory); unverified vs Figma |
+| Kunjungi Toko (halaman toko) | - | `/shop/:name` | Asumsi: tidak ada frame di inventory; versi paling sederhana (kartu toko + grid produk); unverified vs Figma |
+| Sesuaikan lokasi (peta) | 1769:8280 | `/pick-location` | Placeholder statis; paket peta tidak ditambahkan |
 | Section Web, LoFi, Animation, Assets | - | - | Di luar lingkup (sesuai instruksi) |
 
 Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Variasi, Tambah produk, Daftar produk sudah ditambahkan (semua jadi satu layar + state).

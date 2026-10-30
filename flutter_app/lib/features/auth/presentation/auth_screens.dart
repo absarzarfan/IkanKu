@@ -266,6 +266,7 @@ class _RegisterDataScreenState extends ConsumerState<RegisterDataScreen> {
   final _pw = TextEditingController();
   final _area = TextEditingController();
   final _street = TextEditingController();
+  String? _location;
   bool _busy = false;
 
   @override
@@ -274,6 +275,11 @@ class _RegisterDataScreenState extends ConsumerState<RegisterDataScreen> {
       c.dispose();
     }
     super.dispose();
+  }
+
+  Future<void> _pickLocation() async {
+    final l = await context.push<String>('/pick-location');
+    if (l != null && mounted) setState(() => _location = l);
   }
 
   Future<void> _pickArea() async {
@@ -318,6 +324,7 @@ class _RegisterDataScreenState extends ConsumerState<RegisterDataScreen> {
           AppField(fieldKey: const Key('reg-pw'), controller: _pw, hint: 'Kata sandi (min. 6 karakter)', obscure: true, validator: Validators.password),
           AppField(controller: _area, hint: 'Kota, Kecamatan, Kode Pos', readOnly: true, onTap: _pickArea, suffix: const Icon(Icons.chevron_right), validator: (v) => Validators.required(v, 'Kecamatan')),
           AppField(controller: _street, hint: 'Nama Jalan, Gedung, No. Rumah', validator: (v) => Validators.required(v, 'Alamat')),
+          AppField(controller: TextEditingController(text: _location), hint: 'Sesuaikan lokasi', readOnly: true, onTap: _pickLocation, suffix: const Icon(Icons.map_outlined)),
           const SizedBox(height: 8),
           PillButton(label: _busy ? 'Memproses...' : 'Lengkapi Data', height: 56, onPressed: _busy ? null : _submit),
         ]),

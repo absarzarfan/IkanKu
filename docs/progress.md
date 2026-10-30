@@ -30,3 +30,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART C (Flutter: platform web dipertahankan, widget_test.dart ditulis ulang, 32 tes lolos): selesai.
 
 - PART D (Flutter: tes overflow 360x640 dan 1.4x, 4 perbaikan layout, SafeArea bawah, 84 tes lolos): selesai.
+
+- PART E (Flutter: peta placeholder, filter pesanan selesai, ubah kategori, halaman toko; analyze bersih, 91 tes lolos, APK debug berhasil): selesai.

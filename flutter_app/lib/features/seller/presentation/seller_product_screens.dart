@@ -56,6 +56,11 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
                     },
             ),
         ]),
+        if (_cat != 'Semua')
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(onPressed: () => context.push('/seller/categories/${Uri.encodeComponent(_cat)}/edit'), icon: const Icon(Icons.edit_outlined), label: const Text('Ubah Kategori')),
+          ),
         const SizedBox(height: 12),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Expanded(child: Text('Daftar Produk', style: AppText.semi)),
@@ -332,15 +337,17 @@ class _VariantsScreenState extends ConsumerState<VariantsScreen> {
 }
 
 /// Tambah kategori (Figma 3168:7137, 1114:14202). Foto kategori: placeholder.
+/// Tambah kategori (Figma 3168:7137) dan ubah kategori (Figma 1114:14301) bila [editing] diisi.
 class AddCategoryScreen extends ConsumerStatefulWidget {
-  const AddCategoryScreen({super.key});
+  const AddCategoryScreen({super.key, this.editing});
+  final String? editing;
   @override
   ConsumerState<AddCategoryScreen> createState() => _AddCategoryScreenState();
 }
 
 class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
   final _form = GlobalKey<FormState>();
-  final _name = TextEditingController();
+  late final _name = TextEditingController(text: widget.editing);
   @override
   void dispose() {
     _name.dispose();
@@ -350,7 +357,7 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: 'Tambah Kategori',
+      title: widget.editing == null ? 'Tambah Kategori' : 'Ubah Kategori',
       body: Form(
         key: _form,
         child: ListView(padding: const EdgeInsets.all(20), children: [
@@ -362,7 +369,8 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
             validator: (v) {
               final r = Validators.required(v, 'Nama kategori');
               if (r != null) return r;
-              return ref.read(catalogProvider).categories.contains(v!.trim()) ? 'Kategori sudah ada' : null;
+              final n = v!.trim();
+              return n != widget.editing && ref.read(catalogProvider).categories.contains(n) ? 'Kategori sudah ada' : null;
             },
           ),
           Text('Gambar Kategori*', style: AppText.semi.copyWith(fontSize: 14)),
@@ -370,11 +378,16 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
           InkWell(onTap: () => showMsg(context, 'Unggah foto belum tersedia (placeholder)'), child: Container(height: 90, decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)), child: const Center(child: Text('Tambah foto (placeholder)')))),
           const SizedBox(height: 20),
           PillButton(
-            label: 'Tambah Kategori',
+            label: widget.editing == null ? 'Tambah Kategori' : 'Simpan Perubahan',
             onPressed: () {
               if (!_form.currentState!.validate()) return;
-              ref.read(catalogProvider.notifier).addCategory(_name.text);
-              context.pop();
+              final old = widget.editing;
+              if (old == null) {
+                ref.read(catalogProvider.notifier).addCategory(_name.text);
+              } else {
+                ref.read(catalogProvider.notifier).renameCategory(old, _name.text);
+              }
+              context.canPop() ? context.pop() : context.go('/seller/products');
             },
           ),
         ]),

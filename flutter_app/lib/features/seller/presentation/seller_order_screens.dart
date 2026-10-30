@@ -73,15 +73,29 @@ class SellerOrdersScreen extends ConsumerStatefulWidget {
 
 class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
   late int _tab = widget.initialTab.clamp(0, sellerTabs.length - 1);
+  int _pay = 0; // 0 semua, 1 COD, 2 NON COD (filter tab Selesai)
   @override
   Widget build(BuildContext context) {
-    final items = buyerOrders(ref.watch(ordersProvider), sellerTabs[_tab]);
+    final done = sellerTabs[_tab] == OrderStatus.selesai;
+    final items = [
+      for (final o in buyerOrders(ref.watch(ordersProvider), sellerTabs[_tab]))
+        if (!done || _pay == 0 || (_pay == 1) == (o.payment == PaymentMethod.cod)) o,
+    ];
     final n = ref.read(ordersProvider.notifier);
     return AppScaffold(
       title: 'Pesanan',
       onBack: () => context.canPop() ? context.pop() : context.go('/seller'),
       headerExtra: TextTabs(labels: sellerTabLabels, index: _tab, onChanged: (i) => setState(() => _tab = i), onDark: true),
-      body: items.isEmpty
+      body: Column(children: [
+        if (done)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: Wrap(spacing: 8, children: [
+              for (final (i, l) in ['Semua', 'COD', 'NON COD'].indexed) ChoiceChip(key: Key('filter-$i'), label: Text(l), selected: _pay == i, onSelected: (_) => setState(() => _pay = i)),
+            ]),
+          ),
+        Expanded(
+          child: items.isEmpty
           ? EmptyState('Belum ada pesanan ${sellerTabLabels[_tab].toLowerCase()}')
           : ListView(padding: const EdgeInsets.all(20), children: [
               for (final o in items)
@@ -110,6 +124,8 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
                   ]),
                 ),
             ]),
+        ),
+      ]),
     );
   }
 }
