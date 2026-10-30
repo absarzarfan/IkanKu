@@ -47,7 +47,7 @@ export default function TentangKamiPage() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-40% to-brand" />
       </section>
 
-      <section className="mx-auto max-w-[1100px] px-6 py-12 text-center">
+      <section className="container-page section-y text-center">
         <h1 className="text-3xl font-bold leading-[52px] text-brand md:text-[45px]">Marketplace Ikan Tawar Inovatif<br />Visi Misi dan Tujuan Kami</h1>
         <p className="mx-auto mt-8 max-w-[670px]">Dengan fokus kepada kebutuhan pengguna, kami berkomitmen menghadirkan solusi inovatif yang meningkatkan nilai jual ikan air tawar, mendukung pertumbuhan ekonomi lokal dan kualitas di setiap transaksi. Kesuksesan anda dalam mendapatkan produk ikan segar adalah pencapaian tertinggi kami.</p>
         <p className="mx-auto mt-4 max-w-[670px]">Tim IkanKu dipertemukan melalui program Magang dan Studi Independen Bersertifikat (MSIB) Batch 7 di Infinite Learning.</p>
@@ -55,19 +55,19 @@ export default function TentangKamiPage() {
 
       <VisiMisi />
 
-      <section className="bg-brand px-4 py-16 md:px-[80px]">
-        <div className="mx-auto max-w-[1280px] rounded-3xl bg-white px-6 py-12 md:px-12">
+      <section className="bg-brand section-y">
+        <div className="container-page"><div className="rounded-3xl bg-white px-6 py-12 md:px-12">
           <h2 className="mb-10 text-center text-3xl font-bold text-brand md:text-[46px]">Tim Kami</h2>
           <div className="space-y-14">
             {teams.map((t) => (
               <Reveal key={t.role}>
                 <h3 className="mb-6 text-2xl md:text-[32px] md:leading-[40px]">{t.role}</h3>
                 <div className="grid gap-8 md:grid-cols-2 md:gap-0">
-                  <ul className="grid grid-cols-2 gap-x-6 gap-y-6 pr-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
+                  <ul className="grid grid-cols-2 gap-x-6 gap-y-6 pr-4 sm:grid-cols-3 md:grid-cols-2">
                     {t.people.map((p) => (
                       <li key={p.n} className="flex flex-col gap-2 lg:flex-row lg:gap-4">
                         <Image src={`/img/tentang/${p.i}`} alt={p.n} width={117} height={127} className="h-[127px] w-[117px] shrink-0 rounded object-cover" />
-                        <span className="text-base font-medium text-black/80">{p.n}</span>
+                        <span className="min-w-0 break-words text-base font-medium text-black/80">{p.n}</span>
                       </li>
                     ))}
                   </ul>
@@ -76,10 +76,10 @@ export default function TentangKamiPage() {
               </Reveal>
             ))}
           </div>
-        </div>
+        </div></div>
       </section>
 
-      <section className="mx-auto flex max-w-[1440px] flex-col items-center gap-10 px-6 py-16 md:flex-row md:justify-between lg:px-[140px]">
+      <section className="container-page section-y flex flex-col items-center gap-10 md:flex-row md:justify-between">
         <h2 className="text-5xl font-bold leading-[1.2] text-brand md:w-[240px] md:text-[72px] md:tracking-[-2px]">Mitra Kami</h2>
         <Reveal className="w-full max-w-[630px] rounded-2xl bg-brand p-7 text-white">
           <div className="flex flex-col items-center gap-4 sm:flex-row">

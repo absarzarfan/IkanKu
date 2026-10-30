@@ -27,7 +27,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-surface">
       <header className="bg-white shadow-sm">
-        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-4 px-6 py-3 lg:px-[82px]">
+        <div className="container-page flex flex-wrap items-center gap-4 py-3">
           <Link href="/"><Image src="/img/home/logo.png" alt="IkanKu" width={96} height={50} className="h-[50px] w-auto" /></Link>
           <nav className="flex flex-1 flex-wrap gap-6" aria-label="Admin">
             {nav.map((n) => (
@@ -38,7 +38,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
           <button type="button" onClick={() => { setLoggedIn(false); router.replace("/admin/login"); }} className="rounded-lg border border-black px-4 py-1 text-sm hover:bg-brand hover:text-white">Keluar</button>
         </div>
       </header>
-      <main className="mx-auto max-w-[1440px] px-6 py-10 lg:px-[82px]">{children}</main>
+      <main className="container-page py-10">{children}</main>
     </div>
   );
 }

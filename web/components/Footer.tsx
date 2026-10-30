@@ -10,16 +10,16 @@ const programs = [
 export default function Footer() {
   return (
     <footer className="mt-auto bg-surface">
-      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 py-12 md:grid-cols-[1.2fr_1fr_auto] lg:px-[79px]">
+      <div className="container-page grid items-start gap-10 py-12 md:grid-cols-[1.2fr_1fr_auto]">
         <div>
           <Image src="/img/home/logo.png" alt="IkanKu" width={120} height={63} className="mb-6 h-[63px] w-auto" />
           <ul className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Program">
             {programs.map((l) => (<li key={l.src}><Image src={l.src} alt={l.alt} width={l.w} height={l.h} className="h-9 w-auto object-contain" /></li>))}
           </ul>
-          <div className="grid grid-cols-2 gap-x-10 gap-y-6 text-lg text-black">
-            <div><p>Email</p><p className="mt-3 break-all">Ikanku@gmail.com</p></div>
+          <div className="grid gap-x-10 gap-y-6 text-lg text-black sm:grid-cols-2">
+            <div><p>Email</p><p className="mt-3 break-words">Ikanku@gmail.com</p></div>
             <div><p>Nomor telepon</p><p className="mt-3">+62 868-996-4445</p></div>
-            <div className="col-span-2"><p>Alamat</p><p className="mt-3">68692 Ash Grove, Port Lindsay 77261-7123</p></div>
+            <div className="sm:col-span-2"><p>Alamat</p><p className="mt-3">68692 Ash Grove, Port Lindsay 77261-7123</p></div>
           </div>
         </div>
         <div>

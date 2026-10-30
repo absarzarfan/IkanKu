@@ -26,7 +26,7 @@ export default function ArticleList() {
   const shown = list.slice((cur - 1) * PER_PAGE, cur * PER_PAGE);
 
   return (
-    <section className="mx-auto max-w-[1440px] px-6 pb-16 pt-14">
+    <section className="container-page section-y">
       <h2 className="text-center text-3xl md:text-[46px]">Artikel lainnya</h2>
       <div className="relative mx-auto mt-10 max-w-[667px]">
         <Image src="/img/artikel/search.svg" alt="" width={28} height={28} className="absolute left-5 top-4" />

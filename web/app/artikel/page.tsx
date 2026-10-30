@@ -10,8 +10,8 @@ export const metadata: Metadata = { title: "Artikel - IkanKu" };
 export default function ArtikelPage() {
   return (
     <SiteShell>
-      <section className="bg-brand px-4 py-4 md:px-[80px]">
-        <Link href={`/artikel/${featured.slug}`} className="relative mx-auto block min-h-[420px] max-w-[1280px] overflow-hidden rounded-3xl md:h-[882px]">
+      <section className="bg-brand py-4"><div className="container-page">
+        <Link href={`/artikel/${featured.slug}`} className="relative block min-h-[420px] overflow-hidden rounded-3xl md:h-[882px]">
           <Image src={featured.image} alt="" fill priority sizes="1280px" className="object-cover" />
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-black/50 from-20% to-brand/50 p-6 text-white md:h-[241px] md:px-7 md:pt-[13px]">
             <div className="flex flex-col gap-4 md:flex-row md:justify-between">
@@ -26,6 +26,7 @@ export default function ArtikelPage() {
             </div>
           </div>
         </Link>
+        </div>
       </section>
       <ArticleList />
     </SiteShell>

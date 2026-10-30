@@ -22,3 +22,7 @@ Catatan: Figma MCP kehabisan kuota setelah 5 frame; semua "partial (tanpa Figma)
 | Edit Profil (admin) | 4061:2747 | `/admin/profil/edit` | partial (tanpa Figma) |
 | Animation section | 798:5443 | `Reveal` (fade-in saat scroll), hover kartu | partial: tidak dibaca; hanya animasi sederhana |
 | Mobile / tablet | - | semua halaman | ekstrapolasi, tidak ada di Figma |
+
+## Pembaruan PART A/B
+- Footer: tahun 2024, tiga logo program (MSIB, Infinite Learning, Kampus Merdeka). Tentang Kami: kalimat MSIB Batch 7. Favicon: `web/app/icon.png`.
+- Layout seragam di semua route (lihat `web-layout-fixes.md`). Status "partial (tanpa Figma)" pada tabel di atas tetap berlaku: tidak diverifikasi terhadap Figma.

@@ -17,7 +17,7 @@ export default function Navbar() {
   const active = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
-      <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 lg:h-24 lg:px-[82px]">
+      <div className="container-page flex h-20 items-center justify-between lg:h-24">
         <Link href="/" aria-label="IkanKu beranda">
           <Image src="/img/home/logo.png" alt="IkanKu" width={160} height={84} className="h-14 w-auto lg:h-[84px]" priority />
         </Link>

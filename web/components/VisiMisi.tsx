@@ -12,7 +12,7 @@ const tabs = [
 export default function VisiMisi() {
   const [i, setI] = useState(0);
   return (
-    <section className="mx-auto flex max-w-[1100px] flex-col items-center gap-10 px-6 pb-16 md:flex-row md:items-start">
+    <section className="container-page flex flex-col items-center gap-10 pb-16 md:flex-row md:items-start md:justify-center">
       <div className="relative h-[320px] w-[234px] shrink-0 overflow-hidden rounded-t-3xl">
         <Image src="/img/home/phone.png" alt="Aplikasi IkanKu" fill sizes="234px" className="object-cover object-top" />
       </div>

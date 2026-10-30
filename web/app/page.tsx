@@ -21,7 +21,7 @@ export default function Home() {
     <SiteShell>
       {/* Hero */}
       <section className="bg-brand">
-        <div className="mx-auto flex max-w-[1440px] flex-col items-center gap-8 px-6 pt-12 md:flex-row md:justify-between lg:px-[186px] lg:pt-0">
+        <div className="container-page flex flex-col items-center gap-8 pt-12 md:flex-row md:justify-between lg:pt-0">
           <div className="text-white">
             <h1 className="text-3xl leading-[1.5] md:text-[46px] md:leading-[79px]">Belanja Ikan Mudah<br />Dengan IkanKu</h1>
             <a href="#" className="mt-6 inline-flex h-10 items-center rounded-lg bg-accent px-[42px] text-base transition hover:brightness-95">Download on Google Play</a>
@@ -33,7 +33,7 @@ export default function Home() {
       </section>
 
       {/* Apa itu */}
-      <section className="mx-auto flex max-w-[1440px] flex-col items-center gap-10 px-6 py-16 md:flex-row lg:gap-[68px] lg:px-[186px] lg:py-[60px]">
+      <section className="container-page section-y flex flex-col items-center gap-10 md:flex-row lg:gap-[68px]">
         <Reveal className="relative h-[240px] w-full max-w-[419px] shrink-0 overflow-hidden rounded-3xl">
           <Image src="/img/home/fish-box.png" alt="Ikan segar dalam boks" fill sizes="419px" className="object-cover" />
         </Reveal>
@@ -45,7 +45,7 @@ export default function Home() {
 
       {/* Kenapa */}
       <section className="bg-brand py-12 text-white lg:py-10">
-        <div className="mx-auto max-w-[1440px] px-6 lg:px-[221px]">
+        <div className="container-page">
           <h2 className="text-center text-3xl font-bold md:text-[46px]">Kenapa IkanKu?</h2>
           <div className="mt-12 flex flex-col items-center gap-10 md:flex-row md:items-start lg:gap-[135px]">
             <div className="relative h-[420px] w-[282px] shrink-0 overflow-hidden rounded-3xl shadow-[4px_4px_4px_rgba(0,0,0,.25)] lg:h-[604px]">
@@ -65,7 +65,7 @@ export default function Home() {
       </section>
 
       {/* Fitur */}
-      <section className="mx-auto max-w-[1440px] px-6 py-16 lg:px-[192px]">
+      <section className="container-page section-y">
         <h2 className="text-center text-3xl font-bold text-brand md:text-[46px]">Fitur Unggulan</h2>
         <p className="mx-auto mt-8 max-w-[582px] text-center">Temukan kemudahan belanja ikan air tawar dengan fitur lengkap dan pengalaman belanja yang cepat serta aman.</p>
         <div className="mt-12 grid gap-[14px] md:grid-cols-2">
@@ -85,7 +85,7 @@ export default function Home() {
 
       {/* CTA */}
       <section className="bg-surface-2">
-        <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-4 px-6 py-8 text-center sm:flex-row sm:text-left lg:px-[79px]">
+        <div className="container-page flex flex-col items-center justify-between gap-4 py-8 text-center sm:flex-row sm:text-left">
           <p className="text-2xl lg:text-4xl">Mari Bergabung Bersama Kami</p>
           <a href="#" className="inline-flex h-12 items-center rounded-lg bg-accent px-[42px] text-white transition hover:brightness-95 lg:mr-[156px]">Unduh Aplikasi</a>
         </div>

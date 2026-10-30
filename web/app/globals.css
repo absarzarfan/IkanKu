@@ -31,6 +31,20 @@
   --text-h4: 18px;
 }
 
+/* Shared page grid: header, every section and footer use the same edges. */
+@layer components {
+  .container-page { margin-inline: auto; width: 100%; max-width: 1440px; padding-inline: 1.5rem; }
+  .section-y { padding-block: 3rem; }
+}
+@media (min-width: 768px) {
+  .container-page { padding-inline: 2.5rem; }
+  .section-y { padding-block: 4rem; }
+}
+@media (min-width: 1024px) {
+  .container-page { padding-inline: 80px; }
+  .section-y { padding-block: 5rem; }
+}
+
 html { scroll-behavior: smooth; }
 body {
   background: var(--color-surface);

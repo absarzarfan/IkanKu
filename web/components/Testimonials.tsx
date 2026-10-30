@@ -20,7 +20,7 @@ export default function Testimonials() {
   const [page, setPage] = useState(0);
   const shown = items.slice(page * PER, page * PER + PER);
   return (
-    <section className="mx-auto max-w-[1440px] px-6 pb-12 lg:px-0">
+    <section className="container-page section-y">
       <h2 className="text-center text-3xl text-brand md:text-[46px]">Testimoni</h2>
       <div className="mt-20 grid gap-x-[14px] gap-y-16 md:grid-cols-3">
         {shown.map((t, i) => (
