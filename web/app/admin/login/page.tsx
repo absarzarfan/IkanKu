@@ -47,7 +47,7 @@ export default function AdminLogin() {
           <p className="text-xs text-muted">Demo: login tiruan, belum terhubung ke backend.</p>
         </form>
       </div>
-      <div className="hidden items-center justify-center bg-brand p-12 lg:flex">
+      <div className="hidden items-center justify-center bg-brand surface-brand p-12 lg:flex">
         <p className="max-w-[420px] text-center text-[34px] font-bold leading-tight text-white">Temukan Aneka Ikan Segar di IkanKu</p>
       </div>
     </div>

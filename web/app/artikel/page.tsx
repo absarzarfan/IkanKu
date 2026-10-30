@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Artikel - IkanKu" };
 export default function ArtikelPage() {
   return (
     <SiteShell>
-      <section className="bg-brand py-4"><div className="container-page">
+      <section className="bg-brand surface-brand py-4"><div className="container-page">
         <Link href={`/artikel/${featured.slug}`} className="relative block min-h-[420px] overflow-hidden rounded-3xl md:h-[882px]">
           <Image src={featured.image} alt="" fill priority sizes="1280px" className="object-cover" />
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-black/50 from-20% to-brand/50 p-6 text-white md:h-[241px] md:px-7 md:pt-[13px]">

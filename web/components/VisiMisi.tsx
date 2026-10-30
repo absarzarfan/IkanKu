@@ -20,7 +20,7 @@ export default function VisiMisi() {
         <p className="text-4xl font-bold text-brand md:text-[45px] md:leading-[52px]">IkanKu</p>
         <div className="mt-6 flex gap-4" role="tablist">
           {tabs.map((t, n) => (
-            <button key={t.k} type="button" role="tab" aria-selected={i === n} onClick={() => setI(n)} className={`rounded-lg border border-black px-8 py-1 text-sm transition ${i === n ? "border-brand bg-brand text-white" : "bg-surface text-black hover:bg-white"}`}>
+            <button key={t.k} type="button" role="tab" aria-selected={i === n} onClick={() => setI(n)} className={`rounded-lg border border-black px-8 py-1 text-sm transition ${i === n ? "border-brand bg-brand surface-brand text-white" : "bg-surface text-black hover:bg-white"}`}>
               {t.k}
             </button>
           ))}

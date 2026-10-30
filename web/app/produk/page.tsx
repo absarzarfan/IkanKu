@@ -46,7 +46,7 @@ export default function ProdukPage() {
       </section>
 
       {/* Keunggulan */}
-      <section className="bg-brand section-y">
+      <section className="bg-brand surface-brand section-y">
         <h2 className="text-center text-3xl font-bold text-white md:text-[46px]">Keunggulan Produk</h2>
         <ul className="container-page scrollbar-thin mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-6 pb-4 min-[900px]:grid min-[900px]:grid-cols-3 min-[900px]:overflow-visible" aria-label="Keunggulan produk">
           {adv.map((a) => (

@@ -35,7 +35,7 @@ export default function Footer() {
         </nav>
       </div>
       </div>
-      <div className="bg-brand py-4 text-center text-white">© 2024 All rights reserved.</div>
+      <div className="bg-brand surface-brand py-4 text-center text-white">© 2024 All rights reserved.</div>
     </footer>
   );
 }

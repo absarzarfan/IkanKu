@@ -24,7 +24,7 @@ export default function Testimonials() {
       <h2 className="text-center text-3xl text-brand md:text-[46px]">Testimoni</h2>
       <div className="mt-20 grid gap-x-[14px] gap-y-16 md:grid-cols-3">
         {shown.map((t, i) => (
-          <figure key={`${page}-${i}`} className={`relative rounded-2xl bg-brand px-8 pb-6 pt-14 text-center text-white ${i > 0 ? "hidden md:block" : ""}`}>
+          <figure key={`${page}-${i}`} className={`relative rounded-2xl bg-brand surface-brand px-8 pb-6 pt-14 text-center text-white ${i > 0 ? "hidden md:block" : ""}`}>
             <Image src={`/img/home/${t.img}`} alt="" width={90} height={90} className="absolute -top-10 left-1/2 h-[90px] w-[90px] -translate-x-1/2 rounded-full object-cover" />
             <blockquote className="font-montserrat text-sm font-medium">&quot;{t.q}&quot;</blockquote>
             <figcaption className="mt-8 font-montserrat text-xl font-bold">{t.n}</figcaption>
@@ -33,7 +33,7 @@ export default function Testimonials() {
       </div>
       <div className="mt-10 flex justify-center gap-3" role="tablist" aria-label="Halaman testimoni">
         {Array.from({ length: PAGES }, (_, i) => (
-          <button key={i} type="button" role="tab" aria-selected={page === i} aria-label={`Testimoni ${i + 1}`} onClick={() => setPage(i)} className={`h-[10px] w-12 rounded-lg ${page === i ? "bg-brand" : "bg-dot"}`} />
+          <button key={i} type="button" role="tab" aria-selected={page === i} aria-label={`Testimoni ${i + 1}`} onClick={() => setPage(i)} className={`h-[10px] w-12 rounded-lg ${page === i ? "bg-brand surface-brand" : "bg-dot"}`} />
         ))}
       </div>
     </section>

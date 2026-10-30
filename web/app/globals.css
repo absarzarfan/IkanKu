@@ -37,6 +37,7 @@
   --grad-primary-hover: linear-gradient(135deg, hsl(207 80% 47%), hsl(207 80% 35%));
   --grad-cta: linear-gradient(135deg, hsl(25 100% 67%), hsl(19 100% 55%));
   --grad-cta-hover: linear-gradient(135deg, hsl(25 100% 63%), hsl(19 100% 51%));
+  --grad-surface: linear-gradient(135deg, hsl(207 80% 45%), hsl(207 80% 37%));
   --grad-nav: linear-gradient(90deg, #ffffff 0%, #f6fafd 100%);
   --grad-outline-hover: linear-gradient(135deg, #f3f8fd, #e6f0fa);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -58,6 +59,7 @@
   .btn-cta:focus-visible, .btn-primary:focus-visible, .btn-outline:focus-visible {
     outline: 2px solid var(--color-brand); outline-offset: 2px;
   }
+  .surface-brand { background-image: var(--grad-surface); }
   .nav-grad { background-image: var(--grad-nav); }
   .card-lift { transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out); }
   .card-lift:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(5, 3, 21, 0.08); }

@@ -41,7 +41,7 @@ export default function ArticleList() {
       </div>
       <div className="mt-6 flex flex-wrap justify-center gap-4 md:gap-12">
         {chips.map((c) => (
-          <button key={c} type="button" onClick={() => { setChip(c); setPage(1); }} aria-pressed={chip === c} className={`h-10 min-w-[100px] rounded-[11px] border border-[#737373] px-4 text-lg ${chip === c ? "bg-brand text-white" : "bg-white hover:bg-white/70"}`}>
+          <button key={c} type="button" onClick={() => { setChip(c); setPage(1); }} aria-pressed={chip === c} className={`h-10 min-w-[100px] rounded-[11px] border border-[#737373] px-4 text-lg ${chip === c ? "bg-brand surface-brand text-white" : "bg-white hover:bg-white/70"}`}>
             {c}
           </button>
         ))}

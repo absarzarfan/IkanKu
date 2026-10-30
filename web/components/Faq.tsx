@@ -14,7 +14,7 @@ const faqs = [
 export default function Faq() {
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <section id="faq" className="container-page section-y"><div className="rounded-2xl bg-brand px-6 py-12 shadow-[0_8px_8px_rgba(0,0,0,.25)] md:px-[82px] md:pb-[100px]">
+    <section id="faq" className="container-page section-y"><div className="rounded-2xl bg-brand surface-brand px-6 py-12 shadow-[0_8px_8px_rgba(0,0,0,.25)] md:px-[82px] md:pb-[100px]">
       <h2 className="mb-16 text-3xl font-bold tracking-tight text-white md:text-[48px] md:leading-[1.2]">Pertanyaan Yang Sering Diajukan</h2>
       <div className="grid items-start gap-4 md:grid-cols-2 md:gap-x-[22px] md:gap-y-[18px]">
         {faqs.map((f, i) => (

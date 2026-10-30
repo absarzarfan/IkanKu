@@ -41,7 +41,7 @@ export default async function ArticleDetail({ params }: PageProps<"/artikel/[slu
         {headings.map((h) => <h2 key={h} className="mt-8 text-[22px] font-bold">{h}</h2>)}
         <p className="mt-8 rounded-lg bg-white p-4 text-sm text-muted">Isi lengkap artikel belum tersedia: teks badan artikel pada frame Figma tidak dapat diambil.</p>
       </article>
-      <section className="bg-brand px-6 py-12">
+      <section className="bg-brand surface-brand px-6 py-12">
         <div className="mx-auto max-w-[1000px]">
           <h2 className="mb-8 text-2xl text-white md:text-[34px]">Artikel Terkait</h2>
           <ul className="grid gap-6 sm:grid-cols-3">

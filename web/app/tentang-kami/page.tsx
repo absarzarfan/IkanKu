@@ -6,7 +6,7 @@ import VisiMisi from "@/components/VisiMisi";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { contact } from "@/data/contact";
-import { roles, team } from "@/data/team";
+import { membersOf, roles } from "@/data/team";
 
 export const metadata: Metadata = { title: "Tentang Kami - IkanKu" };
 
@@ -29,31 +29,32 @@ export default function TentangKamiPage() {
 
       <VisiMisi />
 
-      <section className="bg-brand section-y">
-        <div className="container-page"><div className="rounded-3xl bg-white px-6 py-12 md:px-12">
-          <h2 className="mb-10 text-center text-3xl font-bold text-brand md:text-[46px]">Tim Kami</h2>
-          <div className="space-y-14">
+      <section id="tim-kami" className="scroll-mt-20 bg-brand surface-brand py-3 lg:scroll-mt-24">
+        <div className="container-page"><div className="rounded-3xl bg-white px-4 py-3 md:px-8">
+          <h2 className="mb-2 text-center text-3xl font-bold text-brand md:text-[34px]">Tim Kami</h2>
+          <div className="space-y-[clamp(6px,1vh,16px)]">
             {roles.map((r) => (
-              <Reveal key={r.role}>
-                <h3 className="text-2xl md:text-[32px]">{r.role}</h3>
-                <p className="mt-3 text-black/80">{r.desc}</p>
-                <ul className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3">
-                  {team.filter((p) => p.role === r.role).map((p) => (
-                    <li key={p.name} className="card-lift flex h-full flex-col rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
-                      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-surface">
+              <div key={r.role}>
+                <div className="mb-1.5 flex flex-wrap items-baseline gap-x-3">
+                  <h3 className="text-lg font-semibold">{r.role}</h3>
+                  <p className="text-sm text-black/60">{r.desc}</p>
+                </div>
+                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
+                  {membersOf(r.role).map((p) => (
+                    <li key={p.name} className="card-lift flex flex-col items-center rounded-2xl px-3 py-2.5 text-center text-white" style={{ backgroundImage: "var(--grad-primary)" }}>
+                      <div className="relative shrink-0 overflow-hidden rounded-full ring-[3px] ring-white" style={{ width: "clamp(48px, 6vh, 88px)", height: "clamp(48px, 6vh, 88px)" }}>
                         {photoExists(p.photo) ? (
-                          <Image src={p.photo} alt={p.name} fill sizes="(min-width:1280px) 280px, (min-width:640px) 45vw, 90vw" className="object-cover" />
+                          <Image src={p.photo} alt={p.name} fill sizes="96px" className="object-cover" style={{ objectPosition: p.focus ?? "50% 20%" }} />
                         ) : (
-                          <span aria-hidden className="flex h-full w-full items-center justify-center text-4xl font-semibold text-brand" style={{ backgroundImage: "var(--grad-primary)", color: "#fff" }}>{initials(p.name)}</span>
+                          <span aria-hidden className="flex h-full w-full items-center justify-center bg-white text-xl font-semibold text-brand">{initials(p.name)}</span>
                         )}
                       </div>
-                      <p className="mt-4 font-semibold text-black/90">{p.name}</p>
-                      <span className="mt-2 w-fit rounded-full px-3 py-1 text-sm text-brand" style={{ background: "color-mix(in srgb, var(--color-brand) 12%, white)" }}>{p.role}</span>
-                      {p.bio && <p className="mt-3 text-sm text-black/70">{p.bio}</p>}
+                      <p className="mt-2 line-clamp-2 min-h-[2.5rem] text-sm font-semibold leading-5">{p.name}</p>
+                      <span className="mt-1 rounded-full bg-white/15 px-2.5 py-0.5 text-xs text-white/85">{p.role}</span>
                     </li>
                   ))}
                 </ul>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div></div>
@@ -61,7 +62,7 @@ export default function TentangKamiPage() {
 
       <section className="container-page section-y flex flex-col items-center gap-10 md:flex-row md:justify-between">
         <h2 className="text-5xl font-bold leading-[1.2] text-brand md:w-[240px] md:text-[72px] md:tracking-[-2px]">Mitra Kami</h2>
-        <Reveal className="w-full max-w-[630px] rounded-2xl bg-brand p-7 text-white">
+        <Reveal className="w-full max-w-[630px] rounded-2xl bg-brand surface-brand p-7 text-white">
           <div className="flex flex-col items-center gap-4 sm:flex-row">
             <Image src="/img/tentang/tibelat.png" alt="Tibelat Farm" width={191} height={150} className="h-[150px] w-[191px] rounded object-cover" />
             <p className="flex-1 text-center text-xl font-bold">Tibelat Farm - Batam</p>

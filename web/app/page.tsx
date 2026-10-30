@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <SiteShell>
       {/* Hero */}
-      <section className="bg-brand">
+      <section className="bg-brand surface-brand">
         <div className="container-page flex flex-col items-center gap-8 pt-12 md:flex-row md:justify-between lg:pt-0">
           <div className="text-white">
             <h1 className="text-3xl leading-[1.5] md:text-[46px] md:leading-[79px]">Belanja Ikan Mudah<br />Dengan IkanKu</h1>
@@ -44,7 +44,7 @@ export default function Home() {
       </section>
 
       {/* Kenapa */}
-      <section className="bg-brand py-12 text-white lg:py-10">
+      <section className="bg-brand surface-brand py-12 text-white lg:py-10">
         <div className="container-page">
           <h2 className="text-center text-3xl font-bold md:text-[46px]">Kenapa IkanKu?</h2>
           <div className="mt-12 flex flex-col items-center gap-10 md:flex-row md:items-start lg:gap-[135px]">

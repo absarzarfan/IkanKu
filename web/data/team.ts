@@ -7,27 +7,21 @@ export type TeamMember = {
   photo: string;
   bio?: string;
   links?: { label: string; href: string }[];
+  /** object-position for the circular crop; default "50% 20%". */
+  focus?: string;
   isPlaceholder?: boolean;
 };
 
+// One-line summaries, shortened from the previous role paragraphs.
 export const roles: { role: TeamRole; desc: string }[] = [
-  {
-    role: "Hustler & Scrum Master",
-    desc: "Sebagai Hustler dan Scrum Master di proyek IkanKu, mereka memimpin tim dengan efektif, memastikan setiap tahapan berjalan lancar, serta menghadirkan solusi inovatif untuk marketplace ikan tawar. Fokus utama mereka adalah mendukung ekonomi lokal dan memudahkan petani ikan dalam memasarkan produk.",
-  },
-  {
-    role: "Designer",
-    desc: "Para desainer berfokus pada User Experience (UX) dan User Interface (UI). Dengan pemahaman mendalam tentang kebutuhan pengguna, mereka merancang antarmuka yang intuitif dan estetis untuk memberikan pengalaman terbaik dalam menggunakan aplikasi ini.",
-  },
-  {
-    role: "Programmer",
-    desc: "Tim developer atau programmer yang memiliki keahlian dalam bidang pengembangan web dan aplikasi mobile. Mereka memastikan bahwa setiap fitur bekerja dengan optimal, memprioritaskan kecepatan, keamanan, dan kemudahan penggunaan aplikasi.",
-  },
+  { role: "Hustler & Scrum Master", desc: "Memimpin tim dan memastikan setiap tahapan proyek berjalan lancar." },
+  { role: "Designer", desc: "Merancang antarmuka UX/UI yang intuitif bagi pengguna." },
+  { role: "Programmer", desc: "Mengembangkan fitur web dan aplikasi mobile dengan optimal." },
 ];
 
 export const slugify = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-const m = (name: string, role: TeamRole): TeamMember => ({ name, role, photo: `/team/${slugify(name)}.png` });
+const m = (name: string, role: TeamRole, focus?: string): TeamMember => ({ name, role, photo: `/team/${slugify(name)}.png`, focus });
 
 // Names and roles come from the existing /tentang-kami page (no placeholders needed).
 export const team: TeamMember[] = [
@@ -44,3 +38,7 @@ export const team: TeamMember[] = [
   m("Zia Djulyanza", "Programmer"),
   m("Absar R Zarfan", "Programmer"),
 ];
+
+/** Members of one role, sorted by name (A-Z) so the grid reads left to right, then down. */
+export const membersOf = (role: TeamRole) =>
+  team.filter((p) => p.role === role).sort((x, y) => x.name.localeCompare(y.name, "id"));

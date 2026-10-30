@@ -30,7 +30,7 @@ export default function ContactForm() {
     errors[k] ? <p role="alert" className="mt-1 text-sm text-[#ffd4d0]">{errors[k]}</p> : null;
 
   return (
-    <form noValidate onSubmit={onSubmit} className="rounded-2xl bg-brand p-6 text-white shadow-[0_4px_4px_rgba(0,0,0,.25)] lg:px-[43px] lg:py-8">
+    <form noValidate onSubmit={onSubmit} className="rounded-2xl bg-brand surface-brand p-6 text-white shadow-[0_4px_4px_rgba(0,0,0,.25)] lg:px-[43px] lg:py-8">
       <h3 className="mb-6 text-2xl lg:text-[32px] lg:leading-[52px]">Kirimkan Saran Anda</h3>
       <div className="grid gap-5 sm:grid-cols-2">
         <label>Nama<input name="nama" placeholder="Nama" className={`${inputCls} mt-1`} />{fe("nama")}</label>
