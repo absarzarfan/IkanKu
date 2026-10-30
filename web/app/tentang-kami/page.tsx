@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import type { Metadata } from "next";
 import SiteShell from "@/components/SiteShell";
 import Reveal from "@/components/Reveal";
@@ -63,14 +63,14 @@ export default function TentangKamiPage() {
         </div></div>
       </section>
 
-      <section className="container-page section-y">
+      <section id="mitra-kami" className="container-page section-y scroll-mt-20">
         <SectionHeader eyebrow="Mitra" title="Mitra Kami" />
         <ul className={`mt-10 grid gap-6 ${partners.length > 1 ? "md:grid-cols-2" : ""}`}>
           {partners.map((pt, n) => (
             <li key={pt.name}>
               <Reveal delay={n * 60} className="h-full"><div className={`card card-lift img-zoom flex h-full flex-col overflow-hidden ${partners.length === 1 ? "md:flex-row" : ""}`}>
                 <div className={`relative aspect-[3/2] w-full shrink-0 overflow-hidden ${partners.length === 1 ? "md:aspect-auto md:min-h-[300px] md:w-[44%]" : ""}`}>
-                  <Image src={pt.image} alt={pt.imageAlt} fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
+                  <Image src={pt.image} alt={pt.imageAlt} fill sizes="(min-width: 768px) 45vw, 100vw" loading="eager" className="object-cover" />
                 </div>
                 <div className="flex flex-col items-start gap-3 p-6 md:p-8">
                   <span className="badge">{pt.location}</span>

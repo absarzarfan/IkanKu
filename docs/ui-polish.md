@@ -32,3 +32,13 @@ Next 16.4.3, Turbopack is already the default for dev/build (no change). Respons
 - tentang-kami: Kontak text-only -> pin/phone/printer/mail chips; VisiMisi tabs -> eye/flag/target.
 - footer contacts -> chips 44; Navbar hamburger (stroke 2) and FAQ chevron (stroke 2.5) -> set icons; Testimonials dots 10px -> prev/next arrows + 44px dots, arrow-key nav, focus ring.
 Replaced: 28 usages. Kept: logos, team/avatar photos, mockups, play overlay.
+**Tokens (globals.css, Phase 8):** colors: brand/link #1672c4 (darkened from #177bcd for AA, 4.96:1 both ways) | heading #050315 | body #2f3542 | muted #4f5868 | placeholder #6b6f78 | on-blue #fff (no more white/85-90) | orange only .btn-cta.
+Gradients: --grad-primary 43->35% L, hover 40->32, --grad-surface 43->36 (white text min 4.7:1, was 4.4). Type: h1 46 / h2 34 / h3 22 / display 60 (--text-*), body 16/1.6, 72ch; fonts Poppins + Montserrat only. Off-scale text-[45/48/32px] and black/NN opacities mapped to tokens. Contrast exceptions: none known; placeholder #6b6f78 on white 5.0:1; --grad-nav/hero photo overlays not re-measured.
+**Motion:** .card-lift/.team-card/.footer-link/.tab-chip hover gated by (hover:hover)(pointer:fine); team photo ring grows on hover; icon chip scale 1.05 on card hover; .hero-in (450ms, 14px, backwards fill) on home hero; SectionHeader now uses Reveal (once, IntersectionObserver); only transform/opacity animate, colors transition, no transition:all, all off under reduced-motion.
+**Skills evidence (Phase 8)**
+- ui-ux-pro-max: 44px hit areas (slider, hamburger, tabs), AA contrast tokens (globals.css), no emoji icons, focus-visible rings (.slider-*, VisiMisi, Navbar).
+- emil-design-eng: card lift 2px/200ms ease-out, press scale .98/.96, hover gated by (hover:hover); no animation on keyboard-driven tab arrows beyond color.
+- animate: purpose-first (hero-in once on load, reveal once); stagger 60ms (partners); interruptible transitions for hover, keyframe only for one-shot hero.
+- animation-performance: transform/opacity only; fill-mode backwards so :active transform is not frozen; no CSS-variable animation; shadow change only on hover.
+- improve-animations: audit found ungated .card-lift hover and missing team/chip/footer states; fixed in the shared classes (no plans/ folder written).
+- frontend-design: one memorable element kept (curved hero + gradient bar), partner card uses existing card system, left-aligned copy at 60ch.
