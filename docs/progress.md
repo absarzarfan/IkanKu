@@ -28,3 +28,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART B (web: container/spasi bersama, footer grid, verifikasi 1440/390): selesai, lihat docs/web-layout-fixes.md.
 
 - PART C (Flutter: platform web dipertahankan, widget_test.dart ditulis ulang, 32 tes lolos): selesai.
+
+- PART D (Flutter: tes overflow 360x640 dan 1.4x, 4 perbaikan layout, SafeArea bawah, 84 tes lolos): selesai.

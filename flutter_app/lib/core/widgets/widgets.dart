@@ -65,7 +65,7 @@ class AppScaffold extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(child: body),
+          Expanded(child: bottom == null && bottomNavigationBar == null ? SafeArea(top: false, child: body) : body),
           ?bottom,
         ],
       ),

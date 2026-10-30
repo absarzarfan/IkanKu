@@ -232,7 +232,7 @@ class CategoryScreen extends ConsumerWidget {
               ? const EmptyState('Belum ada produk di kategori ini')
               : GridView.builder(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 8, crossAxisSpacing: 20, mainAxisExtent: 245),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 8, crossAxisSpacing: 20, mainAxisExtent: 245 + (MediaQuery.textScalerOf(context).scale(14) / 14 - 1).clamp(0.0, 1.0) * 60),
                   itemCount: items.length,
                   itemBuilder: (_, i) => ProductCard(product: items[i]),
                 ),

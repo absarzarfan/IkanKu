@@ -30,7 +30,7 @@ class ProfileScreen extends ConsumerWidget {
         const SizedBox(height: 8),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           for (final (i, e) in [(Icons.account_balance_wallet_outlined, 'Belum Bayar'), (Icons.inventory_2_outlined, 'Dikemas'), (Icons.local_shipping_outlined, 'Dikirim'), (Icons.check_circle_outline, 'Selesai'), (Icons.cancel_outlined, 'Ditolak')].indexed)
-            InkWell(onTap: () => context.push('/orders?tab=$i'), child: Padding(padding: const EdgeInsets.all(6), child: Column(children: [Icon(e.$1, color: AppColors.primary), Text(e.$2, style: const TextStyle(fontSize: 11))]))),
+            Expanded(child: InkWell(onTap: () => context.push('/orders?tab=$i'), child: Padding(padding: const EdgeInsets.symmetric(vertical: 6), child: Column(children: [Icon(e.$1, color: AppColors.primary), FittedBox(fit: BoxFit.scaleDown, child: Text(e.$2, style: const TextStyle(fontSize: 11)))])))),
         ]),
         const SizedBox(height: 12),
         tile(Icons.receipt_long_outlined, 'Semua Pesanan', '/orders'),

@@ -49,3 +49,8 @@ Status: **Figma-read** = layout/warna/teks dibaca dari Figma; **Inventory-only**
 | Section Web, LoFi, Animation, Assets | - | - | Di luar lingkup (sesuai instruksi) |
 
 Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Variasi, Tambah produk, Daftar produk sudah ditambahkan (semua jadi satu layar + state).
+
+## Pembaruan PART D (layout, tanpa Figma)
+- Semua rute pembeli dan penjual di `test/route_lists.dart` dijalankan oleh `test/layout_overflow_test.dart` pada 360x640 (teks 1.0x) dan 412x917 (teks 1.4x); tidak ada overflow.
+- Perbaikan: baris status pesanan di `/profile` (Expanded + FittedBox), tinggi sel grid `/category/*` mengikuti skala teks, judul bagian di `/seller/products` (Expanded), `AppScaffold` memberi SafeArea bawah pada body bila tidak ada bar bawah.
+- Semua layar berstatus Inventory-only tetap **belum diverifikasi terhadap Figma**; hanya konsistensi layout yang diperiksa.

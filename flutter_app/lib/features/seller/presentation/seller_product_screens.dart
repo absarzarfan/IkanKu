@@ -36,7 +36,7 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
       showBack: false,
       body: ListView(padding: const EdgeInsets.all(20), children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('Daftar Kategori', style: AppText.semi),
+          Expanded(child: Text('Daftar Kategori', style: AppText.semi)),
           TextButton.icon(onPressed: () => context.push('/seller/categories/new'), icon: const Icon(Icons.add), label: const Text('Tambah Kategori')),
         ]),
         Wrap(spacing: 8, children: [
@@ -58,7 +58,7 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
         ]),
         const SizedBox(height: 12),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('Daftar Produk', style: AppText.semi),
+          Expanded(child: Text('Daftar Produk', style: AppText.semi)),
           TextButton.icon(onPressed: () => context.push('/seller/products/new'), icon: const Icon(Icons.add), label: const Text('Tambah produk')),
         ]),
         if (items.isEmpty) const Padding(padding: EdgeInsets.all(30), child: EmptyState('Belum ada produk')),
