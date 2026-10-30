@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import Testimonials from "@/components/Testimonials";
 import SectionHeader from "@/components/SectionHeader";
 import CtaBand from "@/components/CtaBand";
+import { Bubbles, Wave } from "@/components/kit";
 import HeadlineCarousel from "@/components/HeadlineCarousel";
 import { Eyebrow } from "@/components/kit";
 import { articleUi } from "@/data/article-ui";
@@ -72,6 +73,7 @@ export default function Home() {
 
       {/* Kenapa */}
       <section className="band-blue py-14 lg:py-20">
+        <Bubbles />
         <div className="container-page">
           <SectionHeader tone="dark" title="Kenapa IkanKu?" />
           <div className="mt-14 flex flex-col items-center gap-10 md:flex-row md:items-start lg:gap-[96px]">
@@ -91,12 +93,13 @@ export default function Home() {
             </ol>
           </div>
         </div>
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0"><Wave color="#fff" /></div>
       </section>
 
       {/* Fitur */}
       <section className="band-white section-y">
         <div className="container-page">
-          <SectionHeader title="Fitur Unggulan" intro="Temukan kemudahan belanja ikan air tawar dengan fitur lengkap dan pengalaman belanja yang cepat serta aman." />
+          <SectionHeader eyebrow="Aplikasi" title="Fitur Unggulan" intro="Temukan kemudahan belanja ikan air tawar dengan fitur lengkap dan pengalaman belanja yang cepat serta aman." />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {features.map((f, i) => (
               <Reveal key={f.t} delay={(i % 2) * 60} className="h-full">

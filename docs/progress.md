@@ -56,3 +56,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 9a P4: Visi/Misi/Tujuan tablist with moving underline and icon-chip cards.
 - Phase 9a P5: article model extended (category, kicker, excerpt, aiGenerated, reviewStatus, body, reading time); 13 AI bodies; docs/ai-articles.md.
 - Phase 9a P6: HeadlineCarousel, newspaper /artikel, article detail (drop cap, pull-quote, related), Home Berita Utama.
+- Phase 9a P7: kit applied (waves on Home Kenapa and Produk Keunggulan bands, bubbles on blue bands and CTA, eyebrows, soft tinted sections on Tentang intro and Hubungi Satu Klik).

@@ -6,6 +6,7 @@ import SiteShell from "@/components/SiteShell";
 import ContactForm from "@/components/ContactForm";
 import Faq from "@/components/Faq";
 import ContactInfo from "@/components/ContactInfo";
+import { Eyebrow } from "@/components/kit";
 import { contact } from "@/data/contact";
 
 export const metadata: Metadata = { title: "Hubungi Kami - IkanKu" };
@@ -44,11 +45,12 @@ export default function HubungiKamiPage() {
         </div>
       </section>
 
-      <section className="container-page section-y text-center">
+      <section className="tint-soft"><div className="container-page section-y text-center">
+        <Eyebrow>Kontak</Eyebrow>
         <h2 className="section-title text-brand">Satu Klik<br />Berhubung Dengan Kami</h2>
         <p className="mx-auto mt-4 text-sm text-body">{contact.institution} - {contact.tagline}</p>
         <div className="mt-10 text-left"><ContactInfo items={["phone", "email", "fax", "address"]} variant="cards" /></div>
-      </section>
+      </div></section>
     </SiteShell>
   );
 }

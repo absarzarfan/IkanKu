@@ -4,6 +4,7 @@ import SiteShell from "@/components/SiteShell";
 import Reveal from "@/components/Reveal";
 import SectionHeader from "@/components/SectionHeader";
 import CtaBand from "@/components/CtaBand";
+import { Bubbles, Wave } from "@/components/kit";
 import { IconChip, type IconName } from "@/components/icons";
 
 export const metadata: Metadata = { title: "Produk - IkanKu" };
@@ -39,7 +40,7 @@ export default function ProdukPage() {
 
       {/* Cara kerja */}
       <section className="band-white section-y"><div className="container-page">
-        <SectionHeader title="Cara Kerja Aplikasi Kami" />
+        <SectionHeader eyebrow="Panduan" title="Cara Kerja Aplikasi Kami" />
         <Reveal className="relative mx-auto mt-14 aspect-[970/456] w-full max-w-[970px] overflow-hidden rounded-3xl shadow-[0_24px_48px_-24px_rgba(23,123,205,.5)]">
           <Image src="/img/produk/pixel7a.png" alt="Video cara kerja aplikasi IkanKu" fill sizes="970px" className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 to-black/50" />
@@ -50,7 +51,8 @@ export default function ProdukPage() {
 
       {/* Keunggulan */}
       <section className="band-blue section-y">
-        <SectionHeader tone="dark" title="Keunggulan Produk" />
+        <Bubbles />
+        <SectionHeader tone="dark" eyebrow="Produk" title="Keunggulan Produk" />
         <ul className="container-page scrollbar-thin mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-6 pb-4 min-[900px]:grid min-[900px]:grid-cols-6 min-[900px]:overflow-visible" aria-label="Keunggulan produk">
           {adv.map((a, i) => (
             <li key={a.t} className={`${i === 3 ? "min-[900px]:col-start-2 " : ""}min-[900px]:col-span-2 card-lift flex h-[360px] w-[min(380px,78vw)] shrink-0 snap-start items-center gap-4 rounded-2xl border border-black/10 bg-white p-5 shadow-sm min-[900px]:w-auto min-[900px]:min-w-0 min-[900px]:gap-5`}>
@@ -64,6 +66,7 @@ export default function ProdukPage() {
             </li>
           ))}
         </ul>
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0"><Wave color="var(--color-surface)" /></div>
       </section>
 
       <CtaBand />
