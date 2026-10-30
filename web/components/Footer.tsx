@@ -2,19 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 
 const programs = [
-  { src: "/logos/msib.png", alt: "MSIB", w: 1024, h: 360 },
+  { src: "/logos/msib.png", alt: "MSIB", w: 1024, h: 360, cls: "h-[54px]" },
   { src: "/logos/infinite-learning.png", alt: "Infinite Learning", w: 471, h: 125 },
   { src: "/logos/kampus-merdeka.png", alt: "Kampus Merdeka", w: 1294, h: 680 },
 ];
 
 export default function Footer() {
   return (
-    <footer className="mt-auto bg-surface">
+    <footer className="mt-auto">
+      <div className="bg-white">
       <div className="container-page grid items-start gap-10 py-12 md:grid-cols-[1.2fr_1fr_auto]">
         <div>
-          <Image src="/img/home/logo.png" alt="IkanKu" width={120} height={63} className="mb-6 h-[63px] w-auto" />
-          <ul className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Program">
-            {programs.map((l) => (<li key={l.src}><Image src={l.src} alt={l.alt} width={l.w} height={l.h} className="h-9 w-auto object-contain" /></li>))}
+          <Image src="/img/home/logo.png" alt="IkanKu" width={160} height={84} className="mb-6 h-[84px] w-auto" />
+          <ul className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-4" aria-label="Program">
+            {programs.map((l) => (<li key={l.src}><Image src={l.src} alt={l.alt} width={l.w} height={l.h} className={`${l.cls ?? "h-9"} w-auto max-w-full object-contain`} /></li>))}
           </ul>
           <div className="grid gap-x-10 gap-y-6 text-lg text-black sm:grid-cols-2">
             <div><p>Email</p><p className="mt-3 break-words">Ikanku@gmail.com</p></div>
@@ -31,6 +32,7 @@ export default function Footer() {
           <Link href="/produk">Produk</Link>
           <Link href="/hubungi-kami#faq">FAQ</Link>
         </nav>
+      </div>
       </div>
       <div className="bg-brand py-4 text-center text-white">© 2024 All rights reserved.</div>
     </footer>

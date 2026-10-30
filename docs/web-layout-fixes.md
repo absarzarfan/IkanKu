@@ -15,3 +15,4 @@ Hanya konsistensi layout; tidak ada perubahan warna, font, bayangan, animasi, ik
 Verifikasi: Edge headless (screenshot di luar repo) di 1440px untuk `/`, `/produk`, `/tentang-kami`; di 390px (viewport iframe asli, karena Edge headless tidak mau lebih sempit dari ~500px) untuk `/tentang-kami`, `/artikel`. Dashboard terkunci login tiruan (tampil "Memuat…" lalu redirect) sehingga hanya ditinjau lewat kode. 768px tidak difoto. Animasi scroll-reveal tidak terpicu di screenshot sehingga beberapa blok tampak kosong di foto (bukan bug layout).
 
 Gate: `npm run lint` bersih, `npm run build` berhasil, semua route 200 di port 3100.
+- Phase 4: web favicon is now a white fish on blue rounded square (web/app/icon.png); footer main section is white, IkanKu logo 63->84px (+33%), MSIB 36->54px (+50%), program logos in one centered wrapping flex row.

@@ -34,3 +34,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART E (Flutter: peta placeholder, filter pesanan selesai, ubah kategori, halaman toko; analyze bersih, 91 tes lolos, APK debug berhasil): selesai.
 
 - Phase 3 (Flutter: ikon IkanKu web+Android, startup langsung beranda dengan pembeli demo, 92 tes lolos, APK debug berhasil): selesai.
+- Phase 4 (web): fish-only favicon and footer tweaks (white background, larger IkanKu/MSIB logos) done.
