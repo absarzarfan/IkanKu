@@ -2,13 +2,18 @@
 
 /* Design tokens (Figma: Design System + Web frames). Brand colors are used in the web frames. */
 @theme inline {
-  --color-brand: #177bcd;
+  --color-brand: #1672c4; /* AA: 4.96:1 on white, white on it 4.96:1 */
   --color-brand-dark: #0072a7;
   --color-accent: #ff8038;
   --color-ink: #050315;
   --color-surface: #f3f8fd;
   --color-surface-2: #e8f1fa;
-  --color-muted: #444444;
+  --color-muted: #4f5868;
+  --color-body: #2f3542;
+  --color-heading: #050315;
+  --color-placeholder: #6b6f78;
+  --color-link: #1672c4;
+  --color-on-blue: #ffffff;
   --color-dot: #d9d9d9;
 
   --color-cerulean-50: #f0f5fe;
@@ -29,15 +34,16 @@
   --text-h2: 34px;
   --text-h3: 22px;
   --text-h4: 18px;
+  --text-display: 60px;
 }
 
 /* Gradient tokens: same hue as the flat brand colors, about +/-6% lightness. */
 :root {
-  --grad-primary: linear-gradient(135deg, hsl(207 80% 51%), hsl(207 80% 39%));
-  --grad-primary-hover: linear-gradient(135deg, hsl(207 80% 47%), hsl(207 80% 35%));
+  --grad-primary: linear-gradient(135deg, hsl(207 80% 43%), hsl(207 80% 35%));
+  --grad-primary-hover: linear-gradient(135deg, hsl(207 80% 40%), hsl(207 80% 32%));
   --grad-cta: linear-gradient(135deg, hsl(25 100% 67%), hsl(19 100% 55%));
   --grad-cta-hover: linear-gradient(135deg, hsl(25 100% 63%), hsl(19 100% 51%));
-  --grad-surface: linear-gradient(135deg, hsl(207 80% 45%), hsl(207 80% 37%));
+  --grad-surface: linear-gradient(135deg, hsl(207 80% 43%), hsl(207 80% 36%));
   --grad-nav: linear-gradient(90deg, #ffffff 0%, #f6fafd 100%);
   --grad-outline-hover: linear-gradient(135deg, #f3f8fd, #e6f0fa);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -61,12 +67,23 @@
   }
   .surface-brand { background-image: var(--grad-surface); }
   .nav-grad { background-image: var(--grad-nav); }
-  .card-lift { transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out); }
-  .card-lift:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(5, 3, 21, 0.08); }
+  .card-lift { transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out); }
+  .team-photo { transition: box-shadow 200ms var(--ease-out); }
+  .tab-chip, .footer-link { transition: color 180ms var(--ease-out), background-color 180ms var(--ease-out), border-color 180ms var(--ease-out); }
 }
+/* Hover effects only where a real hover exists (touch never gets sticky hover). */
+@media (hover: hover) and (pointer: fine) {
+  .card-lift:hover { transform: translateY(-2px); box-shadow: 0 8px 18px -6px rgba(5, 3, 21, 0.12); }
+  .team-card:hover .team-photo { box-shadow: 0 0 0 4px #fff, 0 6px 14px rgba(5, 3, 21, 0.25); }
+  .footer-link:hover, .tab-chip:hover { color: var(--color-link); }
+}
+/* Hero entrance on first load: opacity + 14px rise, staggered with --d. */
+@keyframes hero-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.hero-in { animation: hero-in 450ms var(--ease-out) var(--d, 0ms) backwards; }
 @media (prefers-reduced-motion: reduce) {
-  .btn-cta, .btn-primary, .btn-outline, .card-lift { transition: none; }
-  .btn-cta:active, .btn-primary:active, .btn-outline:active, .card-lift:hover { transform: none; }
+  .btn-cta, .btn-primary, .btn-outline, .card-lift, .team-photo, .tab-chip, .footer-link { transition: none; }
+  .btn-cta:active, .btn-primary:active, .btn-outline:active { transform: none; }
+  .hero-in { animation: none; }
 }
 
 .scrollbar-thin { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.5) transparent; }
@@ -74,7 +91,8 @@
 /* Type scale (shared by all routes): h1 46 / h2 34 / h3 22, body 16 at 1.6, readable paragraph width. */
 @layer base {
   body { font-size: 1rem; line-height: 1.6; }
-  h1, h2, h3, h4 { line-height: 1.25; text-wrap: balance; }
+  h1, h2, h3, h4 { line-height: 1.25; text-wrap: balance; color: var(--color-heading); }
+  .text-white h1, .text-white h2, .text-white h3, .band-blue h1, .band-blue h2, .band-blue h3 { color: inherit; }
   p { max-width: 72ch; }
   small { font-size: 0.875rem; }
 }
@@ -110,7 +128,7 @@ body {
   .section-title { text-align: center; font-weight: 700; line-height: 1.15; font-size: clamp(1.75rem, 1.2rem + 2vw, 2.875rem); }
   .section-title::after { content: ""; display: block; width: 56px; height: 4px; margin: 14px auto 0; border-radius: 4px; background-image: var(--grad-primary); }
   .band-blue .section-title::after { background: #fff; opacity: .85; }
-  .card { background: #fff; border-radius: 24px; border: 1px solid rgba(23,123,205,.12); box-shadow: 0 1px 2px rgba(5,3,21,.04), 0 12px 28px -16px rgba(23,123,205,.28); }
+  .card { background: #fff; border-radius: 24px; border: 1px solid rgba(22,114,196,.12); box-shadow: 0 1px 2px rgba(5,3,21,.04), 0 12px 28px -16px rgba(22,114,196,.28); }
   .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 2px 12px; font-size: .875rem; color: var(--color-brand); background: color-mix(in srgb, var(--color-brand) 12%, white); }
   .glass-card { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: 20px; }
 }

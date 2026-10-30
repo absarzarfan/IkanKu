@@ -16,15 +16,15 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(null);
   return (
     <section id="faq" className="container-page section-y"><div className="rounded-2xl bg-brand surface-brand px-6 py-12 shadow-[0_8px_8px_rgba(0,0,0,.25)] md:px-[82px] md:pb-[100px]">
-      <h2 className="mb-16 text-3xl font-bold tracking-tight text-white md:text-[48px] md:leading-[1.2]">Pertanyaan Yang Sering Diajukan</h2>
+      <h2 className="mb-16 text-3xl font-bold tracking-tight text-white md:text-h1 md:leading-[1.2]">Pertanyaan Yang Sering Diajukan</h2>
       <div className="grid items-start gap-4 md:grid-cols-2 md:gap-x-[22px] md:gap-y-[18px]">
         {faqs.map((f, i) => (
           <div key={f.q} className="rounded-lg bg-white">
-            <button type="button" aria-expanded={open === i} onClick={() => setOpen(open === i ? null : i)} className="flex min-h-[80px] w-full items-center justify-between gap-4 rounded-lg border border-black px-[42px] text-left text-base text-black">
+            <button type="button" aria-expanded={open === i} onClick={() => setOpen(open === i ? null : i)} className="flex min-h-[80px] w-full items-center justify-between gap-4 rounded-lg border border-black px-[42px] text-left text-base text-ink">
               <span>{f.q}</span>
               <Icon name="chevronDown" size={24} className={`shrink-0 transition-transform duration-200 ${open === i ? "rotate-180" : ""}`} />
             </button>
-            {open === i && <p className="px-[42px] pb-5 pt-3 text-sm text-black">{f.a}</p>}
+            {open === i && <p className="px-[42px] pb-5 pt-3 text-sm text-ink">{f.a}</p>}
           </div>
         ))}
       </div>

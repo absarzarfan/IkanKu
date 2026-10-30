@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 type Errors = Partial<Record<"nama" | "email" | "telepon" | "layanan" | "pesan", string>>;
 
 const inputCls =
-  "h-10 w-full rounded-lg bg-white px-4 text-base text-ink placeholder:text-[#757575] focus:outline-2 focus:outline-white";
+  "h-10 w-full rounded-lg bg-white px-4 text-base text-ink placeholder:text-placeholder focus:outline-2 focus:outline-white";
 
 /** Front-end only: validates locally, sends nothing (no backend exists). */
 export default function ContactForm() {
@@ -31,13 +31,13 @@ export default function ContactForm() {
 
   return (
     <form noValidate onSubmit={onSubmit} className="rounded-2xl bg-brand surface-brand p-6 text-white shadow-[0_4px_4px_rgba(0,0,0,.25)] lg:px-[43px] lg:py-8">
-      <h3 className="mb-6 text-2xl lg:text-[32px] lg:leading-[52px]">Kirimkan Saran Anda</h3>
+      <h3 className="mb-6 text-2xl lg:text-h2 lg:leading-[52px]">Kirimkan Saran Anda</h3>
       <div className="grid gap-5 sm:grid-cols-2">
         <label>Nama<input name="nama" placeholder="Nama" className={`${inputCls} mt-1`} />{fe("nama")}</label>
         <label>Email<input name="email" type="email" placeholder="Email" className={`${inputCls} mt-1`} />{fe("email")}</label>
         <label>Telepon<input name="telepon" type="tel" placeholder="Telepon" className={`${inputCls} mt-1`} />{fe("telepon")}</label>
         <label>Layanan
-          <select name="layanan" defaultValue="" className={`${inputCls} mt-1 text-[#757575]`}>
+          <select name="layanan" defaultValue="" className={`${inputCls} mt-1 text-placeholder`}>
             <option value="" disabled>Layanan</option>
             <option>Pembelian</option>
             <option>Pengiriman</option>

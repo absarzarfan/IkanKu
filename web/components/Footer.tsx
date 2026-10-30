@@ -19,17 +19,17 @@ export default function Footer() {
           <ul className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-4" aria-label="Program">
             {programs.map((l) => (<li key={l.src}><Image src={l.src} alt={l.alt} width={l.w} height={l.h} className={`${l.cls ?? "h-9"} w-auto max-w-full object-contain`} /></li>))}
           </ul>
-          <div className="grid gap-x-10 gap-y-6 text-lg text-black sm:grid-cols-2">
-            <div className="flex items-start gap-4"><IconChip name="mail" size={44} /><div><p>Email</p><a href={contact.emailHref} className="mt-1 block break-words hover:text-brand">{contact.email}</a></div></div>
-            <div className="flex items-start gap-4"><IconChip name="phone" size={44} /><div><p>Nomor telepon</p><a href={contact.phoneHref} className="mt-1 block hover:text-brand">{contact.phone}</a></div></div>
+          <div className="grid gap-x-10 gap-y-6 text-lg text-ink sm:grid-cols-2">
+            <div className="flex items-start gap-4"><IconChip name="mail" size={44} /><div><p>Email</p><a href={contact.emailHref} className="footer-link mt-1 block break-words">{contact.email}</a></div></div>
+            <div className="flex items-start gap-4"><IconChip name="phone" size={44} /><div><p>Nomor telepon</p><a href={contact.phoneHref} className="footer-link mt-1 block">{contact.phone}</a></div></div>
             <div className="flex items-start gap-4 sm:col-span-2"><IconChip name="pin" size={44} /><div><p>Alamat</p><p className="mt-1">{contact.address}</p></div></div>
           </div>
         </div>
         <div>
-          <p className="mb-6 text-[22px] font-bold text-black">Download Aplikasi</p>
+          <p className="mb-6 text-h3 font-bold text-ink">Download Aplikasi</p>
           <a href="#" className="inline-flex h-12 items-center btn-cta rounded-lg px-[42px] text-white">Unduh Aplikasi</a>
         </div>
-        <nav className="flex flex-col gap-6 text-[22px] text-black" aria-label="Footer">
+        <nav className="flex flex-col gap-6 text-h3 text-ink" aria-label="Footer">
           <Link className="link-u w-fit" href="/tentang-kami">Tentang kami</Link>
           <Link className="link-u w-fit" href="/produk">Produk</Link>
           <Link className="link-u w-fit" href="/hubungi-kami#faq">FAQ</Link>

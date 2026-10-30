@@ -28,7 +28,7 @@ export default async function ArticleDetail({ params }: PageProps<"/artikel/[slu
     <SiteShell>
       <article className="mx-auto max-w-[900px] px-6 py-12">
         <Link href="/artikel" className="text-brand underline">&larr; Artikel</Link>
-        <h1 className="mt-6 text-3xl font-bold md:text-[34px]">{a.title}</h1>
+        <h1 className="mt-6 text-3xl font-bold md:text-h2">{a.title}</h1>
         <div className="mt-6 flex items-center gap-4">
           <Image src="/img/artikel/avatar.svg" alt="" width={50} height={50} />
           <div className="text-lg"><p className="font-bold">IkanKu</p><p>{a.date}</p></div>
@@ -38,12 +38,12 @@ export default async function ArticleDetail({ params }: PageProps<"/artikel/[slu
           <Image src={a.image} alt="" fill priority sizes="900px" className="object-cover" />
         </div>
         {a.excerpt && <p className="mt-8 text-lg">{a.excerpt}</p>}
-        {headings.map((h) => <h2 key={h} className="mt-8 text-[22px] font-bold">{h}</h2>)}
+        {headings.map((h) => <h2 key={h} className="mt-8 text-h3 font-bold">{h}</h2>)}
         <p className="mt-8 rounded-lg bg-white p-4 text-sm text-muted">Isi lengkap artikel belum tersedia: teks badan artikel pada frame Figma tidak dapat diambil.</p>
       </article>
       <section className="band-blue px-6 py-12">
         <div className="mx-auto max-w-[1000px]">
-          <h2 className="mb-8 text-2xl text-white md:text-[34px]">Artikel Terkait</h2>
+          <h2 className="mb-8 text-2xl text-white md:text-h2">Artikel Terkait</h2>
           <ul className="grid gap-6 sm:grid-cols-3">
             {related.map((r) => (
               <li key={r.slug} className="card card-lift p-3">

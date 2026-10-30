@@ -48,7 +48,7 @@ export default function AdminLogin() {
         </form>
       </div>
       <div className="hidden items-center justify-center bg-brand surface-brand p-12 lg:flex">
-        <p className="max-w-[420px] text-center text-[34px] font-bold leading-tight text-white">Temukan Aneka Ikan Segar di IkanKu</p>
+        <p className="max-w-[420px] text-center text-h2 font-bold leading-tight text-white">Temukan Aneka Ikan Segar di IkanKu</p>
       </div>
     </div>
   );

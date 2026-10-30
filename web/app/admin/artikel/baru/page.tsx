@@ -37,7 +37,7 @@ export default function TambahArtikel() {
         <p className="text-sm text-muted">{saved ? `tersimpan sebagai DRAF ${saved}` : "belum disimpan"}</p>
       </div>
       <div className="mt-6 rounded-2xl bg-white p-6">
-        <input value={title} maxLength={MAX_TITLE} onChange={(e) => setTitle(e.target.value)} placeholder="Tulis judul disini" aria-label="Judul" className="w-full border-b border-black/20 pb-3 text-2xl font-bold outline-none focus:border-brand md:text-[34px]" />
+        <input value={title} maxLength={MAX_TITLE} onChange={(e) => setTitle(e.target.value)} placeholder="Tulis judul disini" aria-label="Judul" className="w-full border-b border-black/20 pb-3 text-2xl font-bold outline-none focus:border-brand md:text-h2" />
         <p className="mt-2 text-sm text-muted">Karakter judul : {title.length}/{MAX_TITLE}</p>
         <textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder="Mulai Menulis Cerita...." aria-label="Isi artikel" rows={14} className="mt-6 w-full resize-y rounded-lg border border-black/10 p-4 outline-none focus:border-brand" />
         <p className="mt-2 text-sm text-muted">Karakter : {body.length} &nbsp; Kata : {words}</p>

@@ -26,8 +26,8 @@ export default function Home() {
       <section className="band-blue curve-b overflow-hidden">
         <div className="container-page grid items-center gap-10 pt-12 md:grid-cols-[1.1fr_0.9fr] lg:pt-0">
           <div>
-            <h1 className="text-4xl font-bold leading-[1.15] md:text-5xl lg:text-[60px]">Belanja Ikan Mudah<br />Dengan IkanKu</h1>
-            <a href="#" className="btn-cta mt-8 inline-flex h-12 items-center rounded-lg px-[42px] text-base text-white">Download on Google Play</a>
+            <h1 className="hero-in text-4xl font-bold leading-[1.15] md:text-h1 lg:text-display">Belanja Ikan Mudah<br />Dengan IkanKu</h1>
+            <a href="#" style={{ "--d": "80ms" } as React.CSSProperties} className="hero-in btn-cta mt-8 inline-flex h-12 items-center rounded-lg px-[42px] text-base text-white">Download on Google Play</a>
           </div>
           <div className="relative mx-auto h-[320px] w-[260px] shrink-0 md:ml-auto md:mr-0 lg:mt-10 lg:h-[420px] lg:w-[335px]">
             <div aria-hidden className="absolute -right-6 top-6 h-[85%] w-[85%] rounded-[40px] border border-white/25 bg-white/10" />
@@ -48,9 +48,9 @@ export default function Home() {
             </div>
           </Reveal>
           <Reveal delay={80}>
-            <h2 className="text-3xl font-bold text-brand md:text-[46px] md:leading-[1.15]">Apa itu IkanKu?</h2>
+            <h2 className="text-3xl font-bold text-brand md:text-h1 md:leading-[1.15]">Apa itu IkanKu?</h2>
             <div className="mt-4 h-1 w-14 rounded bg-[image:var(--grad-primary)]" />
-            <p className="mt-8 max-w-[540px] text-lg text-black/80">Cari ikan segar tanpa ribet? IkanKu solusinya! Temukan ikan air tawar berkualitas langsung dari petani dengan harga terbaik, hanya lewat aplikasi. Pesan sekarang, dan nikmati kemudahan mendapatkan ikan segar di depan pintu Anda!</p>
+            <p className="mt-8 max-w-[540px] text-lg text-body">Cari ikan segar tanpa ribet? IkanKu solusinya! Temukan ikan air tawar berkualitas langsung dari petani dengan harga terbaik, hanya lewat aplikasi. Pesan sekarang, dan nikmati kemudahan mendapatkan ikan segar di depan pintu Anda!</p>
           </Reveal>
         </div>
       </section>
@@ -68,8 +68,8 @@ export default function Home() {
                 <Reveal key={s.t} delay={i * 60}>
                   <li className="glass-card relative p-6 pl-[88px]">
                     <IconChip name={s.icon} tone="glass" size={44} className="absolute left-6 top-6" />
-                    <h3 className="text-[22px] font-semibold">{s.t}</h3>
-                    <p className="mt-3 max-w-[581px] text-white/90">{s.d}</p>
+                    <h3 className="text-h3 font-semibold">{s.t}</h3>
+                    <p className="mt-3 max-w-[581px] text-white">{s.d}</p>
                   </li>
                 </Reveal>
               ))}
@@ -88,8 +88,8 @@ export default function Home() {
                 <div className="card card-lift flex h-full min-h-[220px] flex-col items-start gap-5 p-7 sm:flex-row sm:items-center">
                   <IconChip name={f.icon} size={52} />
                   <div>
-                    <h3 className="text-[22px] font-semibold text-ink">{f.t}</h3>
-                    <p className="mt-3 max-w-[340px] text-black/70">{f.d}</p>
+                    <h3 className="text-h3 font-semibold text-ink">{f.t}</h3>
+                    <p className="mt-3 max-w-[340px] text-body">{f.d}</p>
                   </div>
                 </div>
               </Reveal>

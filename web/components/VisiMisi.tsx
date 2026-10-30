@@ -18,10 +18,10 @@ export default function VisiMisi() {
         <Image src="/img/home/phone.png" alt="Aplikasi IkanKu" fill sizes="234px" className="object-cover object-top" />
       </div>
       <div>
-        <p className="text-4xl font-bold text-brand md:text-[45px] md:leading-[52px]">IkanKu</p>
+        <p className="text-4xl font-bold text-brand md:text-h1 md:leading-[52px]">IkanKu</p>
         <div className="mt-6 flex gap-4" role="tablist">
           {tabs.map((t, n) => (
-            <button key={t.k} type="button" role="tab" aria-selected={i === n} onClick={() => setI(n)} className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-black px-6 py-1 text-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${i === n ? "border-brand bg-brand surface-brand text-white" : "bg-surface text-black hover:bg-white"}`}>
+            <button key={t.k} type="button" role="tab" aria-selected={i === n} onClick={() => setI(n)} className={`tab-chip inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-black px-6 py-1 text-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${i === n ? "border-brand bg-brand surface-brand text-white" : "bg-surface text-black hover:bg-white"}`}>
               <Icon name={t.icon} size={18} />{t.k}
             </button>
           ))}

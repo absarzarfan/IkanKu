@@ -36,7 +36,7 @@ export default function ArticleList() {
           onChange={(e) => { setQ(e.target.value); setPage(1); }}
           placeholder="Search..."
           aria-label="Cari artikel"
-          className="h-[60px] w-full rounded-3xl border border-brand/20 bg-white pl-[68px] pr-6 shadow-sm transition-shadow duration-200 placeholder:text-black/50 focus-visible:outline-2 focus-visible:outline-brand"
+          className="h-[60px] w-full rounded-3xl border border-brand/20 bg-white pl-[68px] pr-6 shadow-sm transition-shadow duration-200 placeholder:text-placeholder focus-visible:outline-2 focus-visible:outline-brand"
         />
       </div>
       <div className="mt-6 flex flex-wrap justify-center gap-4 md:gap-12">
@@ -59,19 +59,19 @@ export default function ArticleList() {
                 </div>
                 <h3 className="mt-4 px-2 text-xl font-semibold text-ink">{a.title}</h3>
                 <span className="badge mx-2 mt-3">{a.category}</span>
-                <p className="mt-3 px-2 pb-2 text-black/70">{a.date}</p>
+                <p className="mt-3 px-2 pb-2 text-body">{a.date}</p>
               </Link>
             </li>
           ))}
         </ul>
       )}
 
-      <div className="mx-auto mt-14 flex max-w-[1000px] items-center justify-between text-[22px] font-bold">
-        <button type="button" disabled={cur <= 1} onClick={() => setPage(cur - 1)} className="flex items-center gap-2 text-lg disabled:opacity-30 md:text-[22px]">
+      <div className="mx-auto mt-14 flex max-w-[1000px] items-center justify-between text-h3 font-bold">
+        <button type="button" disabled={cur <= 1} onClick={() => setPage(cur - 1)} className="flex items-center gap-2 text-lg disabled:opacity-30 md:text-h3">
           <Image src="/img/artikel/arrow.svg" alt="" width={24} height={24} /> Previous
         </button>
         <span className="whitespace-nowrap">Page {cur} of {pages}</span>
-        <button type="button" disabled={cur >= pages} onClick={() => setPage(cur + 1)} className="flex items-center gap-2 text-lg disabled:opacity-30 md:text-[22px]">
+        <button type="button" disabled={cur >= pages} onClick={() => setPage(cur + 1)} className="flex items-center gap-2 text-lg disabled:opacity-30 md:text-h3">
           Next <Image src="/img/artikel/arrow.svg" alt="" width={24} height={24} className="rotate-180" />
         </button>
       </div>

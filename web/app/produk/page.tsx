@@ -24,7 +24,7 @@ export default function ProdukPage() {
         <Image src="/img/produk/hero.png" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand/0 from-20% to-brand" />
         <div className="container-page flex flex-col items-center pb-16 pt-32 text-center lg:pt-[360px]">
-          <h1 className="max-w-[800px] text-4xl font-extrabold leading-tight text-white md:text-[60px]">Dapatkan Ikan Segar Dengan Mudah Dimana Saja</h1>
+          <h1 className="max-w-[800px] text-4xl font-extrabold leading-tight text-white md:text-display">Dapatkan Ikan Segar Dengan Mudah Dimana Saja</h1>
           <div className="mt-16 flex flex-col items-center gap-10 sm:flex-row sm:gap-[60px] lg:mt-[100px]">
             <div className="relative h-[300px] w-[260px] overflow-hidden rounded-t-3xl shadow-[4px_0_4px_rgba(0,0,0,.25)] lg:h-[410px] lg:w-[335px]">
               <Image src="/img/home/phone.png" alt="Aplikasi IkanKu" fill sizes="335px" className="object-cover object-top" />
@@ -59,7 +59,7 @@ export default function ProdukPage() {
               </div>
               <div className="flex min-w-0 flex-1 flex-col items-center gap-4">
                 <IconChip name={a.icon} />
-                <p className="text-balance break-words text-center font-montserrat text-lg font-bold text-black lg:text-xl">{a.t}</p>
+                <p className="text-balance break-words text-center font-montserrat text-lg font-bold text-ink lg:text-xl">{a.t}</p>
               </div>
             </li>
           ))}

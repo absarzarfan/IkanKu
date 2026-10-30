@@ -22,7 +22,7 @@ export default function HubungiKamiPage() {
         <Image src="/img/hubungi/hero.png" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-50% to-brand" />
         <div className="container-page flex min-h-[320px] flex-col items-center justify-end pb-14 text-white lg:min-h-[600px] lg:pb-[130px]">
-          <h1 className="text-4xl font-bold lg:text-5xl">Hubungi Kami</h1>
+          <h1 className="text-4xl font-bold lg:text-h1">Hubungi Kami</h1>
           <p className="mt-4 flex items-center gap-2 text-base font-bold">
             <Icon name="home" size={20} />
             <Link href="/" className="underline">Beranda</Link> <span>- Hubungi Kami</span>
@@ -34,7 +34,7 @@ export default function HubungiKamiPage() {
 
       <section className="container-page section-y grid gap-10 lg:grid-cols-2 lg:gap-[80px]">
         <div>
-          <h2 className="text-3xl font-bold leading-[1.15] text-brand md:text-5xl">Bagaimana Cara Menghubungi Kami?</h2>
+          <h2 className="text-3xl font-bold leading-[1.15] text-brand md:text-h1">Bagaimana Cara Menghubungi Kami?</h2>
           <p className="mt-8 max-w-[539px]">Kami di sini untuk membantu Anda dengan segala pertanyaan atau kebutuhan terkait aplikasi IkanKu. Jangan ragu untuk menghubungi kami melalui salah satu cara di bawah ini.</p>
           <ul className="mt-8 space-y-6">
             {[contacts[2], contacts[0], contacts[1]].map((c) => (
