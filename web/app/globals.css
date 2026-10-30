@@ -129,3 +129,25 @@ body {
   .link-u, .img-zoom img { transition: none; }
   html { scroll-behavior: auto; }
 }
+
+/* Icon chip: rounded square, tinted on light surfaces, translucent white on blue gradients. */
+@layer components {
+  .icon-chip { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 14px; transition: transform 200ms var(--ease-out), background-color 200ms var(--ease-out); }
+  .icon-chip-tint { color: var(--color-brand); background-image: linear-gradient(135deg, color-mix(in srgb, var(--color-brand) 16%, white), color-mix(in srgb, var(--color-brand) 7%, white)); }
+  .icon-chip-glass { color: #fff; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.28); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-lift:hover .icon-chip, .group:hover .icon-chip { transform: scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) { .icon-chip { transition: none; } .card-lift:hover .icon-chip, .group:hover .icon-chip { transform: none; } }
+
+/* Slider controls: 44px hit area, visible focus ring. */
+@layer components {
+  .slider-btn, .slider-dot { display: inline-grid; place-items: center; height: 44px; cursor: pointer; border-radius: 999px; transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out), transform 150ms var(--ease-out); }
+  .slider-btn { width: 44px; color: var(--color-brand); }
+  .slider-dot { min-width: 28px; padding-inline: 4px; }
+  .slider-btn:active, .slider-dot:active { transform: scale(0.96); }
+  .slider-btn:focus-visible, .slider-dot:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+}
+@media (hover: hover) and (pointer: fine) { .slider-btn:hover { background: color-mix(in srgb, var(--color-brand) 10%, white); } }
+@media (prefers-reduced-motion: reduce) { .slider-btn, .slider-dot { transition: none; } }

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { Icon } from "@/components/icons";
 
 const links = [
   { href: "/", label: "Beranda" },
@@ -31,10 +32,8 @@ export default function Navbar() {
         <Link href="/hubungi-kami" className="hidden btn-outline rounded-lg border border-black px-4 py-2 text-sm md:block">
           Hubungi Kami
         </Link>
-        <button type="button" className="md:hidden p-2" aria-label="Buka menu" aria-expanded={open} onClick={() => setOpen(!open)}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-          </svg>
+        <button type="button" className="md:hidden grid size-11 cursor-pointer place-items-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand" aria-label="Buka menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+          <Icon name={open ? "close" : "menu"} size={28} />
         </button>
       </div>
       {open && (

@@ -1,3 +1,4 @@
+import { Icon, IconChip, type IconName } from "@/components/icons";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -8,10 +9,10 @@ import { contact } from "@/data/contact";
 
 export const metadata: Metadata = { title: "Hubungi Kami - IkanKu" };
 
-const contacts = [
-  { icon: "ic-wa.svg", label: "Telepon", val: contact.phone, href: contact.phoneHref, card: "phone.svg" },
-  { icon: "ic-mail.svg", label: "Email", val: contact.email, href: contact.emailHref, card: "mail.svg" },
-  { icon: "ic-pin.svg", label: "Lokasi", val: contact.address, href: undefined as string | undefined, card: "pin.svg" },
+const contacts: { icon: IconName; label: string; val: string; href: string | undefined }[] = [
+  { icon: "phone", label: "Telepon", val: contact.phone, href: contact.phoneHref },
+  { icon: "mail", label: "Email", val: contact.email, href: contact.emailHref },
+  { icon: "pin", label: "Lokasi", val: contact.address, href: undefined },
 ];
 
 export default function HubungiKamiPage() {
@@ -23,7 +24,7 @@ export default function HubungiKamiPage() {
         <div className="container-page flex min-h-[320px] flex-col items-center justify-end pb-14 text-white lg:min-h-[600px] lg:pb-[130px]">
           <h1 className="text-4xl font-bold lg:text-5xl">Hubungi Kami</h1>
           <p className="mt-4 flex items-center gap-2 text-base font-bold">
-            <Image src="/img/hubungi/home.svg" alt="" width={20} height={22} />
+            <Icon name="home" size={20} />
             <Link href="/" className="underline">Beranda</Link> <span>- Hubungi Kami</span>
           </p>
         </div>
@@ -36,14 +37,10 @@ export default function HubungiKamiPage() {
           <h2 className="text-3xl font-bold leading-[1.15] text-brand md:text-5xl">Bagaimana Cara Menghubungi Kami?</h2>
           <p className="mt-8 max-w-[539px]">Kami di sini untuk membantu Anda dengan segala pertanyaan atau kebutuhan terkait aplikasi IkanKu. Jangan ragu untuk menghubungi kami melalui salah satu cara di bawah ini.</p>
           <ul className="mt-8 space-y-6">
-            {[
-              { t: "Lokasi", v: contacts[2].val, h: undefined as string | undefined, i: "ic-pin.svg" },
-              { t: "Telepon", v: contacts[0].val, h: contacts[0].href, i: "ic-wa.svg" },
-              { t: "Email", v: contacts[1].val, h: contacts[1].href, i: "ic-mail.svg" },
-            ].map((c) => (
-              <li key={c.t} className="flex gap-4">
-                <Image src={`/img/hubungi/${c.i}`} alt="" width={22} height={22} className="mt-1 h-[22px] w-[22px] shrink-0" />
-                <div><p className="font-bold text-brand">{c.t}</p><p className="mt-3">{c.h ? <a href={c.h} className="hover:text-brand">{c.v}</a> : c.v}</p></div>
+            {[contacts[2], contacts[0], contacts[1]].map((c) => (
+              <li key={c.label} className="flex items-start gap-4">
+                <IconChip name={c.icon} size={44} />
+                <div><p className="font-bold text-brand">{c.label}</p><p className="mt-1">{c.href ? <a href={c.href} className="hover:text-brand">{c.val}</a> : c.val}</p></div>
               </li>
             ))}
           </ul>
@@ -62,7 +59,7 @@ export default function HubungiKamiPage() {
         <div className="mt-14 flex flex-wrap justify-center gap-8 lg:gap-[100px]">
           {contacts.map((c) => (
             <div key={c.label} className="card-lift flex size-[236px] flex-col items-center justify-center gap-4 rounded-3xl bg-brand surface-brand p-4 text-center text-white shadow-[0_24px_48px_-24px_rgba(23,123,205,.6)]">
-              <Image src={`/img/hubungi/${c.card}`} alt="" width={40} height={40} className="h-10 w-10" />
+              <IconChip name={c.icon} tone="glass" size={52} />
               <p>{c.label}</p>
               <p className="text-sm">{c.href ? <a href={c.href} className="underline-offset-2 hover:underline">{c.val}</a> : c.val}</p>
             </div>

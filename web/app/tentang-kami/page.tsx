@@ -7,6 +7,7 @@ import VisiMisi from "@/components/VisiMisi";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { contact } from "@/data/contact";
+import { IconChip, type IconName } from "@/components/icons";
 import { partners } from "@/data/partners";
 import { membersOf, roles } from "@/data/team";
 
@@ -88,10 +89,14 @@ export default function TentangKamiPage() {
           <p className="mt-4 text-xl font-semibold">{contact.institution}</p>
           <p className="text-sm text-black/70">{contact.tagline}</p>
           <dl className="mt-6 grid gap-6 sm:grid-cols-2">
-            <div><dt className="font-bold text-brand">Alamat</dt><dd className="mt-2">{contact.address}</dd></div>
-            <div><dt className="font-bold text-brand">Telepon</dt><dd className="mt-2"><a href={contact.phoneHref} className="hover:text-brand">{contact.phone}</a></dd></div>
-            <div><dt className="font-bold text-brand">Fax</dt><dd className="mt-2">{contact.fax}</dd></div>
-            <div><dt className="font-bold text-brand">Email</dt><dd className="mt-2"><a href={contact.emailHref} className="hover:text-brand">{contact.email}</a></dd></div>
+            {([
+              ["pin", "Alamat", contact.address],
+              ["phone", "Telepon", <a key="t" href={contact.phoneHref} className="hover:text-brand">{contact.phone}</a>],
+              ["printer", "Fax", contact.fax],
+              ["mail", "Email", <a key="e" href={contact.emailHref} className="hover:text-brand">{contact.email}</a>],
+            ] as [IconName, string, React.ReactNode][]).map(([icon, label, val]) => (
+              <div key={label} className="flex items-start gap-4"><IconChip name={icon} size={44} /><div><dt className="font-bold text-brand">{label}</dt><dd className="mt-1">{val}</dd></div></div>
+            ))}
           </dl>
         </div>
       </section>

@@ -59,3 +59,5 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Phase 7: review-animations skipped (user-only, per user); image downscale reverted because System.Drawing PNG re-encode increased size; Turbopack already default (no script change); surface colour changed to #F3F8FD as part of the redesign.
 
 - Phase 8: Hustler summary reuses existing phrases only (local economy / nilai jual ikan air tawar); the 'help fish farmers market' phrase is not in the repo so it was not used.
+
+- Phase 8: Kenapa-IkanKu number badges replaced by icon chips (steps are not strictly sequential); added prev/next arrows to testimonials (same page state, wraps).

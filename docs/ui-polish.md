@@ -24,3 +24,11 @@ Next 16.4.3, Turbopack is already the default for dev/build (no change). Respons
 
 ## Phase 8 (feature/ui-redesign-v2)
 **Role rename:** "Hustler & Scrum Master" -> "Hustler" (data/team.ts, docs/figma-inventory.md; heading, pill and group order derive from the same data). Summary before: "Memimpin tim dan memastikan setiap tahapan proyek berjalan lancar." -> after: "Mendukung pertumbuhan ekonomi lokal dan meningkatkan nilai jual ikan air tawar." (both phrases already in /tentang-kami copy).
+**Mitra Kami:** data/partners.ts + 1/2-column card grid (white .card, 3:2 image with inner zoom 1.03, "Batam" badge, left-aligned text); single partner renders as a horizontal card so no empty area.
+**Icon audit** (before -> now; all in components/icons, 1.75 stroke, 24 grid, IconChip 44-52px):
+- page.tsx Fitur: raster-like ic-*.svg in 88px tile, mixed sizes -> fish/cart/truck/star chips 52. Kenapa: number badges -> truck/phoneApp/shield glass chips 44.
+- produk Keunggulan: no icons on cards -> tag/star/layers/smile/card chips (screenshots, logo, play overlay untouched).
+- hubungi-kami: ic-wa/mail/pin 22px + 40px card svgs, mismatched -> phone/mail/pin chips (44 list, 52 on blue); breadcrumb home.
+- tentang-kami: Kontak text-only -> pin/phone/printer/mail chips; VisiMisi tabs -> eye/flag/target.
+- footer contacts -> chips 44; Navbar hamburger (stroke 2) and FAQ chevron (stroke 2.5) -> set icons; Testimonials dots 10px -> prev/next arrows + 44px dots, arrow-key nav, focus ring.
+Replaced: 28 usages. Kept: logos, team/avatar photos, mockups, play overlay.

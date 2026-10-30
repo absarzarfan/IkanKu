@@ -46,3 +46,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 7 P5-6: performance measured, docs written, verified, pushed.
 - Phase 8 P0-2: branch v2, skills loaded, role renamed to Hustler.
 - Phase 8 P3: Mitra Kami redesigned (data/partners.ts, grid of cards).
+- Phase 8 P4: unified icon set, chips, slider controls.

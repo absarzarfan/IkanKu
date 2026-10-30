@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Icon } from "@/components/icons";
 
 // Answers are not present in Figma (only closed question buttons); text below is placeholder copy.
 const faqs = [
@@ -21,7 +22,7 @@ export default function Faq() {
           <div key={f.q} className="rounded-lg bg-white">
             <button type="button" aria-expanded={open === i} onClick={() => setOpen(open === i ? null : i)} className="flex min-h-[80px] w-full items-center justify-between gap-4 rounded-lg border border-black px-[42px] text-left text-base text-black">
               <span>{f.q}</span>
-              <svg width="20" height="12" viewBox="0 0 20 12" fill="none" stroke="currentColor" strokeWidth="2.5" className={`shrink-0 transition-transform ${open === i ? "rotate-180" : ""}`} aria-hidden="true"><path d="M2 2l8 8 8-8" /></svg>
+              <Icon name="chevronDown" size={24} className={`shrink-0 transition-transform duration-200 ${open === i ? "rotate-180" : ""}`} />
             </button>
             {open === i && <p className="px-[42px] pb-5 pt-3 text-sm text-black">{f.a}</p>}
           </div>

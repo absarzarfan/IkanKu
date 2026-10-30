@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { Icon, type IconName } from "@/components/icons";
 
 // Only the "Visi" text exists in Figma; Misi/Tujuan frames show no copy.
-const tabs = [
-  { k: "Visi", t: "Menjadi platform terpercaya yang menghubungkan konsumen dengan produk ikan tawar berkualitas melalui transparansi, inovasi dan pelayanan unggul, guna mendukung pertumbuhan ekonomi lokal dan keberlanjutan sektor perikanan." },
-  { k: "Misi", t: "Konten Misi belum tersedia di desain." },
-  { k: "Tujuan", t: "Konten Tujuan belum tersedia di desain." },
+const tabs: { k: string; t: string; icon: IconName }[] = [
+  { k: "Visi", icon: "eye", t: "Menjadi platform terpercaya yang menghubungkan konsumen dengan produk ikan tawar berkualitas melalui transparansi, inovasi dan pelayanan unggul, guna mendukung pertumbuhan ekonomi lokal dan keberlanjutan sektor perikanan." },
+  { k: "Misi", icon: "flag", t: "Konten Misi belum tersedia di desain." },
+  { k: "Tujuan", icon: "target", t: "Konten Tujuan belum tersedia di desain." },
 ];
 
 export default function VisiMisi() {
@@ -20,8 +21,8 @@ export default function VisiMisi() {
         <p className="text-4xl font-bold text-brand md:text-[45px] md:leading-[52px]">IkanKu</p>
         <div className="mt-6 flex gap-4" role="tablist">
           {tabs.map((t, n) => (
-            <button key={t.k} type="button" role="tab" aria-selected={i === n} onClick={() => setI(n)} className={`rounded-lg border border-black px-8 py-1 text-sm transition ${i === n ? "border-brand bg-brand surface-brand text-white" : "bg-surface text-black hover:bg-white"}`}>
-              {t.k}
+            <button key={t.k} type="button" role="tab" aria-selected={i === n} onClick={() => setI(n)} className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-black px-6 py-1 text-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${i === n ? "border-brand bg-brand surface-brand text-white" : "bg-surface text-black hover:bg-white"}`}>
+              <Icon name={t.icon} size={18} />{t.k}
             </button>
           ))}
         </div>

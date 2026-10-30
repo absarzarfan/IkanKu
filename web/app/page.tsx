@@ -4,18 +4,19 @@ import Reveal from "@/components/Reveal";
 import Testimonials from "@/components/Testimonials";
 import SectionHeader from "@/components/SectionHeader";
 import CtaBand from "@/components/CtaBand";
+import { IconChip, type IconName } from "@/components/icons";
 
-const steps = [
-  { t: "Ikan Segar Langsung ke Rumah Anda", d: "Dapatkan ikan segar langsung dari peternakan lokal yang diantar langsung ke rumah Anda. Tanpa perantara, hanya ikan berkualitas tinggi untuk kebutuhan harian Anda." },
-  { t: "Mudah dan Praktis", d: "Cukup dengan beberapa ketukan, Anda bisa menjelajahi, memilih, dan memesan ikan air tawar favorit kapan saja dan di mana saja. Belanja cepat dan mudah, langsung dari genggaman tangan Anda." },
-  { t: "Jaminan Kesegaran", d: "Kami menjamin bahwa ikan yang Anda pesan dipilih dengan cermat dan diproses agar tetap segar hingga sampai ke tangan Anda." },
+const steps: { t: string; d: string; icon: IconName }[] = [
+  { t: "Ikan Segar Langsung ke Rumah Anda", icon: "truck", d: "Dapatkan ikan segar langsung dari peternakan lokal yang diantar langsung ke rumah Anda. Tanpa perantara, hanya ikan berkualitas tinggi untuk kebutuhan harian Anda." },
+  { t: "Mudah dan Praktis", icon: "phoneApp", d: "Cukup dengan beberapa ketukan, Anda bisa menjelajahi, memilih, dan memesan ikan air tawar favorit kapan saja dan di mana saja. Belanja cepat dan mudah, langsung dari genggaman tangan Anda." },
+  { t: "Jaminan Kesegaran", icon: "shield", d: "Kami menjamin bahwa ikan yang Anda pesan dipilih dengan cermat dan diproses agar tetap segar hingga sampai ke tangan Anda." },
 ];
 
-const features = [
-  { icon: "ic-fish.svg", t: "Beragam Kategori Ikan", d: "Temukan berbagai jenis ikan air tawar dengan mudah, mulai dari ikan konsumsi hingga ikan hias, semuanya tersedia dengan deskripsi lengkap." },
-  { icon: "ic-basket.svg", t: "Pembelian Mudah", d: "Nikmati proses belanja yang simpel dengan fitur keranjang, checkout, dan opsi pengiriman yang terintegrasi untuk pengalaman yang nyaman." },
-  { icon: "ic-truck.svg", t: "Pelacakan Pesanan", d: "Pantau status pesanan Anda, mulai dari belum dibayar, dikemas, hingga dikirim dan selesai." },
-  { icon: "ic-review.svg", t: "Ulasan Produk", d: "Berikan rating dan ulasan produk untuk membantu pembeli lain dan meningkatkan kualitas layanan penjual." },
+const features: { icon: IconName; t: string; d: string }[] = [
+  { icon: "fish", t: "Beragam Kategori Ikan", d: "Temukan berbagai jenis ikan air tawar dengan mudah, mulai dari ikan konsumsi hingga ikan hias, semuanya tersedia dengan deskripsi lengkap." },
+  { icon: "cart", t: "Pembelian Mudah", d: "Nikmati proses belanja yang simpel dengan fitur keranjang, checkout, dan opsi pengiriman yang terintegrasi untuk pengalaman yang nyaman." },
+  { icon: "truck", t: "Pelacakan Pesanan", d: "Pantau status pesanan Anda, mulai dari belum dibayar, dikemas, hingga dikirim dan selesai." },
+  { icon: "star", t: "Ulasan Produk", d: "Berikan rating dan ulasan produk untuk membantu pembeli lain dan meningkatkan kualitas layanan penjual." },
 ];
 
 export default function Home() {
@@ -65,8 +66,8 @@ export default function Home() {
             <ol className="flex flex-1 flex-col gap-5">
               {steps.map((s, i) => (
                 <Reveal key={s.t} delay={i * 60}>
-                  <li className="glass-card relative p-6 pl-[72px]">
-                    <span className="absolute left-6 top-6 flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white text-xl font-bold leading-none text-brand">{i + 1}</span>
+                  <li className="glass-card relative p-6 pl-[88px]">
+                    <IconChip name={s.icon} tone="glass" size={44} className="absolute left-6 top-6" />
                     <h3 className="text-[22px] font-semibold">{s.t}</h3>
                     <p className="mt-3 max-w-[581px] text-white/90">{s.d}</p>
                   </li>
@@ -85,9 +86,7 @@ export default function Home() {
             {features.map((f, i) => (
               <Reveal key={f.t} delay={(i % 2) * 60} className="h-full">
                 <div className="card card-lift flex h-full min-h-[220px] flex-col items-start gap-5 p-7 sm:flex-row sm:items-center">
-                  <span className="flex h-[88px] w-[88px] shrink-0 items-center justify-center rounded-2xl bg-brand/10">
-                    <Image src={`/img/home/${f.icon}`} alt="" width={64} height={64} />
-                  </span>
+                  <IconChip name={f.icon} size={52} />
                   <div>
                     <h3 className="text-[22px] font-semibold text-ink">{f.t}</h3>
                     <p className="mt-3 max-w-[340px] text-black/70">{f.d}</p>

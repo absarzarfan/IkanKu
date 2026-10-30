@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { IconChip } from "@/components/icons";
 import { contact } from "@/data/contact";
 
 const programs = [
@@ -19,9 +20,9 @@ export default function Footer() {
             {programs.map((l) => (<li key={l.src}><Image src={l.src} alt={l.alt} width={l.w} height={l.h} className={`${l.cls ?? "h-9"} w-auto max-w-full object-contain`} /></li>))}
           </ul>
           <div className="grid gap-x-10 gap-y-6 text-lg text-black sm:grid-cols-2">
-            <div><p>Email</p><a href={contact.emailHref} className="mt-3 block break-words hover:text-brand">{contact.email}</a></div>
-            <div><p>Nomor telepon</p><a href={contact.phoneHref} className="mt-3 block hover:text-brand">{contact.phone}</a></div>
-            <div className="sm:col-span-2"><p>Alamat</p><p className="mt-3">{contact.address}</p></div>
+            <div className="flex items-start gap-4"><IconChip name="mail" size={44} /><div><p>Email</p><a href={contact.emailHref} className="mt-1 block break-words hover:text-brand">{contact.email}</a></div></div>
+            <div className="flex items-start gap-4"><IconChip name="phone" size={44} /><div><p>Nomor telepon</p><a href={contact.phoneHref} className="mt-1 block hover:text-brand">{contact.phone}</a></div></div>
+            <div className="flex items-start gap-4 sm:col-span-2"><IconChip name="pin" size={44} /><div><p>Alamat</p><p className="mt-1">{contact.address}</p></div></div>
           </div>
         </div>
         <div>

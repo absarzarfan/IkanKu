@@ -4,15 +4,16 @@ import SiteShell from "@/components/SiteShell";
 import Reveal from "@/components/Reveal";
 import SectionHeader from "@/components/SectionHeader";
 import CtaBand from "@/components/CtaBand";
+import { IconChip, type IconName } from "@/components/icons";
 
 export const metadata: Metadata = { title: "Produk - IkanKu" };
 
-const adv = [
-  { t: "Transparansi Harga & Produk Yang Detail", img: "k1.png" },
-  { t: "Sistem Review Yang Terpercaya", img: "k2.png" },
-  { t: "Varietas dan Kualitas Produk Yang Terjamin", img: "k3.png" },
-  { t: "Pengalaman Pengguna (UX) Yang Ramah & Mudah", img: "k4.png" },
-  { t: "Opsi Pembayaran Yang Fleksibel", img: "k5.png" },
+const adv: { t: string; img: string; icon: IconName }[] = [
+  { t: "Transparansi Harga & Produk Yang Detail", img: "k1.png", icon: "tag" },
+  { t: "Sistem Review Yang Terpercaya", img: "k2.png", icon: "star" },
+  { t: "Varietas dan Kualitas Produk Yang Terjamin", img: "k3.png", icon: "layers" },
+  { t: "Pengalaman Pengguna (UX) Yang Ramah & Mudah", img: "k4.png", icon: "smile" },
+  { t: "Opsi Pembayaran Yang Fleksibel", img: "k5.png", icon: "card" },
 ];
 
 export default function ProdukPage() {
@@ -56,7 +57,10 @@ export default function ProdukPage() {
               <div className="relative aspect-[141/300] w-[38%] max-w-[141px] shrink-0 overflow-hidden rounded-xl shadow-[6px_4px_4px_rgba(0,0,0,.25)]">
                 <Image src={`/img/produk/${a.img}`} alt="" fill sizes="141px" className="object-cover" />
               </div>
-              <p className="min-w-0 flex-1 text-balance break-words text-center font-montserrat text-lg font-bold text-black lg:text-xl">{a.t}</p>
+              <div className="flex min-w-0 flex-1 flex-col items-center gap-4">
+                <IconChip name={a.icon} />
+                <p className="text-balance break-words text-center font-montserrat text-lg font-bold text-black lg:text-xl">{a.t}</p>
+              </div>
             </li>
           ))}
         </ul>

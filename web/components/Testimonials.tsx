@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
+import { Icon } from "@/components/icons";
 
 const items = [
   { n: "Rina", q: "Sangat mudah dan praktis! Ikan yang saya terima selalu segar, dan pelayanannya cepat.", img: "t1.png" },
@@ -18,6 +19,13 @@ const PER = 3;
 
 export default function Testimonials() {
   const [page, setPage] = useState(0);
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === "ArrowRight") setPage((page + 1) % PAGES);
+    else if (e.key === "ArrowLeft") setPage((page + PAGES - 1) % PAGES);
+    else return;
+    e.preventDefault();
+    requestAnimationFrame(() => (e.currentTarget.querySelector('[aria-selected="true"]') as HTMLElement | null)?.focus());
+  };
   const shown = items.slice(page * PER, page * PER + PER);
   return (
     <section className="container-page section-y">
@@ -31,10 +39,16 @@ export default function Testimonials() {
           </figure>
         ))}
       </div>
-      <div className="mt-10 flex justify-center gap-3" role="tablist" aria-label="Halaman testimoni">
-        {Array.from({ length: PAGES }, (_, i) => (
-          <button key={i} type="button" role="tab" aria-selected={page === i} aria-label={`Testimoni ${i + 1}`} onClick={() => setPage(i)} className={`h-[10px] w-12 rounded-lg ${page === i ? "bg-brand surface-brand" : "bg-dot"}`} />
-        ))}
+      <div className="mt-10 flex items-center justify-center gap-2">
+        <button type="button" aria-label="Testimoni sebelumnya" onClick={() => setPage((page + PAGES - 1) % PAGES)} className="slider-btn"><Icon name="chevronLeft" size={22} /></button>
+        <div className="flex items-center" role="tablist" aria-label="Halaman testimoni" onKeyDown={onKey}>
+          {Array.from({ length: PAGES }, (_, i) => (
+            <button key={i} type="button" role="tab" aria-selected={page === i} aria-label={`Testimoni ${i + 1}`} tabIndex={page === i ? 0 : -1} onClick={() => setPage(i)} className="slider-dot group">
+              <span className={`block h-2.5 rounded-full transition-[width,background-color] duration-200 ${page === i ? "w-8 bg-brand" : "w-2.5 bg-dot group-hover:bg-brand/50"}`} />
+            </button>
+          ))}
+        </div>
+        <button type="button" aria-label="Testimoni berikutnya" onClick={() => setPage((page + 1) % PAGES)} className="slider-btn"><Icon name="chevronRight" size={22} /></button>
       </div>
     </section>
   );
