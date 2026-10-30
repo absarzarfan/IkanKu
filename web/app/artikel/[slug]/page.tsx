@@ -32,7 +32,7 @@ export default async function ArticleDetail({ params }: PageProps<"/artikel/[slu
         <div className="mt-6 flex items-center gap-4">
           <Image src="/img/artikel/avatar.svg" alt="" width={50} height={50} />
           <div className="text-lg"><p className="font-bold">IkanKu</p><p>{a.date}</p></div>
-          <span className="ml-auto rounded-lg bg-dot px-[9px]">{a.category}</span>
+          <span className="badge ml-auto">{a.category}</span>
         </div>
         <div className="relative mt-8 h-[260px] overflow-hidden rounded-3xl md:h-[480px]">
           <Image src={a.image} alt="" fill priority sizes="900px" className="object-cover" />
@@ -41,14 +41,14 @@ export default async function ArticleDetail({ params }: PageProps<"/artikel/[slu
         {headings.map((h) => <h2 key={h} className="mt-8 text-[22px] font-bold">{h}</h2>)}
         <p className="mt-8 rounded-lg bg-white p-4 text-sm text-muted">Isi lengkap artikel belum tersedia: teks badan artikel pada frame Figma tidak dapat diambil.</p>
       </article>
-      <section className="bg-brand surface-brand px-6 py-12">
+      <section className="band-blue px-6 py-12">
         <div className="mx-auto max-w-[1000px]">
           <h2 className="mb-8 text-2xl text-white md:text-[34px]">Artikel Terkait</h2>
           <ul className="grid gap-6 sm:grid-cols-3">
             {related.map((r) => (
-              <li key={r.slug} className="rounded-lg bg-white p-3">
+              <li key={r.slug} className="card card-lift p-3">
                 <Link href={`/artikel/${r.slug}`}>
-                  <div className="relative h-[160px] overflow-hidden rounded-lg"><Image src={r.image} alt="" fill sizes="300px" className="object-cover" /></div>
+                  <div className="relative h-[160px] overflow-hidden rounded-2xl"><Image src={r.image} alt="" fill sizes="300px" className="object-cover" /></div>
                   <h3 className="mt-3 font-bold">{r.title}</h3>
                   <p className="mt-2 text-sm">{r.date}</p>
                 </Link>

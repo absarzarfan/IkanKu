@@ -21,7 +21,7 @@ export default function Testimonials() {
   const shown = items.slice(page * PER, page * PER + PER);
   return (
     <section className="container-page section-y">
-      <h2 className="text-center text-3xl text-brand md:text-[46px]">Testimoni</h2>
+      <h2 className="section-title text-brand">Testimoni</h2>
       <div className="mt-20 grid gap-x-[14px] gap-y-16 md:grid-cols-3">
         {shown.map((t, i) => (
           <figure key={`${page}-${i}`} className={`relative rounded-2xl bg-brand surface-brand px-8 pb-6 pt-14 text-center text-white ${i > 0 ? "hidden md:block" : ""}`}>

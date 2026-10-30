@@ -27,7 +27,7 @@ export default function ArticleList() {
 
   return (
     <section className="container-page section-y">
-      <h2 className="text-center text-3xl md:text-[46px]">Artikel lainnya</h2>
+      <h2 className="section-title text-brand">Artikel lainnya</h2>
       <div className="relative mx-auto mt-10 max-w-[667px]">
         <Image src="/img/artikel/search.svg" alt="" width={28} height={28} className="absolute left-5 top-4" />
         <input
@@ -36,12 +36,12 @@ export default function ArticleList() {
           onChange={(e) => { setQ(e.target.value); setPage(1); }}
           placeholder="Search..."
           aria-label="Cari artikel"
-          className="h-[60px] w-full rounded-3xl border border-[#a6a6a6] bg-[#eff2f6] pl-[68px] pr-6 placeholder:text-[#a6a6a6]"
+          className="h-[60px] w-full rounded-3xl border border-brand/20 bg-white pl-[68px] pr-6 shadow-sm transition-shadow duration-200 placeholder:text-black/50 focus-visible:outline-2 focus-visible:outline-brand"
         />
       </div>
       <div className="mt-6 flex flex-wrap justify-center gap-4 md:gap-12">
         {chips.map((c) => (
-          <button key={c} type="button" onClick={() => { setChip(c); setPage(1); }} aria-pressed={chip === c} className={`h-10 min-w-[100px] rounded-[11px] border border-[#737373] px-4 text-lg ${chip === c ? "bg-brand surface-brand text-white" : "bg-white hover:bg-white/70"}`}>
+          <button key={c} type="button" onClick={() => { setChip(c); setPage(1); }} aria-pressed={chip === c} className={`h-10 min-w-[100px] cursor-pointer rounded-full border border-brand/30 px-5 text-base transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${chip === c ? "bg-brand surface-brand text-white" : "bg-white hover:bg-white/70"}`}>
             {c}
           </button>
         ))}
@@ -50,16 +50,16 @@ export default function ArticleList() {
       {shown.length === 0 ? (
         <p className="mt-16 text-center">Tidak ada artikel yang cocok.</p>
       ) : (
-        <ul className="mx-auto mt-12 grid max-w-[1000px] gap-x-[50px] gap-y-[65px] sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mx-auto mt-12 grid max-w-[1000px] gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {shown.map((a) => (
             <li key={a.slug}>
-              <Link href={`/artikel/${a.slug}`} className="group block">
-                <div className="relative h-[217px] overflow-hidden rounded-lg">
+              <Link href={`/artikel/${a.slug}`} className="card card-lift group block h-full p-3">
+                <div className="relative h-[200px] overflow-hidden rounded-2xl">
                   <Image src={a.image} alt="" fill sizes="300px" className="object-cover transition-transform duration-300 group-hover:scale-105" />
                 </div>
-                <h3 className="mt-3 text-[22px] font-bold text-ink">{a.title}</h3>
-                <span className="mt-3 inline-block rounded-lg bg-dot px-[9px] text-base">{a.category}</span>
-                <p className="mt-3 text-lg">{a.date}</p>
+                <h3 className="mt-4 px-2 text-xl font-semibold text-ink">{a.title}</h3>
+                <span className="badge mx-2 mt-3">{a.category}</span>
+                <p className="mt-3 px-2 pb-2 text-black/70">{a.date}</p>
               </Link>
             </li>
           ))}

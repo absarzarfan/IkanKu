@@ -42,3 +42,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 6 P2-3: orange removed from non-button elements; Keunggulan Produk row fixed.
 - Phase 6 P4-6: Tim Kami redo (single-screen, A-Z), blue surface gradients, verified.
 - Phase 7 P2-3a: ui-direction doc, shared section/card/badge/CTA components, navbar/footer.
+- Phase 7 P3b-4: pages redesigned (home, produk, artikel, tentang, hubungi); team photo zoom/origin tuned.

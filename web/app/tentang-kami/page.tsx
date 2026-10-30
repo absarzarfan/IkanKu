@@ -16,13 +16,13 @@ const initials = (n: string) => n.split(" ").filter(Boolean).slice(0, 2).map((w)
 export default function TentangKamiPage() {
   return (
     <SiteShell>
-      <section className="relative isolate h-[320px] overflow-hidden md:h-[700px]">
+      <section className="curve-b relative isolate h-[320px] overflow-hidden md:h-[640px]">
         <Image src="/img/tentang/hero.png" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-40% to-brand" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-40% to-[#1569b0]/80" />
       </section>
 
       <section className="container-page section-y text-center">
-        <h1 className="text-3xl font-bold leading-[52px] text-brand md:text-[45px]">Marketplace Ikan Tawar Inovatif<br />Visi Misi dan Tujuan Kami</h1>
+        <h1 className="text-3xl font-bold leading-[1.25] text-brand md:text-[45px]">Marketplace Ikan Tawar Inovatif<br />Visi Misi dan Tujuan Kami</h1>
         <p className="mx-auto mt-8 max-w-[670px]">Dengan fokus kepada kebutuhan pengguna, kami berkomitmen menghadirkan solusi inovatif yang meningkatkan nilai jual ikan air tawar, mendukung pertumbuhan ekonomi lokal dan kualitas di setiap transaksi. Kesuksesan Anda dalam mendapatkan produk ikan segar adalah pencapaian tertinggi kami.</p>
         <p className="mx-auto mt-4 max-w-[670px]">Tim IkanKu dipertemukan melalui program Magang dan Studi Independen Bersertifikat (MSIB) Batch 7 di Infinite Learning.</p>
       </section>
@@ -44,7 +44,7 @@ export default function TentangKamiPage() {
                     <li key={p.name} className="card-lift flex flex-col items-center rounded-2xl px-3 py-2.5 text-center text-white" style={{ backgroundImage: "var(--grad-primary)" }}>
                       <div className="relative shrink-0 overflow-hidden rounded-full ring-[3px] ring-white" style={{ width: "clamp(48px, 6vh, 88px)", height: "clamp(48px, 6vh, 88px)" }}>
                         {photoExists(p.photo) ? (
-                          <Image src={p.photo} alt={p.name} fill sizes="96px" className="object-cover" style={{ objectPosition: p.focus ?? "50% 20%" }} />
+                          <Image src={p.photo} alt={p.name} fill sizes="96px" className="object-cover" style={{ objectPosition: p.focus ?? "50% 20%", transform: p.zoom ? `scale(${p.zoom})` : undefined, transformOrigin: p.origin ?? "50% 50%" }} />
                         ) : (
                           <span aria-hidden className="flex h-full w-full items-center justify-center bg-white text-xl font-semibold text-brand">{initials(p.name)}</span>
                         )}
@@ -61,8 +61,8 @@ export default function TentangKamiPage() {
       </section>
 
       <section className="container-page section-y flex flex-col items-center gap-10 md:flex-row md:justify-between">
-        <h2 className="text-5xl font-bold leading-[1.2] text-brand md:w-[240px] md:text-[72px] md:tracking-[-2px]">Mitra Kami</h2>
-        <Reveal className="w-full max-w-[630px] rounded-2xl bg-brand surface-brand p-7 text-white">
+        <h2 className="text-5xl font-bold leading-[1.15] text-brand md:w-[280px] md:text-[64px]">Mitra Kami<span className="mt-4 block h-1 w-14 rounded bg-[image:var(--grad-primary)]" /></h2>
+        <Reveal className="w-full max-w-[630px] card-lift rounded-3xl bg-brand surface-brand p-7 text-white shadow-[0_24px_48px_-24px_rgba(23,123,205,.6)]">
           <div className="flex flex-col items-center gap-4 sm:flex-row">
             <Image src="/img/tentang/tibelat.png" alt="Tibelat Farm" width={191} height={150} className="h-[150px] w-[191px] rounded object-cover" />
             <p className="flex-1 text-center text-xl font-bold">Tibelat Farm - Batam</p>
@@ -72,7 +72,7 @@ export default function TentangKamiPage() {
       </section>
 
       <section className="container-page section-y">
-        <div className="rounded-2xl bg-white p-6 md:p-10">
+        <div className="card p-6 md:p-10">
           <h2 className="text-3xl font-bold text-brand md:text-[34px]">Kontak</h2>
           <p className="mt-4 text-xl font-semibold">{contact.institution}</p>
           <p className="text-sm text-black/70">{contact.tagline}</p>

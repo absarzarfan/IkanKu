@@ -17,7 +17,7 @@ const contacts = [
 export default function HubungiKamiPage() {
   return (
     <SiteShell>
-      <section className="relative isolate overflow-hidden">
+      <section className="curve-b relative isolate overflow-hidden">
         <Image src="/img/hubungi/hero.png" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-50% to-brand" />
         <div className="container-page flex min-h-[320px] flex-col items-center justify-end pb-14 text-white lg:min-h-[600px] lg:pb-[130px]">
@@ -33,7 +33,7 @@ export default function HubungiKamiPage() {
 
       <section className="container-page section-y grid gap-10 lg:grid-cols-2 lg:gap-[80px]">
         <div>
-          <h2 className="text-3xl font-bold leading-[1.2] tracking-tight text-brand md:text-5xl">Bagaimana Cara Menghubungi Kami?</h2>
+          <h2 className="text-3xl font-bold leading-[1.15] text-brand md:text-5xl">Bagaimana Cara Menghubungi Kami?</h2>
           <p className="mt-8 max-w-[539px]">Kami di sini untuk membantu Anda dengan segala pertanyaan atau kebutuhan terkait aplikasi IkanKu. Jangan ragu untuk menghubungi kami melalui salah satu cara di bawah ini.</p>
           <ul className="mt-8 space-y-6">
             {[
@@ -52,16 +52,16 @@ export default function HubungiKamiPage() {
       </section>
 
       <section className="container-page section-y">
-        <div className="rounded-lg bg-brand surface-brand p-3 md:p-7">
+        <div className="rounded-3xl bg-brand surface-brand p-3 shadow-[0_24px_48px_-24px_rgba(23,123,205,.6)] md:p-7">
           <Image src="/img/hubungi/map.png" alt="Peta lokasi IkanKu" width={1218} height={340} className="h-[240px] w-full rounded-lg object-cover md:h-[340px]" />
         </div>
       </section>
 
       <section className="container-page section-y text-center">
-        <h2 className="text-3xl font-bold leading-[1.2] tracking-tight text-brand md:text-5xl">Satu Klik<br />Berhubung Dengan Kami</h2>
+        <h2 className="section-title text-brand">Satu Klik<br />Berhubung Dengan Kami</h2>
         <div className="mt-14 flex flex-wrap justify-center gap-8 lg:gap-[100px]">
           {contacts.map((c) => (
-            <div key={c.label} className="flex size-[236px] flex-col items-center justify-center gap-4 bg-brand surface-brand p-4 text-white">
+            <div key={c.label} className="card-lift flex size-[236px] flex-col items-center justify-center gap-4 rounded-3xl bg-brand surface-brand p-4 text-center text-white shadow-[0_24px_48px_-24px_rgba(23,123,205,.6)]">
               <Image src={`/img/hubungi/${c.card}`} alt="" width={40} height={40} className="h-10 w-10" />
               <p>{c.label}</p>
               <p className="text-sm">{c.href ? <a href={c.href} className="underline-offset-2 hover:underline">{c.val}</a> : c.val}</p>
