@@ -35,3 +35,7 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 
 - Phase 3 (Flutter: ikon IkanKu web+Android, startup langsung beranda dengan pembeli demo, 92 tes lolos, APK debug berhasil): selesai.
 - Phase 4 (web): fish-only favicon and footer tweaks (white background, larger IkanKu/MSIB logos) done.
+- Phase 5 P0-1: branch feature/ui-polish; Emil Kowalski skills installed locally (excluded from git); ui-ux-pro-max found.
+- Phase 5 P2-3: ui brief, gradient tokens, buttons, type scale.
+- Phase 5 P4: contact data centralized in web/data/contact.ts.
+- Phase 5 P5-6: Tim Kami cards, ui-polish doc, verified.
