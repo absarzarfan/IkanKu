@@ -2,10 +2,12 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import SiteShell from "@/components/SiteShell";
 import Reveal from "@/components/Reveal";
+import SectionHeader from "@/components/SectionHeader";
 import VisiMisi from "@/components/VisiMisi";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { contact } from "@/data/contact";
+import { partners } from "@/data/partners";
 import { membersOf, roles } from "@/data/team";
 
 export const metadata: Metadata = { title: "Tentang Kami - IkanKu" };
@@ -60,15 +62,24 @@ export default function TentangKamiPage() {
         </div></div>
       </section>
 
-      <section className="container-page section-y flex flex-col items-center gap-10 md:flex-row md:justify-between">
-        <h2 className="text-5xl font-bold leading-[1.15] text-brand md:w-[280px] md:text-[64px]">Mitra Kami<span className="mt-4 block h-1 w-14 rounded bg-[image:var(--grad-primary)]" /></h2>
-        <Reveal className="w-full max-w-[630px] card-lift rounded-3xl bg-brand surface-brand p-7 text-white shadow-[0_24px_48px_-24px_rgba(23,123,205,.6)]">
-          <div className="flex flex-col items-center gap-4 sm:flex-row">
-            <Image src="/img/tentang/tibelat.png" alt="Tibelat Farm" width={191} height={150} className="h-[150px] w-[191px] rounded object-cover" />
-            <p className="flex-1 text-center text-xl font-bold">Tibelat Farm - Batam</p>
-          </div>
-          <p className="mt-6 text-justify text-sm">Tibelat Farm adalah salah satu mitra kami yang berlokasi di Batam. Sebagai usaha budidaya ikan tawar terkemuka, Tibelat Farm berkomitmen untuk menyediakan ikan berkualitas tinggi dengan praktik budidaya yang ramah lingkungan. Dengan fasilitas modern dan tim yang berpengalaman, Tibelat Farm memastikan bahwa setiap ikan yang dihasilkan memenuhi standar mutu terbaik. Kami bangga bermitra dengan Tibelat Farm dalam mendukung sektor perikanan yang berkelanjutan.</p>
-        </Reveal>
+      <section className="container-page section-y">
+        <SectionHeader eyebrow="Mitra" title="Mitra Kami" />
+        <ul className={`mt-10 grid gap-6 ${partners.length > 1 ? "md:grid-cols-2" : ""}`}>
+          {partners.map((pt, n) => (
+            <li key={pt.name}>
+              <Reveal delay={n * 60} className="h-full"><div className={`card card-lift img-zoom flex h-full flex-col overflow-hidden ${partners.length === 1 ? "md:flex-row" : ""}`}>
+                <div className={`relative aspect-[3/2] w-full shrink-0 overflow-hidden ${partners.length === 1 ? "md:aspect-auto md:min-h-[300px] md:w-[44%]" : ""}`}>
+                  <Image src={pt.image} alt={pt.imageAlt} fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
+                </div>
+                <div className="flex flex-col items-start gap-3 p-6 md:p-8">
+                  <span className="badge">{pt.location}</span>
+                  <h3 className="text-[22px] font-bold text-brand">{pt.name}</h3>
+                  <p className="max-w-[60ch] text-left text-black/75">{pt.description}</p>
+                </div>
+              </div></Reveal>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="container-page section-y">
