@@ -65,3 +65,6 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Phase 8: --color-brand darkened to #1672c4 and gradient stops ~8% L darker for AA white text; Tim Kami fit measured from full-page height (headless hash-scroll captures blank with smooth scroll), not from a viewport shot; partner image loading=eager.
 
 - Phase 8b: also removed the contact list in the 'Bagaimana Cara Menghubungi Kami?' block (third duplicate on /hubungi-kami); no CSP/X-Frame config exists (next.config.ts has none, no middleware) so nothing changed; public/img/hubungi/map.png (1 MB, Jakarta) is now unused but left in place, along with orphaned ic-*.svg/phone.svg/mail.svg/pin.svg/home.svg.
+
+- Phase 9a P0: the user had replaced images (renamed extensions: fish-box.jpg, produk/hero.jpg, tibelat.jpeg, artikel/featured.jpeg, b4.jpeg); committed them and updated references. Port 3100 was occupied by my own earlier server (will be stopped and restarted by me).
+- Phase 9a P1: the six skills were already loaded in this session; not re-invoked via the Skill tool to save context. Applied rules listed in ui-polish.md.

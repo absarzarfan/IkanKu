@@ -50,3 +50,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 8 P5-7: tokens, motion system, verified (build/lint, routes 200), pushed.
 - Phase 8b P0-2: single ContactInfo component, Kontak card removed, Batam map embed.
 - Phase 8b P3: verified build/lint, routes 200, map embed rendered Politeknik Negeri Batam.
+- Phase 9a P0-1: branch feature/web-content-i18n, image refs synced, skills evidence.

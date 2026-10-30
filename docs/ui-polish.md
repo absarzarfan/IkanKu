@@ -44,3 +44,12 @@ Gradients: --grad-primary 43->35% L, hover 40->32, --grad-surface 43->36 (white 
 - frontend-design: one memorable element kept (curved hero + gradient bar), partner card uses existing card system, left-aligned copy at 60ch.
 
 **Contact consolidation:** data/contact.ts (+ map) is the only source; components/ContactInfo.tsx (compact/cards) is the only renderer: footer (compact) and /hubungi-kami tiles (cards). /tentang-kami Kontak card and the duplicate contact list in 'Bagaimana Cara Menghubungi Kami?' removed; footer hides its contact block on /hubungi-kami (SiteShell footerContact). Map is a Google embed of Politeknik Negeri Batam.
+
+## Skills evidence (Phase 9a)
+Skills loaded earlier in this same session (Phase 8) and re-applied; not re-invoked to save context (see decisions.md). review-animations not used.
+- ui-ux-pro-max: 44px touch targets for carousel/FAQ/tab controls; `cursor-pointer` + visible focus rings on every new interactive element.
+- emil-design-eng: tab/FAQ/carousel motion uses ease-out custom curve, under 300ms; hover gated by `(hover:hover) and (pointer:fine)`.
+- animate: FAQ panel uses a CSS transition (grid-template-rows 0fr to 1fr), interruptible, not keyframes.
+- animation-performance: only transform/opacity animated (tab underline, panel cross-fade, chevron); no `transition: all`.
+- improve-animations: audit rule "frequency tier" applied: autoplay carousel gets pause button and is off under reduced motion.
+- frontend-design: newspaper structure (thin rules, small-caps kickers, dateline) from existing fonts only; no new fonts or colors.
