@@ -37,3 +37,8 @@ class Validators {
     return (n == null || n < 0) ? '$label harus angka' : null;
   }
 }
+
+const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+/// Tanggal dan jam singkat: "2 Nov 2026, 14.31".
+String formatDateTime(DateTime d) => '${d.day} ${_months[d.month - 1]} ${d.year}, ${d.hour.toString().padLeft(2, '0')}.${d.minute.toString().padLeft(2, '0')}';

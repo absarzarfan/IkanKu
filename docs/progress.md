@@ -104,3 +104,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART 0: cabang dibuat dari feature/mobile-unified; baseline analyze bersih, 195 tes lulus.
 - PART 1-2: enam skill termuat; docs/ux-pass.md berisi bukti skill dan audit alur pembeli.
 - PART 3a: widget inti (AppField blur-validasi, QtyStepper batas, StepIndicator, AnimatedCheck, NavBadge), navigasi (badge, ketuk ulang tab), Home (varian ubin, Lihat semua), pencarian (debounce, filter), detail (Hero, sheet variasi live, konfirmasi aksi). 195 tes lulus.
+- PART 3b: keranjang (per toko, Undo, batas stok, total fade), checkout (langkah, sheet, loading, anti-kirim-ganda), sukses (centang animasi), pesanan (hitungan tab, lini masa, konfirmasi batal), ulasan. 195 tes lulus.

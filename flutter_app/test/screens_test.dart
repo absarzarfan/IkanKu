@@ -137,6 +137,8 @@ void main() {
     await tester.tap(find.text('Beli Sekarang').last);
     await tester.pumpAndSettle();
     expect(find.text('Ringkasan Pemesanan'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('checkout-payment')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('pay-cod')));
     await tester.pumpAndSettle();
     await tester.drag(find.byType(ListView).last, const Offset(0, -800));
@@ -146,7 +148,7 @@ void main() {
     expect(find.text('Apakah alamat sudah benar?'), findsOneWidget);
     await tester.tap(find.text('Ya'));
     await tester.pumpAndSettle();
-    expect(find.text('Pesanan berhasil dilakukan !'), findsOneWidget);
+    expect(find.text('Pesanan berhasil dibuat'), findsOneWidget);
     expect(c.read(ordersProvider).length, before + 1);
     expect(c.read(ordersProvider).first.payment, PaymentMethod.cod);
     expect(c.read(cartProvider), isEmpty);

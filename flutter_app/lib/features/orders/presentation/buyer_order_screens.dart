@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
@@ -6,9 +7,10 @@ import 'package:ikanku/core/utils/format.dart';
 import 'package:ikanku/core/widgets/widgets.dart';
 import 'package:ikanku/features/orders/domain/orders.dart';
 import 'package:ikanku/features/orders/presentation/order_providers.dart';
+import 'package:ikanku/features/orders/presentation/orders_strings.dart';
 
 const buyerTabs = [OrderStatus.menunggu, OrderStatus.dikemas, OrderStatus.dikirim, OrderStatus.selesai, OrderStatus.ditolak];
-const _buyerTabLabels = ['Belum Bayar', 'Dikemas', 'Dikirim', 'Selesai', 'Ditolak'];
+const _buyerTabLabels = OrdersStrings.tabs;
 
 Color statusColor(OrderStatus s) => switch (s) {
       OrderStatus.menunggu => AppColors.warning,
@@ -20,7 +22,7 @@ Color statusColor(OrderStatus s) => switch (s) {
       OrderStatus.diarsipkan => AppColors.grey,
     };
 
-/// Pesanan Saya: tab Belum Bayar/Dikemas/Dikirim/Selesai/Ditolak (Figma 1044:5000 dst).
+/// Pesanan Saya: tab Belum Bayar/Dikemas/Dikirim/Selesai/Ditolak (Figma 1044:5000 dst), dengan hitungan per tab.
 class BuyerOrdersScreen extends ConsumerStatefulWidget {
   const BuyerOrdersScreen({super.key, this.initialTab = 0});
   final int initialTab;
@@ -36,13 +38,21 @@ class _BuyerOrdersScreenState extends ConsumerState<BuyerOrdersScreen> {
     final all = ref.watch(ordersProvider);
     final items = buyerOrders(all, buyerTabs[_tab]);
     return AppScaffold(
-      title: 'Pesanan Saya',
+      title: OrdersStrings.ordersTitle,
       onBack: () => context.canPop() ? context.pop() : context.go('/home'),
-      headerExtra: TextTabs(labels: _buyerTabLabels, index: _tab, onChanged: (i) => setState(() => _tab = i), onDark: true),
+      headerExtra: TextTabs(labels: _buyerTabLabels, counts: [for (final s in buyerTabs) buyerOrders(all, s).length], index: _tab, onChanged: (i) => setState(() => _tab = i), onDark: true),
       body: items.isEmpty
-          ? EmptyState('Belum ada pesanan ${_buyerTabLabels[_tab].toLowerCase()}')
+          ? EmptyState(OrdersStrings.emptyTab(_buyerTabLabels[_tab]), icon: Icons.receipt_long_outlined, hint: OrdersStrings.emptyHint)
           : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: Space.pad(context), children: [for (final (i, o) in items.indexed) _OrderCard(order: o, index: i)]),
     );
+  }
+}
+
+Future<void> _confirmCancel(BuildContext context, OrdersNotifier n, Order order) async {
+  final ok = await confirmDialog(context, OrdersStrings.cancelTitle, OrdersStrings.cancelBody(order.id), yes: OrdersStrings.cancelYes, no: OrdersStrings.cancelNo);
+  if (ok) {
+    HapticFeedback.lightImpact();
+    n.cancel(order.id);
   }
 }
 
@@ -64,7 +74,7 @@ class _OrderCard extends ConsumerWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(l.product.name + (order.lines.length > 1 ? ' +${order.lines.length - 1}' : ''), style: AppText.body, maxLines: 2, overflow: TextOverflow.ellipsis),
-              Text('Pilih Variasi ${l.variation.label}', style: AppText.small),
+              Text(OrdersStrings.variation(l.variation.label), style: AppText.small),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(rupiah(order.total), style: AppText.semi)), const SizedBox(width: Gap.sm), Text('x${l.qty}', style: AppText.small)]),
             ]),
           ),
@@ -74,22 +84,79 @@ class _OrderCard extends ConsumerWidget {
           Padding(padding: const EdgeInsets.only(top: Gap.md), child: StatusChip(order.status.label, color: statusColor(order.status))),
           const SizedBox(width: Gap.sm),
           Expanded(child: Wrap(alignment: WrapAlignment.end, crossAxisAlignment: WrapCrossAlignment.center, children: [
-          if (order.status == OrderStatus.menunggu) ...[
-            if (order.needsProof) TextButton(onPressed: () => context.push('/payment/${order.id}'), child: const Text('Bayar Sekarang')),
-            TextButton(
-              onPressed: () async {
-                if (await confirmDialog(context, 'Batalkan pesanan?', order.id)) n.cancel(order.id);
-              },
-              child: Text('Batal', style: AppText.body.copyWith(color: AppColors.danger)),
-            ),
-          ],
-          if (order.status == OrderStatus.selesai)
-            TextButton(onPressed: () => context.push(order.review == null ? '/orders/${order.id}/review' : '/orders/${order.id}/review/view'), child: Text(order.review == null ? 'Beri Ulasan' : 'Lihat Ulasan')),
-          if (order.status == OrderStatus.ditolak) TextButton(onPressed: () => context.push('/orders/${order.id}/rejected'), child: const Text('Lihat Alasan')),
-        ])),
+            if (order.status == OrderStatus.menunggu) ...[
+              if (order.needsProof) TextButton(onPressed: () => context.push('/payment/${order.id}'), child: const Text(OrdersStrings.payNow)),
+              TextButton(onPressed: () => _confirmCancel(context, n, order), child: Text(OrdersStrings.cancel, style: AppText.body.copyWith(color: AppColors.danger))),
+            ],
+            if (order.status == OrderStatus.selesai)
+              TextButton(onPressed: () => context.push(order.review == null ? '/orders/${order.id}/review' : '/orders/${order.id}/review/view'), child: Text(order.review == null ? OrdersStrings.review : OrdersStrings.viewReview)),
+            if (order.status == OrderStatus.ditolak) TextButton(onPressed: () => context.push('/orders/${order.id}/rejected'), child: const Text(OrdersStrings.viewReason)),
+          ])),
         ]),
       ]),
     );
+  }
+}
+
+/// Lini masa status. Hanya memakai data yang sudah ada: status, createdAt, proofUploaded, payment.
+/// Hanya langkah pertama punya waktu (createdAt); status lain tidak menyimpan cap waktu.
+class OrderTimeline extends StatelessWidget {
+  const OrderTimeline({super.key, required this.order});
+  final Order order;
+
+  static List<(String label, bool done, String? time)> stepsFor(Order o) {
+    final s = o.status;
+    final progress = switch (s) {
+      OrderStatus.dikemas => 1,
+      OrderStatus.dikirim => 2,
+      OrderStatus.selesai => 3,
+      _ => 0,
+    };
+    final terminal = s == OrderStatus.ditolak || s == OrderStatus.dibatalkan;
+    return [
+      (OrdersStrings.stepCreated, true, formatDateTime(o.createdAt)),
+      if (o.payment == PaymentMethod.transfer) (o.proofUploaded || progress > 0 ? OrdersStrings.stepProof : OrdersStrings.stepProofWait, o.proofUploaded || progress > 0, null),
+      if (terminal) (s == OrderStatus.ditolak ? OrdersStrings.stepRejected : OrdersStrings.stepCancelled, true, null) else ...[
+        (OrdersStrings.stepPacked, progress >= 1, null),
+        (OrdersStrings.stepShipped, progress >= 2, null),
+        (OrdersStrings.stepDelivered, progress >= 3, null),
+      ],
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final steps = stepsFor(order);
+    final terminal = order.status == OrderStatus.ditolak || order.status == OrderStatus.dibatalkan;
+    return Column(children: [
+      for (final (i, s) in steps.indexed)
+        IntrinsicHeight(
+          child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            SizedBox(
+              width: 24,
+              child: Column(children: [
+                Container(
+                  width: 18,
+                  height: 18,
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: s.$2 ? (terminal && i == steps.length - 1 ? AppColors.danger : AppColors.primary) : AppColors.surface, border: Border.all(color: s.$2 ? (terminal && i == steps.length - 1 ? AppColors.danger : AppColors.primary) : AppColors.greyLight, width: 2)),
+                  child: s.$2 ? const Icon(Icons.check, size: 12, color: Colors.white) : null,
+                ),
+                if (i < steps.length - 1) Expanded(child: Container(width: 2, color: steps[i + 1].$2 ? AppColors.primary : AppColors.greyLight)),
+              ]),
+            ),
+            const SizedBox(width: Gap.md),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: Gap.md),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(s.$1, style: AppText.body.copyWith(fontWeight: s.$2 ? FontWeight.w600 : FontWeight.w400, color: s.$2 ? AppColors.textStrong : AppColors.grey)),
+                  if (s.$3 != null) Text(s.$3!, style: AppText.small.copyWith(color: AppColors.grey)),
+                ]),
+              ),
+            ),
+          ]),
+        ),
+    ]);
   }
 }
 
@@ -100,39 +167,52 @@ class OrderDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final o = ref.watch(ordersProvider).where((e) => e.id == orderId).firstOrNull;
-    if (o == null) return const AppScaffold(title: 'Detail Pesanan', body: EmptyState('Pesanan tidak ditemukan'));
+    if (o == null) return const AppScaffold(title: OrdersStrings.detailTitle, body: EmptyState(OrdersStrings.notFound, icon: Icons.search_off));
+    final n = ref.read(ordersProvider.notifier);
     return AppScaffold(
-      title: o.status == OrderStatus.dikirim ? 'Detail Pengiriman' : 'Detail Pesanan',
-      body: ListView(padding: Space.pad(context), children: [
+      title: o.status == OrderStatus.dikirim ? OrdersStrings.shippingDetailTitle : OrdersStrings.detailTitle,
+      body: RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: Space.pad(context), children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(o.id, style: AppText.semi)), const SizedBox(width: Gap.sm), StatusChip(o.status.label, color: statusColor(o.status))]),
         const SizedBox(height: Gap.md),
+        AppCard(
+          key: const Key('order-timeline'),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SectionHeader(OrdersStrings.timelineTitle),
+            const SizedBox(height: Gap.sm),
+            OrderTimeline(order: o),
+          ]),
+        ),
         for (final l in o.lines)
           AppCard(child: Row(children: [
             ProductImage(asset: l.product.image, size: 60),
             const SizedBox(width: Gap.md),
-            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(l.product.name, style: AppText.body), Text('Pilih Variasi ${l.variation.label}', style: AppText.small)])),
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(l.product.name, style: AppText.body), Text(OrdersStrings.variation(l.variation.label), style: AppText.small)])),
             const SizedBox(width: Gap.sm),
             Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(rupiah(l.unitPrice), style: AppText.body), Text('x${l.qty}', style: AppText.small)])),
           ])),
         AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const SectionHeader('Alamat Pengiriman'),
+          const SectionHeader(OrdersStrings.addressTitle),
           Text('${o.address.recipient} | ${o.address.phone}', style: AppText.small),
           Text(o.address.full, style: AppText.small),
           const Divider(height: 20),
-          KeyValueRow('Pengiriman', o.shipping == ShippingMethod.kirim ? 'Kirim' : 'Jemput'),
-          KeyValueRow('Pembayaran', o.payment == PaymentMethod.transfer ? 'Transfer' : 'COD'),
+          KeyValueRow('Pengiriman', o.shipping == ShippingMethod.kirim ? OrdersStrings.shipSend : OrdersStrings.shipPickup),
+          KeyValueRow(OrdersStrings.paymentLabel, o.payment == PaymentMethod.transfer ? OrdersStrings.payTransfer : OrdersStrings.payCod),
           if (o.note.isNotEmpty) KeyValueRow('Catatan', o.note),
           if (o.shipmentNote.isNotEmpty) KeyValueRow('Catatan pengiriman', o.shipmentNote),
         ])),
         AppCard(child: Column(children: [
-          KeyValueRow('Subtotal', rupiah(o.subtotal)),
-          KeyValueRow('Ongkir', rupiah(o.shippingFee)),
+          KeyValueRow(OrdersStrings.subtotal, rupiah(o.subtotal)),
+          KeyValueRow(OrdersStrings.shippingFee, rupiah(o.shippingFee)),
           const Divider(),
-          KeyValueRow('Total', rupiah(o.total), bold: true),
+          KeyValueRow(OrdersStrings.total, rupiah(o.total), bold: true),
         ])),
         if (o.status == OrderStatus.selesai)
-          PillButton(label: o.review == null ? 'Beri Ulasan' : 'Lihat Ulasan', onPressed: () => context.push(o.review == null ? '/orders/${o.id}/review' : '/orders/${o.id}/review/view')),
-        if (o.status == OrderStatus.menunggu && o.needsProof) PillButton(label: 'Bayar Sekarang', onPressed: () => context.push('/payment/${o.id}')),
+          PillButton(label: o.review == null ? OrdersStrings.review : OrdersStrings.viewReview, onPressed: () => context.push(o.review == null ? '/orders/${o.id}/review' : '/orders/${o.id}/review/view')),
+        if (o.status == OrderStatus.menunggu && o.needsProof) PillButton(label: OrdersStrings.payNow, onPressed: () => context.push('/payment/${o.id}')),
+        if (o.status == OrderStatus.menunggu) ...[
+          const SizedBox(height: Gap.md),
+          PillButton(label: OrdersStrings.cancelOrder, outlined: true, color: AppColors.danger, onPressed: () => _confirmCancel(context, n, o)),
+        ],
       ]),
     );
   }
@@ -145,7 +225,7 @@ class OrderRejectedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final o = ref.watch(ordersProvider).where((e) => e.id == orderId).firstOrNull;
-    if (o == null) return const AppScaffold(title: 'Pesanan Ditolak', body: EmptyState('Pesanan tidak ditemukan'));
+    if (o == null) return const AppScaffold(title: 'Pesanan Ditolak', body: EmptyState(OrdersStrings.notFound, icon: Icons.search_off));
     return AppScaffold(
       title: 'Pesanan Ditolak',
       body: ListView(padding: Space.pad(context), children: [
@@ -175,7 +255,7 @@ class OrderRejectedScreen extends ConsumerWidget {
   }
 }
 
-/// Memberi ulasan (Figma 1804:14908) + notifikasi "Ulasan Terkirim, Terima Kasih!".
+/// Memberi ulasan (Figma 1804:14908): bintang ketuk dengan animasi kecil, penghitung karakter, validasi.
 class ReviewScreen extends ConsumerStatefulWidget {
   const ReviewScreen({super.key, required this.orderId});
   final String orderId;
@@ -185,6 +265,7 @@ class ReviewScreen extends ConsumerStatefulWidget {
 
 class _ReviewScreenState extends ConsumerState<ReviewScreen> {
   int _rating = 0;
+  bool _submitted = false;
   final _text = TextEditingController();
   @override
   void dispose() {
@@ -192,30 +273,48 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
     super.dispose();
   }
 
+  void _send(Order o) {
+    if (_rating == 0) {
+      HapticFeedback.mediumImpact();
+      setState(() => _submitted = true);
+      return;
+    }
+    ref.read(ordersProvider.notifier).review(o.id, _rating, _text.text);
+    HapticFeedback.lightImpact();
+    showMsg(context, OrdersStrings.reviewSent);
+    context.canPop() ? context.pop() : context.go('/orders');
+  }
+
   @override
   Widget build(BuildContext context) {
     final o = ref.watch(ordersProvider).where((e) => e.id == widget.orderId).firstOrNull;
-    if (o == null) return const AppScaffold(title: 'Beri Ulasan', body: EmptyState('Pesanan tidak ditemukan'));
+    if (o == null) return const AppScaffold(title: OrdersStrings.reviewTitle, body: EmptyState(OrdersStrings.notFound, icon: Icons.search_off));
     return AppScaffold(
-      title: 'Beri Ulasan',
+      title: OrdersStrings.reviewTitle,
+      bottom: StickyActionBar(child: PillButton(label: OrdersStrings.reviewSend, onPressed: () => _send(o))),
       body: ListView(padding: Space.pad(context), children: [
         AppCard(child: Row(children: [ProductImage(asset: o.lines.first.product.image, size: 56), const SizedBox(width: Gap.md), Expanded(child: Text('${o.lines.first.product.name}\n${o.lines.first.variation.label}', style: AppText.body))])),
-        Center(child: Text('Bagaimana pengalaman Anda?', style: AppText.semi)),
+        Center(child: Text(OrdersStrings.reviewAsk, style: AppText.semi)),
         Wrap(alignment: WrapAlignment.center, children: [
           for (var i = 1; i <= 5; i++)
-            IconButton(key: Key('star-$i'), tooltip: '$i bintang', iconSize: 36, icon: Icon(i <= _rating ? Icons.star : Icons.star_border, color: AppColors.star), onPressed: () => setState(() => _rating = i)),
+            IconButton(
+              key: Key('star-$i'),
+              tooltip: '$i bintang',
+              iconSize: 36,
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                setState(() => _rating = i);
+              },
+              icon: AnimatedScale(
+                scale: i == _rating ? 1.2 : 1,
+                duration: AppMotion.of(context, AppMotion.fast),
+                curve: AppMotion.curve,
+                child: Icon(i <= _rating ? Icons.star : Icons.star_border, color: AppColors.star),
+              ),
+            ),
         ]),
-        AppField(controller: _text, hint: 'Tulis ulasan Anda', maxLines: 4),
-        PillButton(
-          label: 'Kirim',
-          onPressed: _rating == 0
-              ? null
-              : () {
-                  ref.read(ordersProvider.notifier).review(o.id, _rating, _text.text);
-                  showMsg(context, 'Ulasan Terkirim, Terima Kasih!');
-                  context.canPop() ? context.pop() : context.go('/orders');
-                },
-        ),
+        if (_submitted && _rating == 0) Center(child: Padding(padding: const EdgeInsets.only(bottom: Gap.md), child: Text(OrdersStrings.reviewNeedStars, key: const Key('review-error'), style: AppText.small.copyWith(color: AppColors.danger)))),
+        AppField(controller: _text, hint: OrdersStrings.reviewHint, maxLines: 4, maxLength: OrdersStrings.reviewMax, textInputAction: TextInputAction.newline, keyboard: TextInputType.multiline),
       ]),
     );
   }
@@ -232,7 +331,7 @@ class ViewReviewScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Ulasan',
       body: r == null
-          ? const EmptyState('Belum ada ulasan')
+          ? const EmptyState('Belum ada ulasan', icon: Icons.rate_review_outlined)
           : ListView(padding: Space.pad(context), children: [
               AppCard(color: AppColors.field, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(r.author, style: AppText.semi), RatingStars(rating: r.rating.toDouble())]),

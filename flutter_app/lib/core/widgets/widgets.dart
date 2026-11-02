@@ -562,33 +562,39 @@ void showActionMsg(BuildContext context, String msg, {required String actionLabe
     ..showSnackBar(SnackBar(content: Text(msg), action: SnackBarAction(label: actionLabel, onPressed: onAction)));
 }
 
-/// Indikator langkah: lingkaran bernomor, garis penghubung; langkah selesai berisi centang.
+/// Indikator langkah: lingkaran bernomor dengan garis penghubung; langkah selesai berisi centang.
+/// Tiap langkah mendapat lebar sama dan labelnya membungkus, sehingga aman pada teks besar.
 class StepIndicator extends StatelessWidget {
   const StepIndicator({super.key, required this.labels, required this.current});
   final List<String> labels;
   final int current;
   @override
   Widget build(BuildContext context) {
+    Widget line(bool on, bool visible) => Expanded(child: Container(height: 2, color: !visible ? Colors.transparent : (on ? AppColors.primary : AppColors.greyLight)));
     return Semantics(
       label: 'Langkah ${current + 1} dari ${labels.length}: ${labels[current]}',
       excludeSemantics: true,
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        for (final (i, l) in labels.indexed) ...[
-          if (i > 0) Expanded(child: Padding(padding: const EdgeInsets.only(top: 13), child: Container(height: 2, color: i <= current ? AppColors.primary : AppColors.greyLight))),
-          Column(mainAxisSize: MainAxisSize.min, children: [
-            AnimatedContainer(
-              duration: AppMotion.of(context, AppMotion.base),
-              curve: AppMotion.curve,
-              width: 28,
-              height: 28,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: i <= current ? AppColors.primary : AppColors.surface, border: Border.all(color: i <= current ? AppColors.primary : AppColors.greyLight, width: 2)),
-              child: i < current ? const Icon(Icons.check, size: 16, color: Colors.white) : Text('${i + 1}', style: AppText.caption.copyWith(color: i == current ? Colors.white : AppColors.grey, fontWeight: FontWeight.w600)),
-            ),
-            const SizedBox(height: Gap.xs),
-            Text(l, style: AppText.caption.copyWith(fontWeight: i == current ? FontWeight.w600 : FontWeight.w400)),
-          ]),
-        ],
+        for (final (i, l) in labels.indexed)
+          Expanded(
+            child: Column(children: [
+              Row(children: [
+                line(i <= current, i > 0),
+                AnimatedContainer(
+                  duration: AppMotion.of(context, AppMotion.base),
+                  curve: AppMotion.curve,
+                  width: 28,
+                  height: 28,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: i <= current ? AppColors.primary : AppColors.surface, border: Border.all(color: i <= current ? AppColors.primary : AppColors.greyLight, width: 2)),
+                  child: i < current ? const Icon(Icons.check, size: 16, color: Colors.white) : Text('${i + 1}', style: AppText.caption.copyWith(color: i == current ? Colors.white : AppColors.grey, fontWeight: FontWeight.w600)),
+                ),
+                line(i < current, i < labels.length - 1),
+              ]),
+              const SizedBox(height: Gap.xs),
+              Text(l, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.caption.copyWith(fontWeight: i == current ? FontWeight.w600 : FontWeight.w400)),
+            ]),
+          ),
       ]),
     );
   }
