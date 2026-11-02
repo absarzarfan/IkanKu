@@ -49,7 +49,7 @@ export default function Home() {
         <div className="container-page">
           <Eyebrow>{articleUi.pageTitle}</Eyebrow>
           <h2 className="mb-8 text-3xl font-bold text-brand md:text-h2">{articleUi.headlines}</h2>
-          <HeadlineCarousel items={latestArticles(5)} />
+          <HeadlineCarousel items={latestArticles(5)} priorityFirst={false} />
           <div className="mt-6 flex justify-center"><Link href="/artikel" className="btn-outline inline-flex min-h-11 items-center rounded-lg border border-black px-5 py-2 text-sm">{articleUi.allArticles}</Link></div>
         </div>
       </section>
@@ -57,10 +57,11 @@ export default function Home() {
       {/* Apa itu */}
       <section className="band-tint section-y">
         <div className="container-page flex flex-col items-center gap-12 md:flex-row lg:gap-[88px]">
-          <Reveal className="relative w-full max-w-[460px] shrink-0">
+          <Reveal className="relative w-full max-w-[340px] shrink-0">
             <div aria-hidden className="absolute -bottom-4 -left-4 h-full w-full rounded-3xl bg-brand/15" />
-            <div className="relative aspect-[419/300] overflow-hidden rounded-3xl shadow-[0_18px_40px_-20px_rgba(23,123,205,.5)]">
-              <Image src="/img/home/fish-box.jpg" alt="Ikan segar dalam boks" fill sizes="460px" className="object-cover" />
+            <div className="relative aspect-[314/393] overflow-hidden rounded-3xl shadow-[0_18px_40px_-20px_rgba(23,123,205,.5)]">
+              {/* Source is 314x393: capped at 340px wide (1.08x) so it stays sharp */}
+              <Image src="/img/home/fish-box.jpg" alt="Ikan segar dalam boks" fill sizes="340px" className="object-cover" />
             </div>
           </Reveal>
           <Reveal delay={80}>

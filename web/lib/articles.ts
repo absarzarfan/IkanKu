@@ -61,6 +61,15 @@ const meta: Record<string, Meta> = {
   "pokdakan-dan-poklahsar": { category: "Pasar & Ekonomi" },
 };
 
+// Intrinsic widths of the source photos (see docs/ui-polish.md "Image audit"); used to avoid stretching low-res files.
+const IMAGE_W: Record<string, number> = {
+  "a1.png": 1200, "a2.png": 960, "a3.png": 258, "a4.png": 540, "a5.png": 300, "a6.png": 800,
+  "b1.jpg": 1024, "b2.jpg": 275, "b3.jpg": 375, "b4.jpeg": 1024, "b5.jpg": 1778, "b6.jpg": 1143, "featured.jpeg": 900,
+};
+export function imageWidth(a: Pick<Article, "image">) {
+  return IMAGE_W[a.image.split("/").pop() ?? ""] ?? 1200;
+}
+
 type Base = { slug: string; title: string; date: string; image: string; excerpt?: string };
 
 function build(b: Base): Article {

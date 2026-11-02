@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type Ke
 import { Icon } from "@/components/icons";
 import { Byline, Kicker } from "@/components/ArticleMeta";
 import { articleUi } from "@/data/article-ui";
-import type { Article } from "@/lib/articles";
+import { imageWidth, type Article } from "@/lib/articles";
 
 const INTERVAL = 6000;
 const RM = "(prefers-reduced-motion: reduce)";
@@ -14,7 +14,7 @@ const getRm = () => window.matchMedia(RM).matches;
 
 // CSS scroll-snap track + small client script. Autoplay pauses on hover/focus, has a visible pause button
 // and stays off under prefers-reduced-motion. Only the current slide is focusable (others are inert).
-export default function HeadlineCarousel({ items }: { items: Article[] }) {
+export default function HeadlineCarousel({ items, priorityFirst = true }: { items: Article[]; priorityFirst?: boolean }) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [i, setI] = useState(0);
   const [userPlay, setUserPlay] = useState<boolean | null>(null);
@@ -62,9 +62,19 @@ export default function HeadlineCarousel({ items }: { items: Article[] }) {
     >
       <ul ref={trackRef} onScroll={onScroll} aria-live={auto ? "off" : "polite"} className="hc-track flex snap-x snap-mandatory overflow-x-auto">
         {items.map((a, k) => (
-          <li key={a.slug} role="group" aria-roledescription="slide" aria-label={articleUi.carousel.slideLabel(k + 1, n)} inert={k !== i} className="relative h-[440px] w-full shrink-0 snap-center md:h-[520px]">
+          <li key={a.slug} role="group" aria-roledescription="slide" aria-label={articleUi.carousel.slideLabel(k + 1, n)} inert={k !== i} className="relative h-[500px] w-full shrink-0 snap-center md:h-[520px]">
             <Link href={`/artikel/${a.slug}`} className="img-zoom block h-full w-full text-white focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white">
-              <Image src={a.image} alt="" fill sizes="(min-width:1280px) 1200px, 100vw" priority={k === 0} loading={k === 0 ? undefined : "lazy"} className="object-cover" />
+              {imageWidth(a) >= 1000 ? (
+                <Image src={a.image} alt="" fill sizes="(min-width:1280px) 1200px, 100vw" priority={priorityFirst && k === 0} loading={priorityFirst && k === 0 ? undefined : "lazy"} className="object-cover" />
+              ) : (
+                // Low-res source: framed and capped at 1.3x its intrinsic width over the brand gradient instead of full-bleed
+                <>
+                  <div aria-hidden="true" className="surface-brand absolute inset-0" />
+                  <div className="absolute right-6 top-6 aspect-video overflow-hidden rounded-2xl border border-white/40 shadow-[0_18px_36px_-20px_rgba(5,3,21,.7)] md:right-10 md:top-8" style={{ width: `min(calc(100% - 3rem), ${Math.round(imageWidth(a) * 1.3)}px)` }}>
+                    <Image src={a.image} alt="" fill sizes={`${Math.round(imageWidth(a) * 1.3)}px`} priority={priorityFirst && k === 0} loading={priorityFirst && k === 0 ? undefined : "lazy"} className="object-cover" />
+                  </div>
+                </>
+              )}
               <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[rgba(5,3,21,.92)] via-[rgba(5,3,21,.6)] via-45% to-transparent to-80%" />
               <div className="absolute inset-x-0 bottom-0 p-6 pb-16 md:p-10 md:pb-16">
                 <Kicker a={a} tone="dark" />

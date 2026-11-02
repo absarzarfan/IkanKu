@@ -21,12 +21,14 @@ export default function ProdukPage() {
   return (
     <SiteShell>
       {/* Hero */}
-      <section className="curve-b relative isolate overflow-hidden">
-        <Image src="/img/produk/hero.jpg" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand/0 from-20% to-brand" />
-        <div className="container-page flex flex-col items-center pb-16 pt-32 text-center lg:pt-[360px]">
-          <h1 className="max-w-[800px] text-4xl font-extrabold leading-tight text-white md:text-display">Dapatkan Ikan Segar Dengan Mudah Dimana Saja</h1>
-          <div className="mt-16 flex flex-col items-center gap-10 sm:flex-row sm:gap-[60px] lg:mt-[100px]">
+      <section className="band-blue curve-b overflow-hidden">
+        <div className="container-page flex flex-col items-center pb-16 pt-28 text-center lg:pt-32">
+          {/* Photo is 750px wide: framed and capped at its intrinsic width so it is never stretched */}
+          <div className="relative aspect-[750/360] w-full max-w-[750px] overflow-hidden rounded-3xl border border-white/40 shadow-[0_24px_48px_-24px_rgba(5,3,21,.6)]">
+            <Image src="/img/produk/hero.jpg" alt="" fill priority sizes="(min-width:830px) 750px, calc(100vw - 48px)" className="object-cover object-[50%_40%]" />
+          </div>
+          <h1 className="mt-12 max-w-[800px] text-4xl font-extrabold leading-tight text-white md:text-display" style={{ textWrap: "balance" }}>Dapatkan Ikan Segar Dengan Mudah Dimana Saja</h1>
+          <div className="mt-12 flex flex-col items-center gap-10 sm:flex-row sm:gap-[60px] lg:mt-16">
             <div className="relative h-[300px] w-[260px] overflow-hidden rounded-t-3xl shadow-[4px_0_4px_rgba(0,0,0,.25)] lg:h-[410px] lg:w-[335px]">
               <Image src="/img/home/phone.png" alt="Aplikasi IkanKu" fill sizes="335px" className="object-cover object-top" />
             </div>

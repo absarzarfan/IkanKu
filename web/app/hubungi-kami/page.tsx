@@ -14,11 +14,13 @@ export const metadata: Metadata = { title: "Hubungi Kami - IkanKu" };
 export default function HubungiKamiPage() {
   return (
     <SiteShell footerContact={false}>
-      <section className="curve-b relative isolate overflow-hidden">
-        <Image src="/img/hubungi/hero.png" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-50% to-brand" />
-        <div className="container-page flex min-h-[320px] flex-col items-center justify-end pb-14 text-white lg:min-h-[600px] lg:pb-[130px]">
-          <h1 className="text-4xl font-bold lg:text-h1">Hubungi Kami</h1>
+      <section className="band-blue curve-b overflow-hidden">
+        <div className="container-page flex flex-col items-center pb-16 pt-28 text-white lg:pb-20 lg:pt-32">
+          {/* Photo is 736px wide: framed and capped at its intrinsic width so it is never stretched */}
+          <div className="relative aspect-[736/340] w-full max-w-[736px] overflow-hidden rounded-3xl border border-white/40 shadow-[0_24px_48px_-24px_rgba(5,3,21,.6)]">
+            <Image src="/img/hubungi/hero.png" alt="" fill priority sizes="(min-width:816px) 736px, calc(100vw - 48px)" className="object-cover object-[50%_40%]" />
+          </div>
+          <h1 className="mt-10 text-4xl font-bold lg:text-h1">Hubungi Kami</h1>
           <p className="mt-4 flex items-center gap-2 text-base font-bold">
             <Icon name="home" size={20} />
             <Link href="/" className="underline">Beranda</Link> <span>- Hubungi Kami</span>

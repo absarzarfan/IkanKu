@@ -61,3 +61,38 @@ Skills loaded earlier in this same session (Phase 8) and re-applied; not re-invo
 - Articles: 13 AI-assisted bodies, reading time, categories, AI label; HeadlineCarousel (autoplay 6s, pause button, reduced-motion off).
 - /artikel newspaper front page, /artikel/[slug] with drop cap, pull-quote (2 articles), related row.
 - Verified: build + lint pass, 6 routes + 13 slugs return 200, no horizontal scroll at 390 (5 pages + 1 article), screenshots in D:\Tools\shots\phase9a.
+
+## Skills evidence (Phase 10)
+All six skills loaded via the Skill tool (review-animations not invoked).
+- ui-ux-pro-max: 44px tap targets and `cursor-pointer` (cards, buttons); visible focus rings on dark and light; contrast measured, not assumed (Part 5).
+- emil-design-eng: ease-out `--ease-out` everywhere, `:active` press scale, hover gated by `(hover:hover) and (pointer:fine)` (globals.css, card/btn classes).
+- animate: frequency gate (no motion on keyboard actions), reveal 14px/opacity only, stagger <= 60ms (Reveal, home steps).
+- animation-performance: transform/opacity only, no `transition: all`, no animated CSS variables; `will-change` not added (nothing measured).
+- improve-animations: inventory + rules audit of every transition (Part 4 table); fixes applied directly, no plans/ folder.
+- frontend-design: one memorable element (curved band), framed photos instead of stretched ones, existing tokens/fonts only.
+
+## Image audit (px; ratio = intrinsic / (rendered x 1.5), 1440 | 1920 viewports)
+| File | Intrinsic | Rendered before | Ratio before | After |
+|---|---|---|---|---|
+| produk/hero.jpg | 750x600 | full-bleed 1440 / 1920 | 0.35 / 0.26 | framed, 750 max (1.0x) |
+| hubungi/hero.png | 736x460 | full-bleed | 0.34 / 0.26 | framed, 736 max (1.0x) |
+| home/fish-box.jpg | 314x393 | 460 (landscape crop) | 0.46 | 340 portrait (1.08x) |
+| tentang/hero.png | 2499x1666 | full-bleed | 1.16 / 0.87 | unchanged (no upscale) |
+| home/phone.png | 388x830 | 335 / 282 / 234 | 0.77-1.0 | unchanged |
+| produk/pixel7a.png | 1500x1125 | 970 | 1.03 | unchanged |
+| produk/k1-k5 | 224-390 wide | 141 | 1.06-1.8 | unchanged |
+| home/t1-t9 | 180 | 90 | 1.33 | unchanged |
+| tentang/tibelat.jpeg | 1024x683 | ~650 | 1.05 | unchanged |
+| artikel a3 258, b2 275, a5 300, b3 375, a4 540 | small | carousel 1200 / detail 852 | 0.1-0.5 | carousel + detail framed at <= 1.3x |
+| artikel list cards (400px) | a3, b2, a5 | 400 | 0.43-0.5 | still 1.3-1.55x (see below) |
+| artikel a1, a2, a6, b1, b4, b5, b6, featured | 800-1778 | 400-1200 | 0.5-1.2 | unchanged |
+Team photos (96px circles), logos and icons: far above 1.0. `sizes` corrected on every next/image touched; `priority` only on the first above-the-fold image per page (home carousel no longer priority).
+
+## Needs better source files
+| File | Min width needed |
+|---|---|
+| artikel/a3.png (258), b2.jpg (275), a5.png (300), b3.jpg (375) | 800 (list cards 600, detail 1100) |
+| artikel/a4.png (540) | 1100 |
+| home/fish-box.jpg (314x393) | 700x875 for a larger frame |
+| produk/hero.jpg (750x600) | 1920 for a full-bleed hero |
+| hubungi/hero.png (736x460) | 1920 for a full-bleed hero |

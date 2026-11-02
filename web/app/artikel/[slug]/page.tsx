@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import SiteShell from "@/components/SiteShell";
 import { AiLabel, Byline, Kicker } from "@/components/ArticleMeta";
 import { articleUi } from "@/data/article-ui";
-import { allArticles, getArticle, relatedArticles } from "@/lib/articles";
+import { allArticles, getArticle, imageWidth, relatedArticles } from "@/lib/articles";
 
 export function generateStaticParams() {
   return allArticles.map((a) => ({ slug: a.slug }));
@@ -39,8 +39,9 @@ export default async function ArticleDetail({ params }: PageProps<"/artikel/[slu
           </div>
         </header>
 
-        <div className="kit-frame relative mt-8 aspect-[16/9]">
-          <Image src={a.image} alt="" fill priority sizes="900px" className="object-cover" />
+        {/* Capped at 1.3x the source width so small files are not stretched across the 852px column */}
+        <div className="kit-frame relative mx-auto mt-8 aspect-[16/9] w-full" style={{ maxWidth: Math.min(852, Math.round(imageWidth(a) * 1.3)) }}>
+          <Image src={a.image} alt="" fill priority sizes={`(min-width:900px) ${Math.min(852, Math.round(imageWidth(a) * 1.3))}px, calc(100vw - 48px)`} className="object-cover" />
         </div>
 
         <div className="dropcap mx-auto mt-10 max-w-[68ch] text-lg leading-[1.8] text-body">
