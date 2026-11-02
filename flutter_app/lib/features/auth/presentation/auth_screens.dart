@@ -29,23 +29,23 @@ class AuthShell extends StatelessWidget {
               padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 16, bottom: showTabs ? 0 : 20),
               decoration: const BoxDecoration(
                 color: AppColors.primary,
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
-                boxShadow: [BoxShadow(color: Color(0x0F000000), offset: Offset(0, 4), blurRadius: 30)],
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(AppRadius.headerAuth)),
+                boxShadow: AppShadow.auth,
               ),
               child: Column(children: [
                 if (onBack != null)
                   Align(alignment: Alignment.centerLeft, child: IconButton(tooltip: 'Kembali', icon: const Icon(Icons.arrow_back, color: Colors.white), onPressed: onBack)),
-                Image.asset('assets/images/logo.png', width: 196, height: 97, fit: BoxFit.contain),
+                Image.asset('assets/images/logo.png', width: fluid(context, 196), fit: BoxFit.contain, errorBuilder: (_, _, _) => const SizedBox(height: 97)),
                 if (showTabs) ...[
                   const SizedBox(height: 40),
-                  Row(children: [
+                  ContentFrame(padded: false, child: Row(children: [
                     Expanded(child: _Tab('Login', tab == 0, () => context.go('/login'))),
                     Expanded(child: _Tab('Daftar', tab == 1, () => context.go('/register'))),
-                  ]),
+                  ])),
                 ],
               ]),
             ),
-            Padding(padding: const EdgeInsets.fromLTRB(21, 24, 21, 32), child: child),
+            ContentFrame(safe: true, child: Padding(padding: const EdgeInsets.only(top: Gap.xxl, bottom: Gap.xxxl), child: child)),
           ],
         ),
       ),
@@ -64,9 +64,9 @@ class _Tab extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Column(children: [
-            Text(label, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w600, fontSize: 18, color: Colors.white)),
+            Text(label, style: AppText.tabOnPrimary),
             const SizedBox(height: 10),
-            Container(height: 3, width: 134, margin: const EdgeInsets.only(bottom: 4), decoration: BoxDecoration(color: active ? Colors.white : Colors.transparent, borderRadius: BorderRadius.circular(40))),
+            FractionallySizedBox(widthFactor: 0.8, child: Container(height: 3, margin: const EdgeInsets.only(bottom: 4), decoration: BoxDecoration(color: active ? AppColors.onPrimary : Colors.transparent, borderRadius: BorderRadius.circular(40)))),
           ]),
         ),
       );
@@ -121,23 +121,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             validator: Validators.password,
             suffix: IconButton(tooltip: 'Tampilkan kata sandi', icon: Icon(_show ? Icons.visibility_off : Icons.visibility), onPressed: () => setState(() => _show = !_show)),
           ),
-          InkWell(onTap: () => context.push('/forgot'), child: Padding(padding: const EdgeInsets.symmetric(vertical: 6), child: Text('Lupa kata sandi', style: AppText.semi.copyWith(fontSize: 14, color: AppColors.navy)))),
+          InkWell(onTap: () => context.push('/forgot'), child: Padding(padding: const EdgeInsets.symmetric(vertical: 6), child: Text('Lupa kata sandi', style: AppText.label.copyWith(color: AppColors.navy)))),
           const SizedBox(height: 24),
           PillButton(label: _busy ? 'Memproses...' : 'Login', height: 56, onPressed: _busy ? null : _submit),
           const SizedBox(height: 16),
-          Center(child: Text('Atau', style: AppText.semi.copyWith(fontSize: 18, color: AppColors.navy))),
+          Center(child: Text('Atau', style: AppText.heading.copyWith(color: AppColors.navy))),
           const SizedBox(height: 16),
           OutlinedButton(
             style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(58), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), side: const BorderSide(color: AppColors.greyLight)),
             onPressed: () => showMsg(context, 'Login dengan Google belum tersedia (backend belum ditentukan)'),
             child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text('G', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22, color: AppColors.primary)),
+              Text('G', style: AppText.googleMark),
               SizedBox(width: 12),
-              Flexible(child: Text('Login dengan google', overflow: TextOverflow.ellipsis, style: TextStyle(fontFamily: 'Poppins', fontSize: 16, color: Color(0x8A000000)))),
+              Flexible(child: Text('Login dengan google', overflow: TextOverflow.ellipsis, style: AppText.googleButton)),
             ]),
           ),
           const SizedBox(height: 16),
-          const Text('Demo: pembeli fharaa@gmail.com, penjual penjual@ikanku.id, kata sandi Admin123', style: TextStyle(fontSize: 11, color: AppColors.grey)),
+          Text('Demo: pembeli fharaa@gmail.com, penjual penjual@ikanku.id, kata sandi Admin123', style: AppText.caption.copyWith(color: AppColors.grey)),
         ]),
       ),
     );
@@ -167,7 +167,7 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
       child: Form(
         key: _form,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Masukkan Nomor Ponsel', style: AppText.semi.copyWith(fontSize: 18)),
+          Text('Masukkan Nomor Ponsel', style: AppText.heading),
           const SizedBox(height: 14),
           AppField(fieldKey: const Key('reg-phone'), controller: _phone, hint: 'Nomor Ponsel Ex 6282387436427', keyboard: TextInputType.phone, validator: Validators.phone),
           const SizedBox(height: 16),
@@ -232,9 +232,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       showTabs: false,
       onBack: () => Navigator.of(context).maybePop(),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(widget.title, style: AppText.semi.copyWith(fontSize: 18)),
+        Text(widget.title, style: AppText.heading),
         const SizedBox(height: 6),
-        Text('Kode 4 digit dikirim ke $phone (mock: 1234)', style: AppText.body.copyWith(fontSize: 13, color: AppColors.grey)),
+        Text('Kode 4 digit dikirim ke $phone (mock: 1234)', style: AppText.small.copyWith(color: AppColors.grey)),
         const SizedBox(height: 14),
         TextField(
           key: const Key('otp-field'),
@@ -242,7 +242,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
           maxLength: 4,
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 28, letterSpacing: 16, fontFamily: 'Nunito'),
+          style: AppText.otp,
           decoration: InputDecoration(counterText: '', errorText: _error, filled: true, fillColor: AppColors.field, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none)),
         ),
         const SizedBox(height: 20),
@@ -316,7 +316,7 @@ class _RegisterDataScreenState extends ConsumerState<RegisterDataScreen> {
       child: Form(
         key: _form,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Lengkapi Data', style: AppText.semi.copyWith(fontSize: 18)),
+          Text('Lengkapi Data', style: AppText.heading),
           const SizedBox(height: 14),
           AppField(fieldKey: const Key('reg-name'), controller: _name, hint: 'Nama lengkap', validator: (v) => Validators.required(v, 'Nama lengkap')),
           AppField(controller: TextEditingController(text: phone), hint: 'Nomor Ponsel', readOnly: true),
@@ -369,7 +369,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       child: Form(
         key: _form,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Lupa Kata sandi?', style: AppText.semi.copyWith(fontSize: 18)),
+          Text('Lupa Kata sandi?', style: AppText.heading),
           const SizedBox(height: 6),
           Text('Masukkan alamat email anda', style: AppText.body.copyWith(color: AppColors.grey)),
           const SizedBox(height: 14),

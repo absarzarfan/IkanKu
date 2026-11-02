@@ -36,7 +36,7 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
     return AppScaffold(
       title: 'Produk',
       showBack: false,
-      body: ListView(padding: const EdgeInsets.all(20), children: [
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Expanded(child: Text('Daftar Kategori', style: AppText.semi)),
           TextButton.icon(onPressed: () => context.push('/seller/categories/new'), icon: const Icon(Icons.add), label: const Text('Tambah Kategori')),
@@ -94,7 +94,7 @@ class SellerProductDetailScreen extends ConsumerWidget {
     if (p == null) return const AppScaffold(title: 'Produk', body: EmptyState('Produk tidak ditemukan'));
     return AppScaffold(
       title: p.name,
-      body: ListView(padding: const EdgeInsets.all(20), children: [
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         ClipRRect(borderRadius: BorderRadius.circular(28), child: SizedBox(height: 200, child: productPicture(p.image, cacheWidth: 900))),
         const SizedBox(height: 12),
         Text(rupiah(p.startingPrice), style: AppText.price),
@@ -286,8 +286,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
       title: _existing == null ? 'Tambah produk' : 'Ubah Produk',
       body: Form(
         key: _form,
-        child: ListView(padding: const EdgeInsets.all(20), children: [
-          Text('Foto (pilih contoh)', style: AppText.semi.copyWith(fontSize: 14)),
+        child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+          Text('Foto (pilih contoh)', style: AppText.label),
           const SizedBox(height: 6),
           SizedBox(
             height: 72,
@@ -312,10 +312,10 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
           const SizedBox(height: 14),
           AppField(fieldKey: const Key('prod-name'), label: 'Nama', controller: _name, hint: 'Nama produk', validator: (v) => Validators.required(v, 'Nama')),
           AppField(label: 'Deskripsi', controller: _desc, hint: 'Deskripsi produk', maxLines: 3),
-          Text('Kategori', style: AppText.semi.copyWith(fontSize: 14)),
+          Text('Kategori', style: AppText.label),
           Wrap(spacing: 8, children: [for (final c in cats) ChoiceChip(label: Text(c), selected: _category == c, onSelected: (_) => setState(() => _category = c))]),
           const SizedBox(height: 14),
-          Text('Variasi', style: AppText.semi.copyWith(fontSize: 14)),
+          Text('Variasi', style: AppText.label),
           VariationsEditor(initial: _initialVars, controllerOut: _varOut),
           const SizedBox(height: 10),
           PillButton(label: 'Simpan', onPressed: _save),
@@ -350,7 +350,7 @@ class _VariantsScreenState extends ConsumerState<VariantsScreen> {
       title: 'Variasi',
       body: Form(
         key: _form,
-        child: ListView(padding: const EdgeInsets.all(20), children: [
+        child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
           Text(p.name, style: AppText.semi),
           VariationsEditor(initial: p.variations, controllerOut: _out),
           PillButton(
@@ -391,7 +391,7 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
       title: widget.editing == null ? 'Tambah Kategori' : 'Ubah Kategori',
       body: Form(
         key: _form,
-        child: ListView(padding: const EdgeInsets.all(20), children: [
+        child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
           AppField(
             fieldKey: const Key('cat-name'),
             label: 'Kategori',
@@ -404,7 +404,7 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
               return n != widget.editing && ref.read(catalogProvider).categories.contains(n) ? 'Kategori sudah ada' : null;
             },
           ),
-          Text('Gambar Kategori*', style: AppText.semi.copyWith(fontSize: 14)),
+          Text('Gambar Kategori*', style: AppText.label),
           const SizedBox(height: 6),
           InkWell(onTap: () => showMsg(context, 'Unggah foto belum tersedia (placeholder)'), child: Container(height: 90, decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)), child: const Center(child: Text('Tambah foto (placeholder)')))),
           const SizedBox(height: 20),
@@ -452,7 +452,7 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
     }
     return AppScaffold(
       title: 'Diskon',
-      body: ListView(padding: const EdgeInsets.all(20), children: [
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         for (final p in products)
           AppCard(child: Row(children: [
             ProductImage(asset: p.image, size: 46),

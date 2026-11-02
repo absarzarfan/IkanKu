@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ikanku/core/responsive/breakpoints.dart';
+import 'package:ikanku/core/responsive/content_frame.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
+
+export 'package:ikanku/core/responsive/breakpoints.dart';
+export 'package:ikanku/core/responsive/content_frame.dart';
 
 /// Layout standar: kotak biru melengkung di atas (Figma "kotak"), judul, tombol kembali.
 class AppScaffold extends StatelessWidget {
@@ -37,13 +42,16 @@ class AppScaffold extends StatelessWidget {
             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 8, bottom: 14),
             decoration: const BoxDecoration(
               color: AppColors.primary,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
-              boxShadow: [BoxShadow(color: Color(0x40000000), offset: Offset(0, 4), blurRadius: 4)],
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(AppRadius.header)),
+              boxShadow: AppShadow.header,
             ),
-            child: Column(
+            child: ContentFrame(
+              padded: false,
+              safe: true,
+              child: Column(
               children: [
-                SizedBox(
-                  height: 48,
+                ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: AppSize.buttonSmall),
                   child: Row(
                     children: [
                       showBack
@@ -64,9 +72,10 @@ class AppScaffold extends StatelessWidget {
                 ?headerExtra,
               ],
             ),
+            ),
           ),
-          Expanded(child: bottom == null && bottomNavigationBar == null ? SafeArea(top: false, child: body) : body),
-          ?bottom,
+          Expanded(child: ContentFrame(padded: false, safe: true, child: bottom == null && bottomNavigationBar == null ? SafeArea(top: false, child: body) : body)),
+          if (bottom != null) ContentFrame(padded: false, safe: true, child: bottom!),
         ],
       ),
     );
@@ -74,7 +83,7 @@ class AppScaffold extends StatelessWidget {
 }
 
 class PillButton extends StatelessWidget {
-  const PillButton({super.key, required this.label, required this.onPressed, this.color = AppColors.primary, this.outlined = false, this.height = 50, this.expanded = true});
+  const PillButton({super.key, required this.label, required this.onPressed, this.color = AppColors.primary, this.outlined = false, this.height = AppSize.button, this.expanded = true, this.busy = false});
   final String label;
   final VoidCallback? onPressed;
   final Color color;
@@ -82,19 +91,26 @@ class PillButton extends StatelessWidget {
   final double height;
   final bool expanded;
 
+  /// true: tombol dinonaktifkan dan menampilkan indikator (cegah kirim ganda).
+  final bool busy;
+
   @override
   Widget build(BuildContext context) {
+    final fg = outlined ? color : AppColors.onPrimarySoft;
     final child = ElevatedButton(
-      onPressed: onPressed,
+      onPressed: busy ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: outlined ? Colors.white : color,
-        foregroundColor: outlined ? color : AppColors.onPrimarySoft,
+        foregroundColor: fg,
         disabledBackgroundColor: AppColors.greyLight,
         elevation: 0,
-        minimumSize: Size(expanded ? double.infinity : 0, height),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30), side: outlined ? BorderSide(color: color) : BorderSide.none),
+        minimumSize: Size(expanded ? double.infinity : 0, height < AppSize.buttonSmall ? AppSize.buttonSmall : height),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pill), side: outlined ? BorderSide(color: color) : BorderSide.none),
       ),
-      child: Text(label, style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w600, fontSize: 15, color: outlined ? color : AppColors.onPrimarySoft)),
+      child: busy
+          ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: fg))
+          : Text(label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.buttonLabel.copyWith(color: fg)),
     );
     return expanded ? SizedBox(width: double.infinity, child: child) : child;
   }
@@ -122,7 +138,7 @@ class AppField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (label != null) Padding(padding: const EdgeInsets.only(bottom: 6), child: Text(label!, style: AppText.semi.copyWith(fontSize: 14))),
+          if (label != null) Padding(padding: const EdgeInsets.only(bottom: 6), child: Text(label!, style: AppText.label)),
           TextFormField(
             key: fieldKey,
             controller: controller,
@@ -133,16 +149,11 @@ class AppField extends StatelessWidget {
             readOnly: readOnly,
             onTap: onTap,
             style: AppText.input,
+            scrollPadding: const EdgeInsets.fromLTRB(20, 20, 20, 140),
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: AppText.hint,
-              filled: true,
-              fillColor: AppColors.field,
               suffixIcon: suffix,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-              errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: AppColors.danger)),
-              focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: AppColors.danger)),
             ),
           ),
         ],
@@ -166,9 +177,9 @@ class AppCard extends StatelessWidget {
       child: Material(
         color: color,
         elevation: 2,
-        shadowColor: Colors.black45,
-        borderRadius: BorderRadius.circular(16),
-        child: InkWell(borderRadius: BorderRadius.circular(16), onTap: onTap, child: Padding(padding: padding, child: child)),
+        shadowColor: AppColors.shadow,
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        child: InkWell(borderRadius: BorderRadius.circular(AppRadius.card), onTap: onTap, child: Padding(padding: padding, child: child)),
       ),
     );
   }
@@ -190,8 +201,9 @@ class RatingStars extends StatelessWidget {
 /// Gambar produk: URL (Supabase Storage) atau aset bawaan (mode mock).
 Widget productPicture(String src, {double? width, double? height, int? cacheWidth, BoxFit fit = BoxFit.cover}) {
   Widget fallback(BuildContext c, Object e, StackTrace? st) => Container(width: width, height: height, color: AppColors.field, child: const Icon(Icons.image_not_supported, color: AppColors.grey));
+  Widget placeholder(BuildContext c, Widget child, int? frame, bool sync) => sync || frame != null ? child : Container(width: width, height: height, color: AppColors.field);
   if (src.startsWith('http')) {
-    return Image.network(src, width: width, height: height, fit: fit, cacheWidth: cacheWidth, errorBuilder: fallback);
+    return Image.network(src, width: width, height: height, fit: fit, cacheWidth: cacheWidth, errorBuilder: fallback, frameBuilder: placeholder);
   }
   return Image.asset(src, width: width, height: height, fit: fit, cacheWidth: cacheWidth, errorBuilder: fallback);
 }
@@ -218,9 +230,9 @@ class QtyStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisSize: MainAxisSize.min, children: [
-      IconButton(tooltip: 'Kurangi', visualDensity: VisualDensity.compact, icon: const Icon(Icons.remove_circle_outline), onPressed: value > min ? () => onChanged(value - 1) : null),
+      IconButton(tooltip: 'Kurangi', icon: const Icon(Icons.remove_circle_outline), onPressed: value > min ? () => onChanged(value - 1) : null),
       Text('$value', style: AppText.semi),
-      IconButton(tooltip: 'Tambah', visualDensity: VisualDensity.compact, icon: const Icon(Icons.add_circle_outline), onPressed: () => onChanged(value + 1)),
+      IconButton(tooltip: 'Tambah', icon: const Icon(Icons.add_circle_outline), onPressed: () => onChanged(value + 1)),
     ]);
   }
 }
@@ -236,38 +248,71 @@ class TextTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     final base = onDark ? Colors.white : Colors.black;
     final active = onDark ? Colors.white : AppColors.primary;
-    return SizedBox(
-      height: 46,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: labels.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 18),
-        itemBuilder: (_, i) => InkWell(
-          onTap: () => onChanged(i),
-          child: Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: i == index ? active : Colors.transparent, width: 3))),
-            child: Text(labels[i], style: AppText.body.copyWith(fontWeight: i == index ? FontWeight.w600 : FontWeight.w400, color: i == index ? active : base)),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.symmetric(horizontal: context.pagePadding),
+      child: Row(children: [
+        for (final (i, l) in labels.indexed)
+          Padding(
+            padding: EdgeInsets.only(right: i == labels.length - 1 ? 0 : 18),
+            child: InkWell(
+              onTap: () => onChanged(i),
+              child: Container(
+                constraints: const BoxConstraints(minHeight: AppSize.buttonSmall, minWidth: 48),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: i == index ? active : Colors.transparent, width: 3))),
+                child: Text(l, style: AppText.body.copyWith(fontWeight: i == index ? FontWeight.w600 : FontWeight.w400, color: i == index ? active : base)),
+              ),
+            ),
           ),
-        ),
-      ),
+      ]),
     );
   }
 }
 
 class EmptyState extends StatelessWidget {
-  const EmptyState(this.message, {super.key, this.icon = Icons.inbox_outlined});
+  const EmptyState(this.message, {super.key, this.icon = Icons.inbox_outlined, this.actionLabel, this.onAction});
   final String message;
   final IconData icon;
+  final String? actionLabel;
+  final VoidCallback? onAction;
   @override
   Widget build(BuildContext context) => Center(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Icon(icon, size: 56, color: AppColors.greyLight),
-          const SizedBox(height: 8),
-          Text(message, style: AppText.body.copyWith(color: AppColors.grey), textAlign: TextAlign.center),
-        ]),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(context.pagePadding),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Icon(icon, size: 56, color: AppColors.greyLight),
+            const SizedBox(height: Gap.sm),
+            Text(message, style: AppText.body.copyWith(color: AppColors.grey), textAlign: TextAlign.center),
+            if (actionLabel != null) ...[const SizedBox(height: Gap.lg), PillButton(label: actionLabel!, expanded: false, onPressed: onAction)],
+          ]),
+        ),
       );
+}
+
+/// Galat dengan tombol "Coba lagi".
+class ErrorState extends StatelessWidget {
+  const ErrorState({super.key, this.message = 'Terjadi kesalahan. Silakan coba lagi.', required this.onRetry});
+  final String message;
+  final VoidCallback onRetry;
+  @override
+  Widget build(BuildContext context) => EmptyState(message, icon: Icons.error_outline, actionLabel: 'Coba lagi', onAction: onRetry);
+}
+
+class LoadingState extends StatelessWidget {
+  const LoadingState({super.key});
+  @override
+  Widget build(BuildContext context) => const Center(child: CircularProgressIndicator());
+}
+
+/// Daftar yang bisa ditarik untuk memuat ulang; selalu dapat di-scroll agar gesture tarik berfungsi, juga saat kosong.
+class RefreshableList extends StatelessWidget {
+  const RefreshableList({super.key, required this.onRefresh, required this.children, this.padding});
+  final Future<void> Function() onRefresh;
+  final List<Widget> children;
+  final EdgeInsetsGeometry? padding;
+  @override
+  Widget build(BuildContext context) => RefreshIndicator(onRefresh: onRefresh, child: ListView(physics: const AlwaysScrollableScrollPhysics(), padding: padding, children: children));
 }
 
 class StatusChip extends StatelessWidget {
@@ -277,7 +322,7 @@ class StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(16), border: Border.all(color: color)),
+        decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: color)),
         child: Text(label, style: AppText.small.copyWith(color: color, fontWeight: FontWeight.w500)),
       );
 }
@@ -292,7 +337,7 @@ class SectionRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Flexible(child: Text(title, style: AppText.body, overflow: TextOverflow.ellipsis)),
-          if (action != null) InkWell(onTap: onAction, child: Text(action!, style: AppText.body.copyWith(color: AppColors.primary))),
+          if (action != null) InkWell(onTap: onAction, child: ConstrainedBox(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), child: Align(alignment: Alignment.center, widthFactor: 1, child: Padding(padding: const EdgeInsets.only(left: Gap.md), child: Text(action!, style: AppText.body.copyWith(color: AppColors.primary)))))),
         ]),
       );
 }

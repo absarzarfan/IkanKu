@@ -11,19 +11,26 @@ class StartupScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(children: [
-            const Spacer(),
-            Image.asset('assets/images/logo.png', width: 220),
-            const Spacer(),
-            PillButton(label: 'Masuk', outlined: true, onPressed: () => context.go('/login')),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () => showMsg(context, 'Website IkanKu: alamat belum ditentukan'),
-              child: const Text('Jelajahi Website kami', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
+        child: LayoutBuilder(
+          builder: (context, c) => SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: c.maxHeight),
+              child: ContentFrame(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Gap.xxl),
+                  child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Padding(padding: const EdgeInsets.symmetric(vertical: Gap.xxxl), child: Image.asset('assets/images/logo.png', width: fluid(context, 220), fit: BoxFit.contain, errorBuilder: (_, _, _) => const SizedBox(height: 96))),
+                    PillButton(label: 'Masuk', outlined: true, onPressed: () => context.go('/login')),
+                    const SizedBox(height: Gap.md),
+                    TextButton(
+                      onPressed: () => showMsg(context, 'Website IkanKu: alamat belum ditentukan'),
+                      child: const Text('Jelajahi Website kami', textAlign: TextAlign.center, style: AppText.bannerButton),
+                    ),
+                  ]),
+                ),
+              ),
             ),
-          ]),
+          ),
         ),
       ),
     );
@@ -38,12 +45,12 @@ class OfflineScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(Gap.xxxl),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             const Icon(Icons.wifi_off, size: 96, color: AppColors.grey),
             const SizedBox(height: 16),
-            Text('Koneksi Internet Terputus!', style: AppText.semi.copyWith(fontSize: 18), textAlign: TextAlign.center),
+            Text('Koneksi Internet Terputus!', style: AppText.heading, textAlign: TextAlign.center),
             const SizedBox(height: 24),
             PillButton(label: 'Coba Kembali', onPressed: () => context.canPop() ? context.pop() : context.go('/')),
           ]),
@@ -66,17 +73,17 @@ class PickLocationScreen extends StatelessWidget {
           child: Container(
             key: const Key('map-placeholder'),
             width: double.infinity,
-            margin: const EdgeInsets.all(20),
+            margin: EdgeInsets.all(context.pagePadding),
             decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)),
-            child: const Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Icon(Icons.location_on, size: 56, color: AppColors.danger),
               SizedBox(height: 8),
-              Text('Peta belum tersedia (placeholder statis)', textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: AppColors.grey)),
+              Text('Peta belum tersedia (placeholder statis)', textAlign: TextAlign.center, style: AppText.small.copyWith(color: AppColors.grey)),
             ]),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+          padding: EdgeInsets.fromLTRB(context.pagePadding, 0, context.pagePadding, 20),
           child: PillButton(label: 'Gunakan Lokasi Ini', onPressed: () => context.pop(placeholderLabel)),
         ),
       ]),

@@ -19,8 +19,8 @@ class SellerSettingsScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Pengaturan',
       showBack: false,
-      body: ListView(padding: const EdgeInsets.all(20), children: [
-        Text(s.shopName, style: AppText.semi.copyWith(fontSize: 18)),
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+        Text(s.shopName, style: AppText.heading),
         const SizedBox(height: 12),
         tile(Icons.local_shipping_outlined, 'Biaya Ongkir', '/seller/ongkir'),
         tile(Icons.payments_outlined, 'Metode Pembayaran', '/seller/payment-methods'),
@@ -62,7 +62,7 @@ class _OngkirScreenState extends ConsumerState<OngkirScreen> {
       title: 'Biaya Ongkir',
       body: Form(
         key: _form,
-        child: ListView(padding: const EdgeInsets.all(20), children: [
+        child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
           AppField(fieldKey: const Key('ongkir-fee'), label: 'Biaya ongkir (Rp)', controller: _fee, hint: '10000', keyboard: TextInputType.number, validator: (v) => Validators.number(v, 'Biaya')),
           AppField(fieldKey: const Key('ongkir-free'), label: 'Gratis ongkir untuk subtotal minimal (0 = nonaktif)', controller: _free, hint: '0', keyboard: TextInputType.number, validator: (v) => Validators.number(v, 'Nilai')),
           PillButton(
@@ -103,7 +103,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     final n = ref.read(sellerSettingsProvider.notifier);
     return AppScaffold(
       title: 'Metode Pembayaran',
-      body: ListView(padding: const EdgeInsets.all(20), children: [
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Transfer'), value: s.transferEnabled, onChanged: (v) => n.update(s.copyWith(transferEnabled: v || s.codEnabled ? v : true))),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('COD'), value: s.codEnabled, onChanged: (v) => n.update(s.copyWith(codEnabled: v || s.transferEnabled ? v : true))),
         const Divider(),

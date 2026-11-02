@@ -138,23 +138,26 @@ class _ShellScaffold extends StatelessWidget {
     return Scaffold(
       body: shell,
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+        decoration: const BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.sheet))),
         child: SafeArea(
           top: false,
-          child: SizedBox(
-            height: 72,
-            child: Row(children: [
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 64),
+            child: IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               for (final (i, it) in items.indexed)
                 Expanded(
                   child: InkWell(
                     onTap: () => shell.goBranch(i, initialLocation: i == shell.currentIndex),
-                    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Icon(it.$1, color: Colors.white.withValues(alpha: i == shell.currentIndex ? 1 : 0.7)),
-                      Text(it.$2, style: TextStyle(fontFamily: 'Poppins', fontSize: 13, color: Colors.white, fontWeight: i == shell.currentIndex ? FontWeight.w600 : FontWeight.w400)),
-                    ]),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Icon(it.$1, color: AppColors.onPrimary.withValues(alpha: i == shell.currentIndex ? 1 : 0.7)),
+                        Text(it.$2, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.navLabel.copyWith(fontWeight: i == shell.currentIndex ? FontWeight.w600 : FontWeight.w400)),
+                      ]),
+                    ),
                   ),
                 ),
-            ]),
+            ])),
           ),
         ),
       ),

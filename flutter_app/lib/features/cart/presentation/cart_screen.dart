@@ -31,7 +31,7 @@ class CartScreen extends ConsumerWidget {
                     const Text('Semua'),
                     const Spacer(),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.end, children: [
-                      const Text('Total', style: TextStyle(fontSize: 11, color: AppColors.grey)),
+                      Text('Total', style: AppText.caption.copyWith(color: AppColors.grey)),
                       Text(rupiah(subtotal), key: const Key('cart-total'), style: AppText.semi),
                     ]),
                     const SizedBox(width: 12),
@@ -42,7 +42,7 @@ class CartScreen extends ConsumerWidget {
             ),
       body: lines.isEmpty
           ? const EmptyState('Keranjang masih kosong', icon: Icons.shopping_cart_outlined)
-          : ListView(padding: const EdgeInsets.all(20), children: [
+          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
               for (final l in lines)
                 Dismissible(
                   key: ValueKey(l.key),

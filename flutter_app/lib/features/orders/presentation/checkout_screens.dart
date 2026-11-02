@@ -91,7 +91,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       title: 'Ringkasan Pemesanan',
       body: lines.isEmpty
           ? const EmptyState('Tidak ada item dipilih')
-          : ListView(padding: const EdgeInsets.all(20), children: [
+          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
               AppCard(
                 onTap: () => context.push('/addresses?pick=1'),
                 child: Row(children: [
@@ -100,7 +100,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   Expanded(
                     child: address == null
                         ? const Text('Pilih alamat pengiriman')
-                        : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('${address.recipient} | ${address.phone}', style: AppText.semi.copyWith(fontSize: 14)), Text(address.full, style: AppText.small)]),
+                        : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('${address.recipient} | ${address.phone}', style: AppText.label), Text(address.full, style: AppText.small)]),
                   ),
                   const Icon(Icons.chevron_right),
                 ]),
@@ -163,11 +163,11 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
     final bank = settings.banks.isEmpty ? null : settings.banks.first;
     return AppScaffold(
       title: 'Pembayaran',
-      body: ListView(padding: const EdgeInsets.all(20), children: [
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         AppCard(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Transfer ke', style: AppText.small),
-            if (bank != null) ...[Text('${bank.bank} ${bank.number}', style: AppText.semi.copyWith(fontSize: 18)), Text('a.n. ${bank.holder}', style: AppText.small)] else const Text('Rekening belum diatur penjual'),
+            if (bank != null) ...[Text('${bank.bank} ${bank.number}', style: AppText.heading), Text('a.n. ${bank.holder}', style: AppText.small)] else const Text('Rekening belum diatur penjual'),
             const Divider(height: 24),
             KeyValueRow('Subtotal', rupiah(order.subtotal)),
             KeyValueRow('Ongkir', rupiah(order.shippingFee)),
@@ -179,8 +179,10 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
         InkWell(
           onTap: () => setState(() => _picked = true),
           child: Container(
-            height: 120,
-            decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)),
+            constraints: const BoxConstraints(minHeight: 120),
+            width: double.infinity,
+            padding: const EdgeInsets.all(Gap.lg),
+            decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(AppRadius.card)),
             child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [Icon(_picked ? Icons.check_circle : Icons.upload_file, size: 36, color: _picked ? AppColors.success : AppColors.grey), Text(_picked ? 'Bukti terpilih (simulasi)' : 'Unggah bukti transfer (simulasi)', style: AppText.small)])),
           ),
         ),
@@ -210,11 +212,11 @@ class OrderSuccessScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: ListView(padding: const EdgeInsets.all(20), children: [
+        child: ContentFrame(padded: false, child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
           const SizedBox(height: 40),
           const Icon(Icons.check_circle, size: 96, color: AppColors.success),
           const SizedBox(height: 12),
-          Center(child: Text('Pesanan berhasil dilakukan !', style: AppText.semi.copyWith(fontSize: 18))),
+          Center(child: Text('Pesanan berhasil dilakukan !', style: AppText.heading)),
           const SizedBox(height: 24),
           if (order != null)
             AppCard(
@@ -232,7 +234,7 @@ class OrderSuccessScreen extends ConsumerWidget {
           PillButton(label: 'Lihat Pesanan', outlined: true, onPressed: () => context.go('/orders')),
           const SizedBox(height: 12),
           PillButton(label: 'Kembali ke Beranda', onPressed: () => context.go('/home')),
-        ]),
+        ])),
       ),
     );
   }

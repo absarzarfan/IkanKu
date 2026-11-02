@@ -73,3 +73,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 12a P2: supabase migrations 0001-0004, seed.sql, supabase-setup.md (untested, no live DB).
 - Phase 12a P3a: supabase_flutter + image_picker, AppConfig, typed errors, mappers, Supabase repos (auth/catalog/orders/cart/reviews/profile/shop/admin), hybrid notifiers, admin role + panel.
 - Phase 12a P3b/P4: image upload (image_picker), INTERNET permission, contract/mapper/redirect tests (126 total); gates: analyze clean, tests pass, APK debug built (kotlin.incremental=false), security grep clean.
+- Phase 12b P0: baseline on feature/mobile-mvp clean and pushed; flutter analyze clean, flutter test 126 passed.
+- Phase 12b P1: lib/core/responsive (breakpoints, ContentFrame, ResponsiveGrid, PeekRow, fluid helpers), shared widgets (scaffold, buttons, fields, tabs, empty/error/loading, refresh list), bottom nav, Home/ProductCard/grids reworked; analyze clean, 126 tests pass.

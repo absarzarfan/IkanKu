@@ -30,8 +30,8 @@ class SellerHomeScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Toko Saya',
       showBack: false,
-      body: ListView(padding: const EdgeInsets.all(20), children: [
-        Text('SELAMAT DATANG, ${(user?.name ?? '').toUpperCase()}!', style: AppText.semi.copyWith(fontSize: 18)),
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+        Text('SELAMAT DATANG, ${(user?.name ?? '').toUpperCase()}!', style: AppText.heading),
         const SizedBox(height: 14),
         GridView.count(
           shrinkWrap: true,
@@ -89,7 +89,7 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
       body: Column(children: [
         if (done)
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            padding: EdgeInsets.fromLTRB(context.pagePadding, 12, context.pagePadding, 0),
             child: Wrap(spacing: 8, children: [
               for (final (i, l) in ['Semua', 'COD', 'NON COD'].indexed) ChoiceChip(key: Key('filter-$i'), label: Text(l), selected: _pay == i, onSelected: (_) => setState(() => _pay = i)),
             ]),
@@ -97,7 +97,7 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
         Expanded(
           child: items.isEmpty
           ? EmptyState('Belum ada pesanan ${sellerTabLabels[_tab].toLowerCase()}')
-          : ListView(padding: const EdgeInsets.all(20), children: [
+          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
               for (final o in items)
                 AppCard(
                   onTap: () => context.push('/seller/orders/${o.id}'),
@@ -119,7 +119,7 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
                       if (o.status == OrderStatus.dikemas) TextButton(onPressed: () => context.push('/seller/orders/${o.id}/ship'), child: const Text('Kirim')),
                       if (o.status == OrderStatus.dikirim) TextButton(onPressed: () => n.complete(o.id), child: const Text('Selesai')),
                       if (o.status == OrderStatus.selesai) TextButton(onPressed: () => context.push('/orders/${o.id}/review/view'), child: const Text('Lihat Ulasan')),
-                      if (o.status == OrderStatus.dibatalkan || o.status == OrderStatus.ditolak || o.status == OrderStatus.selesai) TextButton(onPressed: () => n.archive(o.id), child: const Text('Hapus', style: TextStyle(color: AppColors.danger))),
+                      if (o.status == OrderStatus.dibatalkan || o.status == OrderStatus.ditolak || o.status == OrderStatus.selesai) TextButton(onPressed: () => n.archive(o.id), child: Text('Hapus', style: AppText.body.copyWith(color: AppColors.danger))),
                     ]),
                   ]),
                 ),
@@ -150,7 +150,7 @@ class SellerOrderDetailScreen extends ConsumerWidget {
     final n = ref.read(ordersProvider.notifier);
     return AppScaffold(
       title: o.status == OrderStatus.menunggu ? 'Proses Pesanan' : 'Detail Pesanan',
-      body: ListView(padding: const EdgeInsets.all(20), children: [
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(o.id, style: AppText.semi), StatusChip(o.status.label, color: statusColor(o.status))]),
         const SizedBox(height: 12),
         for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: 12), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), Text('x${l.qty}', style: AppText.small)])),
@@ -212,7 +212,7 @@ class _ShipProofScreenState extends ConsumerState<ShipProofScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: 'Bukti Pengiriman',
-      body: ListView(padding: const EdgeInsets.all(20), children: [
+      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         Text('Silahkan Upload Foto Pengiriman', style: AppText.semi),
         const SizedBox(height: 8),
         InkWell(
@@ -250,7 +250,7 @@ class SellerReviewsScreen extends ConsumerWidget {
       title: 'Ulasan',
       body: reviewed.isEmpty
           ? const EmptyState('Belum ada ulasan')
-          : ListView(padding: const EdgeInsets.all(20), children: [
+          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
               for (final o in reviewed)
                 AppCard(
                   onTap: () => context.push('/orders/${o.id}/review/view'),
