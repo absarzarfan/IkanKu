@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ikanku/core/data/backend.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
 import 'package:ikanku/core/utils/format.dart';
 import 'package:ikanku/core/widgets/widgets.dart';
@@ -217,6 +219,25 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
   final _varOut = ValueNotifier<List<Variation> Function()?>(null);
   String? _category;
   String _image = _photoChoices.first;
+  bool _uploading = false;
+
+  /// Ukuran dibatasi lewat opsi image_picker (sisi terpanjang 1280 px, kualitas 80); bucket membatasi 2 MB.
+  Future<void> _pickAndUpload() async {
+    final remote = ref.read(catalogRemoteProvider);
+    if (remote == null) return;
+    final file = await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 1280, maxHeight: 1280, imageQuality: 80);
+    if (file == null) return;
+    setState(() => _uploading = true);
+    try {
+      final dot = file.name.lastIndexOf('.');
+      final url = await remote.uploadProductImage(await file.readAsBytes(), extension: dot < 0 ? 'jpg' : file.name.substring(dot + 1));
+      if (mounted) setState(() => _image = url);
+    } catch (e) {
+      ref.read(backendErrorProvider.notifier).report(e);
+    } finally {
+      if (mounted) setState(() => _uploading = false);
+    }
+  }
   Product? _existing;
   late final List<Variation> _initialVars;
 
@@ -278,6 +299,16 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 ),
             ]),
           ),
+          if (ref.watch(catalogRemoteProvider) != null)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                key: const Key('prod-upload'),
+                onPressed: _uploading ? null : _pickAndUpload,
+                icon: const Icon(Icons.photo_library_outlined),
+                label: Text(_uploading ? 'Mengunggah...' : 'Unggah dari galeri'),
+              ),
+            ),
           const SizedBox(height: 14),
           AppField(fieldKey: const Key('prod-name'), label: 'Nama', controller: _name, hint: 'Nama produk', validator: (v) => Validators.required(v, 'Nama')),
           AppField(label: 'Deskripsi', controller: _desc, hint: 'Deskripsi produk', maxLines: 3),
