@@ -25,7 +25,7 @@ class CartScreen extends ConsumerWidget {
               child: SafeArea(
                 top: false,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
+                  padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.sm, Gap.lg, Gap.md),
                   child: Row(children: [
                     Checkbox(value: selectedCount == lines.length, onChanged: (v) => cart.toggleAll(v ?? false)),
                     const Text('Semua'),
@@ -34,7 +34,7 @@ class CartScreen extends ConsumerWidget {
                       Text('Total', style: AppText.caption.copyWith(color: AppColors.grey)),
                       Text(rupiah(subtotal), key: const Key('cart-total'), style: AppText.semi),
                     ]),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: Gap.md),
                     PillButton(label: 'Beli Sekarang', expanded: false, onPressed: selectedCount == 0 ? null : () => context.push('/checkout')),
                   ]),
                 ),
@@ -42,18 +42,18 @@ class CartScreen extends ConsumerWidget {
             ),
       body: lines.isEmpty
           ? const EmptyState('Keranjang masih kosong', icon: Icons.shopping_cart_outlined)
-          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+          : ListView(padding: Space.pad(context), children: [
               for (final l in lines)
                 Dismissible(
                   key: ValueKey(l.key),
                   direction: DismissDirection.endToStart,
-                  background: Container(alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: 20), margin: const EdgeInsets.only(bottom: 14), decoration: BoxDecoration(color: AppColors.danger, borderRadius: BorderRadius.circular(16)), child: const Icon(Icons.delete, color: Colors.white)),
+                  background: Container(alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: Gap.xl), margin: const EdgeInsets.only(bottom: Gap.md), decoration: BoxDecoration(color: AppColors.danger, borderRadius: BorderRadius.circular(16)), child: const Icon(Icons.delete, color: Colors.white)),
                   onDismissed: (_) => cart.remove(l.key),
                   child: AppCard(
                     child: Row(children: [
                       Checkbox(value: l.selected, onChanged: (_) => cart.toggle(l.key)),
                       ProductImage(asset: l.product.image, size: 64),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: Gap.md),
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(l.product.name, style: AppText.body),

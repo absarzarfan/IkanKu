@@ -154,7 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       onTap: () => context.go('/search'),
                       child: Container(
                         constraints: const BoxConstraints(minHeight: AppSize.searchBar),
-                        padding: const EdgeInsets.symmetric(horizontal: Gap.sm + 2),
+                        padding: const EdgeInsets.symmetric(horizontal: Gap.md),
                         decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card)),
                         child: const Row(children: [Icon(Icons.search, size: 16, color: AppColors.grey), SizedBox(width: Gap.sm), Text('Telusuri', style: AppText.searchHint)]),
                       ),
@@ -181,7 +181,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       onTap: () => context.push('/category/${c.$1}'),
                       child: Container(
                         constraints: const BoxConstraints(minHeight: AppSize.buttonSmall),
-                        padding: const EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(Gap.sm),
                         decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card), boxShadow: AppShadow.soft),
                         child: Row(children: [
                           ProductImage(asset: c.$2, size: fluid(context, 46), radius: AppRadius.card),
@@ -212,7 +212,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: Stack(fit: StackFit.expand, children: [
                           Image.asset(_banners[i].$1, fit: BoxFit.cover, cacheWidth: 800, errorBuilder: (_, _, _) => Container(color: AppColors.field)),
                           Padding(
-                            padding: const EdgeInsets.all(14),
+                            padding: const EdgeInsets.all(Gap.md),
                             child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                               Flexible(child: Align(alignment: Alignment.centerLeft, child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: Text(_banners[i].$2, style: AppText.banner)))),
                               Align(
@@ -223,7 +223,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(AppRadius.chip),
                                     onTap: () => context.push('/category/Semua'),
-                                    child: IntrinsicWidth(child: Container(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), alignment: Alignment.center, padding: const EdgeInsets.symmetric(horizontal: 14), child: const Text('Beli Sekarang', textAlign: TextAlign.center, style: AppText.bannerButton))),
+                                    child: IntrinsicWidth(child: Container(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), alignment: Alignment.center, padding: const EdgeInsets.symmetric(horizontal: Gap.md), child: const Text('Beli Sekarang', textAlign: TextAlign.center, style: AppText.bannerButton))),
                                   ),
                                 ),
                               ),
@@ -332,17 +332,17 @@ class ShopScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Toko',
       onBack: () => context.canPop() ? context.pop() : context.go('/home'),
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         AppCard(
           color: AppColors.field,
           child: Row(children: [
             const CircleAvatar(radius: 28, backgroundColor: Colors.white, child: Icon(Icons.storefront, color: AppColors.primary)),
-            const SizedBox(width: 14),
+            const SizedBox(width: Gap.md),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(name, style: AppText.semi), Text('${items.length} produk', style: AppText.small)])),
           ]),
         ),
         Text('Produk', style: AppText.semi),
-        const SizedBox(height: 8),
+        const SizedBox(height: Gap.sm),
         if (items.isEmpty)
           const EmptyState('Belum ada produk di toko ini')
         else
@@ -361,7 +361,7 @@ class RecommendationsScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Rekomendasi',
       onBack: () => context.canPop() ? context.pop() : context.go('/home'),
-      body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: EdgeInsets.all(context.pagePadding), children: [for (final p in items) ProductRow(product: p)]),
+      body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: Space.pad(context), children: [for (final p in items) ProductRow(product: p)]),
     );
   }
 }
@@ -391,7 +391,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       title: 'Telusuri',
       showBack: false,
       headerExtra: Padding(
-        padding: EdgeInsets.fromLTRB(context.pagePadding, 6, context.pagePadding, 0),
+        padding: EdgeInsets.fromLTRB(context.pagePadding, Gap.sm, context.pagePadding, 0),
         child: TextField(
           key: const Key('search-field'),
           controller: _c,
@@ -413,14 +413,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         ),
       ),
       body: _q.trim().isEmpty
-          ? ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+          ? ListView(padding: Space.padTab(context), children: [
               const SectionHeader('Rekomendasi untuk anda'),
               for (final p in cat.products.take(5)) ProductRow(product: p),
             ])
           : results.isEmpty
               ? EmptyState('Tidak ada hasil untuk "$_q"', icon: Icons.search_off)
-              : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
-                  if (_submitted) Padding(padding: const EdgeInsets.only(bottom: 8), child: Text('${results.length} hasil untuk "$_q"', style: AppText.small)),
+              : ListView(padding: Space.padTab(context), children: [
+                  if (_submitted) Padding(padding: const EdgeInsets.only(bottom: Gap.sm), child: Text('${results.length} hasil untuk "$_q"', style: AppText.small)),
                   for (final p in results) ProductRow(product: p),
                 ]),
     );
@@ -469,17 +469,17 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       bottom: SafeArea(
         top: false,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(context.pagePadding, 8, context.pagePadding, 12),
+          padding: EdgeInsets.fromLTRB(context.pagePadding, Gap.sm, context.pagePadding, Gap.md),
           child: Row(children: [
             Expanded(child: PillButton(label: 'Masukkan Keranjang', onPressed: p.stock == 0 ? null : () => _addToCart(p, buyNow: false))),
-            const SizedBox(width: 10),
+            const SizedBox(width: Gap.md),
             Expanded(child: PillButton(label: 'Beli Sekarang', color: AppColors.navy, onPressed: p.stock == 0 ? null : () => _addToCart(p, buyNow: true))),
           ]),
         ),
       ),
-      body: ListView(padding: EdgeInsets.fromLTRB(context.pagePadding, 16, context.pagePadding, 20), children: [
+      body: ListView(padding: EdgeInsets.fromLTRB(context.pagePadding, Gap.lg, context.pagePadding, Gap.xl), children: [
         ClipRRect(borderRadius: BorderRadius.circular(AppRadius.sheet), child: AspectRatio(aspectRatio: 1.6, child: productPicture(p.image, cacheWidth: 900))),
-        const SizedBox(height: 14),
+        const SizedBox(height: Gap.md),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(rupiah(p.startingPrice), style: AppText.price),
@@ -488,23 +488,23 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           const SizedBox(width: Gap.sm),
           Row(children: [const Icon(Icons.star, size: 18, color: AppColors.star), Text(' ${p.rating}', style: AppText.body)]),
         ]),
-        const SizedBox(height: 12),
+        const SizedBox(height: Gap.md),
         Text('Stok: ${p.stock} ekor', style: AppText.subheading),
-        const SizedBox(height: 12),
+        const SizedBox(height: Gap.md),
         Text('Deskripsi', style: AppText.subheading),
         Text(p.description, style: AppText.body),
-        const SizedBox(height: 16),
+        const SizedBox(height: Gap.lg),
         AppCard(
           color: AppColors.field,
           child: Row(children: [
             const CircleAvatar(radius: 28, backgroundColor: Colors.white, child: Icon(Icons.storefront, color: AppColors.primary)),
-            const SizedBox(width: 14),
+            const SizedBox(width: Gap.md),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(p.sellerName, style: AppText.semi), Text('Tempat Budidaya Ikan Air Tawar, Restoran, Kolam Pemancingan', style: AppText.small)])),
             OutlinedButton(onPressed: () => context.push('/shop/${Uri.encodeComponent(p.sellerName)}'), child: Text('Kunjungi Toko', style: AppText.caption.copyWith(color: AppColors.danger))),
           ]),
         ),
         Text('Penilaian & Ulasan Produk', style: AppText.semi),
-        const SizedBox(height: 8),
+        const SizedBox(height: Gap.sm),
         AppCard(
           color: AppColors.field,
           child: Row(children: [
@@ -521,7 +521,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 for (var s = 5; s >= 1; s--)
                   Row(children: [
                     Text('$s', style: AppText.caption),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: Gap.sm),
                     Expanded(child: LinearProgressIndicator(value: reviews.isEmpty ? 0 : reviews.where((r) => r.rating == s).length / reviews.length, color: AppColors.text, backgroundColor: AppColors.greyLight, minHeight: 6)),
                   ]),
               ]),
@@ -539,7 +539,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             for (final r in reviews)
               AppCard(color: AppColors.field, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(r.author, style: AppText.label)), RatingStars(rating: r.rating.toDouble(), size: 12)]),
-                const SizedBox(height: 4),
+                const SizedBox(height: Gap.xs),
                 Text(r.text, style: AppText.small.copyWith(fontWeight: FontWeight.w300)),
               ])),
       ]),
@@ -562,10 +562,10 @@ class _VariationSheetState extends State<_VariationSheet> {
     final p = widget.product;
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(context.pagePadding, 20, context.pagePadding, 16),
+        padding: EdgeInsets.fromLTRB(context.pagePadding, Gap.xl, context.pagePadding, Gap.lg),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Pilih Variasi (${p.variations.length} variasi)', style: AppText.semi),
-          const SizedBox(height: 12),
+          const SizedBox(height: Gap.md),
           Flexible(
             child: SingleChildScrollView(
               child: Wrap(spacing: 8, runSpacing: 8, children: [
@@ -579,7 +579,7 @@ class _VariationSheetState extends State<_VariationSheet> {
               ]),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: Gap.lg),
           PillButton(label: widget.actionLabel, onPressed: _selected == null ? null : () => Navigator.pop(context, _selected)),
         ]),
       ),

@@ -58,7 +58,7 @@ class _SearchBox extends StatelessWidget {
   final ValueChanged<String> onSubmit;
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(Gap.md),
         child: TextField(
           key: const Key('admin-search'),
           decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: AdminStrings.search),

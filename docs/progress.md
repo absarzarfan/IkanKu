@@ -79,3 +79,6 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 12b P3-4: order/seller/detail overflow fixes, pull-to-refresh lists, admin error with retry, tap targets 48.
 - Phase 12b P5: responsive matrix test (3 roles x 9 sizes x 3 text scales + tap target guidelines) and helper unit tests; 164 tests pass.
 - Phase 12b P6: web build mock, headless screenshots (home 4 sizes; search/product/cart/checkout/orders/profile at 360 and 768) in D:\Tools\shots\phase12b; fixed banner button width; gates: analyze clean, 164 tests pass, APK debug built.
+- Phase 12b-fix P0: baseline on mobile-mvp clean and pushed; analyze clean, 164 tests pass.
+- Phase 12b-fix P1-2,4: spacing tokens (lib/core/responsive/spacing.dart), SectionHeader, HorizontalCardList, ProductCardWithPhoto, Home rhythm + keys, spacing_test; 172 tests pass.
+- Phase 12b-fix P3: ~146 literal gaps/paddings replaced by Gap/Space tokens, 36 list paddings via Space.pad/padTab (bottom clearance); analyze clean, 172 tests pass.

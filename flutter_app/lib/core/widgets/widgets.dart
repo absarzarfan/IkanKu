@@ -107,7 +107,7 @@ class PillButton extends StatelessWidget {
         disabledBackgroundColor: AppColors.greyLight,
         elevation: 0,
         minimumSize: Size(expanded ? double.infinity : 0, height < AppSize.buttonSmall ? AppSize.buttonSmall : height),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: Gap.xl, vertical: Gap.md),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pill), side: outlined ? BorderSide(color: color) : BorderSide.none),
       ),
       child: busy
@@ -136,11 +136,11 @@ class AppField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(bottom: Gap.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (label != null) Padding(padding: const EdgeInsets.only(bottom: 6), child: Text(label!, style: AppText.label)),
+          if (label != null) Padding(padding: const EdgeInsets.only(bottom: Gap.sm), child: Text(label!, style: AppText.label)),
           TextFormField(
             key: fieldKey,
             controller: controller,
@@ -165,9 +165,9 @@ class AppField extends StatelessWidget {
 }
 
 class AppCard extends StatelessWidget {
-  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(14), this.onTap, this.color = Colors.white, this.margin = const EdgeInsets.only(bottom: Space.itemGap)});
+  const AppCard({super.key, required this.child, this.padding, this.onTap, this.color = Colors.white, this.margin = const EdgeInsets.only(bottom: Space.itemGap)});
   final Widget child;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final VoidCallback? onTap;
   final Color color;
   final EdgeInsets margin;
@@ -181,7 +181,7 @@ class AppCard extends StatelessWidget {
         elevation: 2,
         shadowColor: AppColors.shadow,
         borderRadius: BorderRadius.circular(AppRadius.card),
-        child: InkWell(borderRadius: BorderRadius.circular(AppRadius.card), onTap: onTap, child: Padding(padding: padding, child: child)),
+        child: InkWell(borderRadius: BorderRadius.circular(AppRadius.card), onTap: onTap, child: Padding(padding: padding ?? EdgeInsets.all(Space.cardPadding(context)), child: child)),
       ),
     );
   }
@@ -256,7 +256,7 @@ class TextTabs extends StatelessWidget {
       child: Row(children: [
         for (final (i, l) in labels.indexed)
           Padding(
-            padding: EdgeInsets.only(right: i == labels.length - 1 ? 0 : 18),
+            padding: EdgeInsets.only(right: i == labels.length - 1 ? 0 : Gap.lg),
             child: InkWell(
               onTap: () => onChanged(i),
               child: Container(
@@ -281,7 +281,7 @@ class EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(context.pagePadding),
+          padding: Space.pad(context),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Icon(icon, size: 56, color: AppColors.greyLight),
             const SizedBox(height: Gap.sm),
@@ -323,7 +323,7 @@ class StatusChip extends StatelessWidget {
   final Color color;
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: Gap.md, vertical: Gap.xs),
         decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: color)),
         child: Text(label, style: AppText.small.copyWith(color: color, fontWeight: FontWeight.w500)),
       );
@@ -362,10 +362,10 @@ class KeyValueRow extends StatelessWidget {
   final bool bold;
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(vertical: Gap.xs),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(k, style: bold ? AppText.semi : AppText.body),
-          const SizedBox(width: 12),
+          const SizedBox(width: Gap.md),
           Flexible(child: Text(v, textAlign: TextAlign.right, style: bold ? AppText.semi : AppText.body)),
         ]),
       );
