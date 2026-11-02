@@ -95,3 +95,7 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART 4: tes jarak bawah 12 kasus lulus; clearance = inset + 16 (tab di luar body).
 - PART 5: radius kartu 20 via token, rating Poppins tabular.
 - PART 6: MOCK_AUTOLOGIN_ROLE (mock-only); tangkapan layar di D:\Tools\shots\phase13b (pembeli 6, penjual 4, admin 1 layar empty-state).
+- PART 7: analyze bersih, 195 tes lulus (baseline mvp 172, polish 175), apk debug berhasil.
+
+### Branch map
+`feature/mobile-mvp` dan `feature/mobile-polish` adalah snapshot beku. Semua pekerjaan berikutnya (Phase 12c integrasi Supabase) dilakukan di `feature/mobile-unified`.

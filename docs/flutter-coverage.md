@@ -64,3 +64,7 @@ Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Va
 - Token tema web dipetakan ke `app_theme.dart`; widget bersama baru: Pressable, Reveal, Skeleton, IconChip, GradientHeader, SectionTitle. Detail dan inventaris gerak: docs/mobile-polish.md. Status Figma per layar tidak berubah (docs/figma-fidelity.md); gaya kini mengikuti web.
 ## Pembaruan Phase 12b-fix (spasi)
 - Spasi memakai token `Space`/`Gap`/`VGap`; Home diuji jarak ukurannya (`test/spacing_test.dart`, 360/412/768 x teks 1.0/1.3). Layar lain: literal diganti token, padding daftar memakai `Space.pad`/`padTab`.
+
+## Pembaruan Phase 13b
+- Tes: 195 lulus (mvp 172, polish 175; +spacing/polish tergabung 183, +12 tes jarak bawah tab). Tes baru: `bottom_clearance_test.dart`. Analyze bersih; `flutter build apk --debug` berhasil.
+- Layar admin dalam mode mock hanya empty-state (butuh Supabase).

@@ -54,3 +54,6 @@ Screenshot (web mock, headless Edge, iframe) di `D:\Tools\shots\phase13\`: Beran
 - Pesanan/Profil/layar lain: header sama, kartu seragam, chip ikon pada menu profil/penjual/pengaturan, chip status berkontras tinggi, tombol utama bergradien dengan umpan balik tekan.
 Dibanding web: palet #1672c4, tint #F3F8FD, gradien 43%-37%, kartu radius 20 (web 24), tanpa oranye.
 Tidak dibuat: timeline pesanan dan eyebrow (tidak ada fitur/teks baru). Pengujian a11y: label Semantics di item tab, bintang, tile; dekorasi dikeluarkan dari semantics; matriks responsif 81 kasus lulus tanpa perubahan.
+
+## Phase 13b - cabang terpadu (feature/mobile-unified)
+- Gaya visual polish + ritme spasi mvp dalam satu widget per komponen. SectionHeader (batang aksen, aksi 48 dp) di semua layar; StickyActionBar pada formulir; radius kartu 20 lewat token; rating Poppins tabular; `MOCK_AUTOLOGIN_ROLE` (khusus mock) untuk pemeriksaan visual penjual/admin.
