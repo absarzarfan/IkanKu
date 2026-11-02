@@ -65,3 +65,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 11 P2: orange CTA label switched to dark token (min 6.33:1), admin buttons on .btn-cta.
 - Phase 11 P3-4: asset integrity (a3 kept, different picture), refs 0 broken, 8 unused files removed, others listed.
 - Phase 11 P5-6: oxipng not installed (P5 skipped); image-licenses.md created (78 rows).
+- Phase 11 P7-8: approval-pack.md (110 lines, 19 flagged sentences), data/site.ts for download link and QR.
+- Phase 11 P9: verified (build, lint, 19 pages + 48 images 200, Tim Kami fits, screenshots in D:\Tools\shots\phase11).

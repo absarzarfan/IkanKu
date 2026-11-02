@@ -94,3 +94,15 @@ Reference check (D:\Tools\scripts\check-refs.mjs): 34 literal refs + 12 team slu
 ## Unused files (not deleted)
 Deleted with `git rm` (zero references; recoverable from git): hubungi/map.png, home/ic-basket|fish|review|truck.svg, hubungi/ic-mail|pin|ic-wa.svg.
 Only listed: artikel/arrow.svg, artikel/avatar.svg, home/step-dot.svg, home/step-line.svg, hubungi/chev.svg, hubungi/form-bg.svg, hubungi/home.svg, hubungi/mail.svg, hubungi/phone.svg, hubungi/pin.svg, hubungi/logo-white.png (73 KB), and the old duplicates tentang/{absar,dicky,dzakwan,dzaky,feby,hafid,miftahul,naufal,ririn,surya,zia}.png (the site uses /team/*).
+
+## ACC checklist (Phase 11 run)
+- PASS: build and lint; 6 routes + 14 article slugs 200; 48 image URLs (incl. /_next/image) all 200.
+- PASS: no broken /img, /logos, /team references (34 literal + 12 team slugs).
+- PASS: 768 / 900 / 1000px frames (carousel, article detail, produk, hubungi, footer, FAQ); 768 re-checked after fixes, 900/1000 carousel not re-viewed.
+- PASS: orange CTA label contrast min 6.33:1; focus ring visible on blue bands.
+- PASS: Tim Kami fits one screen (1440x900 bottom 767px, 1920x1080 bottom 803px, viewport captures).
+- NOT VERIFIED: DOWNLOAD_URL empty (buttons link to "#"); QR target and origin unknown.
+- NOT VERIFIED: image sources, licences, team consent (all UNKNOWN / NEEDS CONFIRMATION in image-licenses.md).
+- NOT VERIFIED: two watermarked article images, two image/title mismatches, low-res sources.
+- NOT VERIFIED: Visi/Misi/Tujuan and FAQ facts (approval-pack.md pending team answers).
+- SKIPPED: lossless PNG pass (oxipng not installed).
