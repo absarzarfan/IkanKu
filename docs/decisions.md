@@ -86,3 +86,9 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Orange CTA contrast (2.06-2.99) reported only, per instruction. FAQ panel keeps grid-template-rows animation (explicit earlier request).
 - Contact form "send" is simulated (600ms) because no backend exists. Carousel empty message is new state copy (Indonesian). Slide height 440 -> 500px on mobile so framed low-res photos do not collide with text; check visually on a phone.
 - Not re-measured: carousel low-res slide overlap at 768-1000px (no screenshot of those slides).
+
+## Phase 11 (feature/web-final)
+- Orange CTA: option B (dark label token, gradient kept). Admin buttons moved from flat bg-accent to .btn-cta so one class controls all orange. ContactForm Submit and the home "Download on Google Play" button already used .btn-cta (orange outside "Unduh Aplikasi"); left as is, flagged for review.
+- a3.png NOT restored: the backup is a different picture; the current small file is the user's replacement and renders correctly (low-res, listed in "Needs better source files").
+- Deleted (git rm, zero references): img/hubungi/map.png and 7 ic-*.svg icons (home: ic-basket, ic-fish, ic-review, ic-truck; hubungi: ic-mail, ic-pin, ic-wa). Other unreferenced files are only listed in docs/ui-polish.md.
+- Responsive: navbar text smaller with nowrap below xl, FAQ columns only from lg, footer contact single column below lg, carousel low-res frame capped at 400px and slides taller (540/560px).

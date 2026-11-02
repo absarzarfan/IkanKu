@@ -76,3 +76,21 @@ Gradient and hue unchanged; label colour moved to the dark token `--color-on-cta
 | Hover, light stop | 2.24 | 9.10 |
 | Hover, dark stop | 3.22 | 6.33 |
 Active state only scales (no colour change). Minimum now 6.33:1.
+
+## Asset integrity (Phase 11)
+Backups: D:\Tools\image-backup exists; image-backup-gps does not.
+| File | Now | Backup | Status |
+|---|---|---|---|
+| artikel/a1.png | 2400 KB, 1200x981 | same | identical |
+| artikel/a2.png | 970 KB, 960x640 | same | identical |
+| artikel/a3.png | 10 KB, 258x195 | 3025 KB, 1602x1062 | DIFFERENT PICTURE (current = fish in a styrofoam box, backup = tilapia on a board); current is the user's Phase 9a replacement, valid and not broken, so NOT restored |
+| hubungi/map.png | 1052 KB | same | identical (now deleted, unused) |
+| produk/hero.png (backup) | - | 604 KB, 2028x2499 | replaced by the user's produk/hero.jpg (750x600); backup file is not the current asset |
+| produk/pixel7a.png | 1652 KB, 1500x1125 | same | identical |
+| tentang/hero.png | 594 KB, 2499x1666 | same | identical |
+| tentang/zia.png, team/zia-djulyanza.png | 340 KB, 2000x3008 | same | identical |
+Reference check (D:\Tools\scripts\check-refs.mjs): 34 literal refs + 12 team slugs + k1-k5/t1-t9 dynamic names, 0 broken, 0 fixed.
+
+## Unused files (not deleted)
+Deleted with `git rm` (zero references; recoverable from git): hubungi/map.png, home/ic-basket|fish|review|truck.svg, hubungi/ic-mail|pin|ic-wa.svg.
+Only listed: artikel/arrow.svg, artikel/avatar.svg, home/step-dot.svg, home/step-line.svg, hubungi/chev.svg, hubungi/form-bg.svg, hubungi/home.svg, hubungi/mail.svg, hubungi/phone.svg, hubungi/pin.svg, hubungi/logo-white.png (73 KB), and the old duplicates tentang/{absar,dicky,dzakwan,dzaky,feby,hafid,miftahul,naufal,ririn,surya,zia}.png (the site uses /team/*).
