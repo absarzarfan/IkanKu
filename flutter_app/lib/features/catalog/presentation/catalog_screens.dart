@@ -404,7 +404,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ),
       ),
       body: ListView(padding: const EdgeInsets.fromLTRB(20, 16, 20, 20), children: [
-        ClipRRect(borderRadius: BorderRadius.circular(28), child: SizedBox(height: 240, child: Image.asset(p.image, fit: BoxFit.cover, cacheWidth: 900))),
+        ClipRRect(borderRadius: BorderRadius.circular(28), child: SizedBox(height: 240, child: productPicture(p.image, cacheWidth: 900))),
         const SizedBox(height: 14),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

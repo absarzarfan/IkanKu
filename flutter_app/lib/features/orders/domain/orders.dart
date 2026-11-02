@@ -16,6 +16,9 @@ enum OrderStatus {
 
 enum PaymentMethod { transfer, cod }
 
+/// Status pembayaran manual (tanpa payment gateway).
+enum PaymentStatus { belumBayar, menungguVerifikasi, terverifikasi }
+
 enum ShippingMethod { kirim, jemput }
 
 class OrderLine {
@@ -46,6 +49,8 @@ class Order {
     this.shipmentNote = '',
     this.review,
     this.archivedFrom,
+    this.remoteId,
+    this.paymentStatus = PaymentStatus.belumBayar,
   });
 
   final String id;
@@ -65,6 +70,10 @@ class Order {
   final Review? review;
   final OrderStatus? archivedFrom;
 
+  /// Id baris di backend (uuid); [id] berisi kode tampilan (mis. INV-1100). Null pada mock.
+  final String? remoteId;
+  final PaymentStatus paymentStatus;
+
   int get subtotal => lines.fold(0, (s, l) => s + l.total);
   int get total => subtotal + shippingFee;
 
@@ -80,6 +89,7 @@ class Order {
     Review? review,
     OrderStatus? archivedFrom,
     PaymentMethod? payment,
+    PaymentStatus? paymentStatus,
   }) =>
       Order(
         id: id,
@@ -98,6 +108,8 @@ class Order {
         shipmentNote: shipmentNote ?? this.shipmentNote,
         review: review ?? this.review,
         archivedFrom: archivedFrom ?? this.archivedFrom,
+        remoteId: remoteId,
+        paymentStatus: paymentStatus ?? this.paymentStatus,
       );
 }
 

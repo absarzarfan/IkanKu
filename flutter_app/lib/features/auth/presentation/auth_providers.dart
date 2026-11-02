@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ikanku/core/data/backend.dart';
 import 'package:ikanku/features/auth/data/mock_auth_repository.dart';
 import 'package:ikanku/features/auth/domain/auth.dart';
 
@@ -19,11 +20,24 @@ class AuthController extends Notifier<AppUser?> {
     state = await _repo.register(name: name, phone: phone, password: password, email: email);
   }
 
-  void logout() => state = null;
+  /// Keluar langsung (UI tidak menunggu); sesi di backend diakhiri di latar belakang.
+  void logout() {
+    state = null;
+    _repo.logout().catchError((Object _) {});
+  }
 
+  /// Nama/telepon disimpan ke backend bila aktif (email diubah lewat alur auth, belum dibuat: lokal saja).
   void updateProfile({String? name, String? email, String? phone}) {
     final u = state;
-    if (u != null) state = u.copyWith(name: name, email: email, phone: phone);
+    if (u == null) return;
+    state = u.copyWith(name: name, email: email, phone: phone);
+    final remote = ref.read(profileRemoteProvider);
+    if (remote != null && (name != null || phone != null)) {
+      remote.updateProfile(name: name, phone: phone).catchError((Object e) {
+        ref.read(backendErrorProvider.notifier).report(e);
+        return u;
+      });
+    }
   }
 
   Future<void> changePassword(String oldPassword, String newPassword) async {

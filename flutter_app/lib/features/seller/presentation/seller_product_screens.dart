@@ -93,7 +93,7 @@ class SellerProductDetailScreen extends ConsumerWidget {
     return AppScaffold(
       title: p.name,
       body: ListView(padding: const EdgeInsets.all(20), children: [
-        ClipRRect(borderRadius: BorderRadius.circular(28), child: SizedBox(height: 200, child: Image.asset(p.image, fit: BoxFit.cover, cacheWidth: 900))),
+        ClipRRect(borderRadius: BorderRadius.circular(28), child: SizedBox(height: 200, child: productPicture(p.image, cacheWidth: 900))),
         const SizedBox(height: 12),
         Text(rupiah(p.startingPrice), style: AppText.price),
         Text('Kategori: ${p.category}  |  Rating ${p.rating}', style: AppText.small),

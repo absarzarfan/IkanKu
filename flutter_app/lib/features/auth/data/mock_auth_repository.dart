@@ -3,11 +3,13 @@ import 'package:ikanku/features/auth/domain/auth.dart';
 /// Autentikasi in-memory. Akun demo (bukan rahasia, hanya data mock):
 /// pembeli: 6285274088734 atau fharaa@gmail.com / Admin123
 /// penjual: 6281266680075 atau penjual@ikanku.id / Admin123
+/// admin: admin@ikanku.id / Admin123 (panel admin hanya aktif pada mode Supabase)
 class MockAuthRepository implements AuthRepository {
   MockAuthRepository() {
     _accounts.addAll([
       _Account(demoBuyer, 'Admin123'),
       _Account(const AppUser(id: 's1', name: 'Anna', email: 'penjual@ikanku.id', phone: '6281266680075', role: UserRole.seller), 'Admin123'),
+      _Account(const AppUser(id: 'a1', name: 'Admin', email: 'admin@ikanku.id', phone: '6280000000000', role: UserRole.admin), 'Admin123'),
     ]);
   }
 
@@ -16,6 +18,12 @@ class MockAuthRepository implements AuthRepository {
 
   @override
   AppUser? get initialUser => demoBuyer;
+
+  @override
+  Future<void> restoreSession() async {}
+
+  @override
+  Future<void> logout() async {}
 
   final List<_Account> _accounts = [];
   static const validOtp = '1234';

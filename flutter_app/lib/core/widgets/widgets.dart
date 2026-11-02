@@ -187,6 +187,15 @@ class RatingStars extends StatelessWidget {
   }
 }
 
+/// Gambar produk: URL (Supabase Storage) atau aset bawaan (mode mock).
+Widget productPicture(String src, {double? width, double? height, int? cacheWidth, BoxFit fit = BoxFit.cover}) {
+  Widget fallback(BuildContext c, Object e, StackTrace? st) => Container(width: width, height: height, color: AppColors.field, child: const Icon(Icons.image_not_supported, color: AppColors.grey));
+  if (src.startsWith('http')) {
+    return Image.network(src, width: width, height: height, fit: fit, cacheWidth: cacheWidth, errorBuilder: fallback);
+  }
+  return Image.asset(src, width: width, height: height, fit: fit, cacheWidth: cacheWidth, errorBuilder: fallback);
+}
+
 class ProductImage extends StatelessWidget {
   const ProductImage({super.key, required this.asset, this.size = 60, this.radius});
   final String asset;
@@ -196,7 +205,7 @@ class ProductImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius ?? size / 2),
-      child: Image.asset(asset, width: size, height: size, fit: BoxFit.cover, cacheWidth: (size * 3).round(), errorBuilder: (_, _, _) => Container(width: size, height: size, color: AppColors.field, child: const Icon(Icons.image_not_supported, color: AppColors.grey))),
+      child: productPicture(asset, width: size, height: size, cacheWidth: (size * 3).round()),
     );
   }
 }

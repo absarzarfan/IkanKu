@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
+import 'package:ikanku/features/admin/presentation/admin_screens.dart';
 import 'package:ikanku/features/auth/domain/auth.dart';
 import 'package:ikanku/features/auth/presentation/auth_providers.dart';
 import 'package:ikanku/features/auth/presentation/auth_screens.dart';
@@ -19,7 +20,13 @@ const _publicPaths = {'/', '/login', '/register', '/register/otp', '/register/da
 const _guestOnly = {'/', '/login', '/register', '/register/otp', '/register/data', '/forgot'};
 const _buyerPrefixes = ['/home', '/search', '/profile', '/cart', '/checkout', '/category', '/recommendations', '/product', '/payment', '/order-success', '/addresses', '/shop'];
 
-String homeFor(UserRole r) => r == UserRole.seller ? '/seller' : '/home';
+String homeFor(UserRole r) => switch (r) {
+      UserRole.seller => '/seller',
+      UserRole.admin => '/admin',
+      UserRole.buyer => '/home',
+    };
+
+bool _isAdminPath(String p) => p == '/admin' || p.startsWith('/admin/');
 
 /// Logika redirect murni (dapat diuji): peran dan status login menentukan rute yang boleh diakses.
 String? computeRedirect(AppUser? user, String path) {
@@ -28,6 +35,8 @@ String? computeRedirect(AppUser? user, String path) {
     // Alur registrasi menyelesaikan dirinya sendiri lewat state login.
     return homeFor(user.role);
   }
+  if (user.role == UserRole.admin) return _isAdminPath(path) || path == '/offline' ? null : '/admin';
+  if (_isAdminPath(path)) return homeFor(user.role);
   if (user.role == UserRole.buyer && path.startsWith('/seller')) return '/home';
   if (user.role == UserRole.seller && _buyerPrefixes.any((p) => path == p || path.startsWith('$p/'))) return '/seller';
   return null;
@@ -56,6 +65,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/offline', builder: (_, _) => const OfflineScreen()),
       GoRoute(path: '/pick-kecamatan', builder: (_, _) => const PickKecamatanScreen()),
       GoRoute(path: '/help', builder: (_, _) => const HelpCenterScreen()),
+      GoRoute(path: '/admin', builder: (_, _) => const AdminHomeScreen()),
 
       // Pembeli: shell dengan bottom nav Beranda / Telusuri / Profil.
       StatefulShellRoute.indexedStack(

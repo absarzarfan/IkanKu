@@ -1,6 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ikanku/core/data/backend.dart';
+import 'package:ikanku/features/auth/domain/auth.dart';
+import 'package:ikanku/features/auth/presentation/auth_providers.dart';
 import 'package:ikanku/features/catalog/data/mock_catalog_repository.dart';
+import 'package:ikanku/core/errors/app_error.dart';
 import 'package:ikanku/features/catalog/domain/catalog.dart';
+import 'package:ikanku/features/catalog/domain/catalog_remote.dart';
 
 final catalogRepositoryProvider = Provider<CatalogRepository>((ref) => MockCatalogRepository());
 
@@ -29,10 +34,53 @@ class CatalogState {
 class CatalogNotifier extends Notifier<CatalogState> {
   CatalogRepository get _repo => ref.read(catalogRepositoryProvider);
 
+  CatalogRemote? get _remote => ref.read(catalogRemoteProvider);
+
   @override
-  CatalogState build() => CatalogState(products: _repo.products(), categories: _repo.categories());
+  CatalogState build() {
+    if (ref.read(catalogRemoteProvider) == null) return CatalogState(products: _repo.products(), categories: _repo.categories());
+    // Mode Supabase: mulai kosong, muat dari server saat login dan setiap pengguna berganti.
+    ref.listen(authProvider, (_, user) {
+      if (user == null) {
+        state = const CatalogState(products: [], categories: []);
+      } else {
+        refresh();
+      }
+    });
+    if (ref.read(authProvider) != null) Future.microtask(refresh);
+    return const CatalogState(products: [], categories: []);
+  }
+
+  /// Memuat ulang dari backend (penjual: produk tokonya; lainnya: produk aktif).
+  Future<void> refresh() async {
+    final r = _remote;
+    if (r == null) return;
+    try {
+      final mine = ref.read(authProvider)?.role == UserRole.seller;
+      final results = await Future.wait([r.listProducts(mine: mine), r.categories()]);
+      state = CatalogState(products: results[0] as List<Product>, categories: results[1] as List<String>);
+    } catch (e) {
+      ref.read(backendErrorProvider.notifier).report(e);
+    }
+  }
+
+  /// Jalankan tulis ke backend; hasil akhir selalu disamakan dengan server (rollback bila gagal).
+  Future<void> _run(Future<void> Function(CatalogRemote r) f) async {
+    final r = _remote;
+    if (r == null) return;
+    try {
+      await f(r);
+    } catch (e) {
+      ref.read(backendErrorProvider.notifier).report(e);
+    }
+    await refresh();
+  }
 
   void _commit(List<Product> p, List<String> c) {
+    if (_remote != null) {
+      state = CatalogState(products: p, categories: c);
+      return;
+    }
     _repo.saveProducts(p);
     _repo.saveCategories(c);
     state = CatalogState(products: _repo.products(), categories: _repo.categories());
@@ -47,26 +95,41 @@ class CatalogNotifier extends Notifier<CatalogState> {
       list.add(product);
     }
     _commit(list, state.categories);
+    _run((r) => r.saveProduct(product));
   }
 
-  void deleteProduct(String id) => _commit(state.products.where((p) => p.id != id).toList(), state.categories);
+  void deleteProduct(String id) {
+    _commit(state.products.where((p) => p.id != id).toList(), state.categories);
+    _run((r) => r.deleteProduct(id));
+  }
 
   void addCategory(String name) {
     final n = name.trim();
     if (n.isEmpty || state.categories.contains(n)) return;
     _commit(state.products, [...state.categories, n]);
+    _run((r) => r.addCategory(n));
+  }
+
+  /// Ubah/hapus kategori hanya admin di backend (RLS); mode Supabase menolak di sisi klien.
+  bool _categoryEditBlocked() {
+    if (_remote == null) return false;
+    ref.read(backendErrorProvider.notifier).report(const AppError.permission('Hanya admin yang dapat mengubah atau menghapus kategori.'));
+    return true;
   }
 
   void renameCategory(String old, String name) {
     final n = name.trim();
-    if (n.isEmpty) return;
+    if (n.isEmpty || _categoryEditBlocked()) return;
     _commit(
       state.products.map((p) => p.category == old ? p.copyWith(category: n) : p).toList(),
       state.categories.map((c) => c == old ? n : c).toList(),
     );
   }
 
-  void deleteCategory(String name) => _commit(state.products, state.categories.where((c) => c != name).toList());
+  void deleteCategory(String name) {
+    if (_categoryEditBlocked()) return;
+    _commit(state.products, state.categories.where((c) => c != name).toList());
+  }
 
   void setDiscount(String productId, int percent) {
     final p = state.byId(productId);

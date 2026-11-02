@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ikanku/core/errors/app_error.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
 import 'package:ikanku/core/utils/format.dart';
 import 'package:ikanku/core/widgets/widgets.dart';
@@ -55,7 +56,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     if (!ok || !mounted) return;
     final settings = ref.read(sellerSettingsProvider);
     final sub = ref.read(cartSubtotalProvider);
-    final order = ref.read(ordersProvider.notifier).place(
+    final Order order;
+    try {
+      order = await ref.read(ordersProvider.notifier).placeAsync(
           lines: [for (final l in lines) OrderLine(product: l.product, variation: l.variation, qty: l.qty, unitPrice: l.unitPrice)],
           payment: _payment,
           shipping: _shipping,
@@ -64,6 +67,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           buyerName: user?.name ?? address.recipient,
           note: _note.text,
         );
+    } catch (e) {
+      if (mounted) showMsg(context, mapError(e).message);
+      return;
+    }
     ref.read(cartProvider.notifier).removeSelected();
     if (!mounted) return;
     if (_payment == PaymentMethod.transfer) {
