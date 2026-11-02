@@ -319,7 +319,7 @@ class RecommendationsScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Rekomendasi',
       onBack: () => context.canPop() ? context.pop() : context.go('/home'),
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [for (final p in items) ProductRow(product: p)]),
+      body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: EdgeInsets.all(context.pagePadding), children: [for (final p in items) ProductRow(product: p)]),
     );
   }
 }
@@ -439,10 +439,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ClipRRect(borderRadius: BorderRadius.circular(AppRadius.sheet), child: AspectRatio(aspectRatio: 1.6, child: productPicture(p.image, cacheWidth: 900))),
         const SizedBox(height: 14),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(rupiah(p.startingPrice), style: AppText.price),
             if (p.discountPercent > 0) Text('Diskon ${p.discountPercent}%', style: AppText.small.copyWith(color: AppColors.danger)),
-          ]),
+          ])),
+          const SizedBox(width: Gap.sm),
           Row(children: [const Icon(Icons.star, size: 18, color: AppColors.star), Text(' ${p.rating}', style: AppText.body)]),
         ]),
         const SizedBox(height: 12),
@@ -495,7 +496,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           else
             for (final r in reviews)
               AppCard(color: AppColors.field, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(r.author, style: AppText.label), RatingStars(rating: r.rating.toDouble(), size: 12)]),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(r.author, style: AppText.label)), RatingStars(rating: r.rating.toDouble(), size: 12)]),
                 const SizedBox(height: 4),
                 Text(r.text, style: AppText.small.copyWith(fontWeight: FontWeight.w300)),
               ])),

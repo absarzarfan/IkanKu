@@ -36,9 +36,9 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
     return AppScaffold(
       title: 'Produk',
       showBack: false,
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Expanded(child: Text('Daftar Kategori', style: AppText.semi)),
+      body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: EdgeInsets.all(context.pagePadding), children: [
+        Wrap(alignment: WrapAlignment.spaceBetween, crossAxisAlignment: WrapCrossAlignment.center, children: [
+          Text('Daftar Kategori', style: AppText.semi),
           TextButton.icon(onPressed: () => context.push('/seller/categories/new'), icon: const Icon(Icons.add), label: const Text('Tambah Kategori')),
         ]),
         Wrap(spacing: 8, children: [
@@ -64,8 +64,8 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
             child: TextButton.icon(onPressed: () => context.push('/seller/categories/${Uri.encodeComponent(_cat)}/edit'), icon: const Icon(Icons.edit_outlined), label: const Text('Ubah Kategori')),
           ),
         const SizedBox(height: 12),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Expanded(child: Text('Daftar Produk', style: AppText.semi)),
+        Wrap(alignment: WrapAlignment.spaceBetween, crossAxisAlignment: WrapCrossAlignment.center, children: [
+          Text('Daftar Produk', style: AppText.semi),
           TextButton.icon(onPressed: () => context.push('/seller/products/new'), icon: const Icon(Icons.add), label: const Text('Tambah produk')),
         ]),
         if (items.isEmpty) const Padding(padding: EdgeInsets.all(30), child: EmptyState('Belum ada produk')),

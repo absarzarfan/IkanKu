@@ -33,22 +33,20 @@ class SellerHomeScreen extends ConsumerWidget {
       body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         Text('SELAMAT DATANG, ${(user?.name ?? '').toUpperCase()}!', style: AppText.heading),
         const SizedBox(height: 14),
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          childAspectRatio: 1.5,
+        ResponsiveGrid(
+          maxCrossAxisExtent: 220,
+          spacing: Gap.md,
+          runSpacing: Gap.md,
           children: [
             for (final c in cards)
               AppCard(
                 margin: EdgeInsets.zero,
                 onTap: () => context.push('/seller/orders?tab=${sellerTabs.indexOf(c.$2)}'),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Icon(c.$3, color: AppColors.primary),
+                  const SizedBox(height: Gap.sm),
                   Text('${count(c.$2)}', key: Key('count-${c.$2.name}'), style: AppText.price),
-                  Text(c.$1.toUpperCase(), style: AppText.small),
+                  Text(c.$1.toUpperCase(), style: AppText.small, maxLines: 2, overflow: TextOverflow.ellipsis),
                 ]),
               ),
           ],
@@ -97,7 +95,7 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
         Expanded(
           child: items.isEmpty
           ? EmptyState('Belum ada pesanan ${sellerTabLabels[_tab].toLowerCase()}')
-          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: EdgeInsets.all(context.pagePadding), children: [
               for (final o in items)
                 AppCard(
                   onTap: () => context.push('/seller/orders/${o.id}'),
@@ -106,15 +104,16 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
                       ProductImage(asset: o.lines.first.product.image, size: 60),
                       const SizedBox(width: 12),
                       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Text(o.lines.first.product.name, style: AppText.body),
+                        Text(o.lines.first.product.name, style: AppText.body, maxLines: 2, overflow: TextOverflow.ellipsis),
                         Text(o.lines.first.variation.label, style: AppText.small),
                         Text('${o.buyerName} | ${o.payment == PaymentMethod.cod ? 'COD' : 'NON COD'}', style: AppText.small),
                         Text(rupiah(o.total), style: AppText.semi),
+                        const SizedBox(height: Gap.xs),
+                        StatusChip(o.status.label, color: statusColor(o.status)),
                       ])),
-                      StatusChip(o.status.label, color: statusColor(o.status)),
                     ]),
                     const SizedBox(height: 8),
-                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Wrap(alignment: WrapAlignment.end, children: [
                       if (o.status == OrderStatus.menunggu) TextButton(onPressed: () => context.push('/seller/orders/${o.id}'), child: const Text('Proses Pesanan')),
                       if (o.status == OrderStatus.dikemas) TextButton(onPressed: () => context.push('/seller/orders/${o.id}/ship'), child: const Text('Kirim')),
                       if (o.status == OrderStatus.dikirim) TextButton(onPressed: () => n.complete(o.id), child: const Text('Selesai')),
@@ -151,7 +150,7 @@ class SellerOrderDetailScreen extends ConsumerWidget {
     return AppScaffold(
       title: o.status == OrderStatus.menunggu ? 'Proses Pesanan' : 'Detail Pesanan',
       body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(o.id, style: AppText.semi), StatusChip(o.status.label, color: statusColor(o.status))]),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(o.id, style: AppText.semi)), const SizedBox(width: Gap.sm), StatusChip(o.status.label, color: statusColor(o.status))]),
         const SizedBox(height: 12),
         for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: 12), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), Text('x${l.qty}', style: AppText.small)])),
         AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -41,7 +41,7 @@ class _BuyerOrdersScreenState extends ConsumerState<BuyerOrdersScreen> {
       headerExtra: TextTabs(labels: _buyerTabLabels, index: _tab, onChanged: (i) => setState(() => _tab = i), onDark: true),
       body: items.isEmpty
           ? EmptyState('Belum ada pesanan ${_buyerTabLabels[_tab].toLowerCase()}')
-          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [for (final o in items) _OrderCard(order: o)]),
+          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: EdgeInsets.all(context.pagePadding), children: [for (final o in items) _OrderCard(order: o)]),
     );
   }
 }
@@ -61,16 +61,17 @@ class _OrderCard extends ConsumerWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(l.product.name + (order.lines.length > 1 ? ' +${order.lines.length - 1}' : ''), style: AppText.body),
+              Text(l.product.name + (order.lines.length > 1 ? ' +${order.lines.length - 1}' : ''), style: AppText.body, maxLines: 2, overflow: TextOverflow.ellipsis),
               Text('Pilih Variasi ${l.variation.label}', style: AppText.small),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(rupiah(order.total), style: AppText.semi), Text('x${l.qty}', style: AppText.small)]),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(rupiah(order.total), style: AppText.semi)), const SizedBox(width: Gap.sm), Text('x${l.qty}', style: AppText.small)]),
             ]),
           ),
         ]),
         const SizedBox(height: 10),
-        Row(children: [
-          StatusChip(order.status.label, color: statusColor(order.status)),
-          const Spacer(),
+        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(padding: const EdgeInsets.only(top: Gap.md), child: StatusChip(order.status.label, color: statusColor(order.status))),
+          const SizedBox(width: Gap.sm),
+          Expanded(child: Wrap(alignment: WrapAlignment.end, crossAxisAlignment: WrapCrossAlignment.center, children: [
           if (order.status == OrderStatus.menunggu) ...[
             if (order.needsProof) TextButton(onPressed: () => context.push('/payment/${order.id}'), child: const Text('Bayar Sekarang')),
             TextButton(
@@ -83,6 +84,7 @@ class _OrderCard extends ConsumerWidget {
           if (order.status == OrderStatus.selesai)
             TextButton(onPressed: () => context.push(order.review == null ? '/orders/${order.id}/review' : '/orders/${order.id}/review/view'), child: Text(order.review == null ? 'Beri Ulasan' : 'Lihat Ulasan')),
           if (order.status == OrderStatus.ditolak) TextButton(onPressed: () => context.push('/orders/${order.id}/rejected'), child: const Text('Lihat Alasan')),
+        ])),
         ]),
       ]),
     );
@@ -100,14 +102,15 @@ class OrderDetailScreen extends ConsumerWidget {
     return AppScaffold(
       title: o.status == OrderStatus.dikirim ? 'Detail Pengiriman' : 'Detail Pesanan',
       body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(o.id, style: AppText.semi), StatusChip(o.status.label, color: statusColor(o.status))]),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(o.id, style: AppText.semi)), const SizedBox(width: Gap.sm), StatusChip(o.status.label, color: statusColor(o.status))]),
         const SizedBox(height: 12),
         for (final l in o.lines)
           AppCard(child: Row(children: [
             ProductImage(asset: l.product.image, size: 60),
             const SizedBox(width: 12),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(l.product.name, style: AppText.body), Text('Pilih Variasi ${l.variation.label}', style: AppText.small)])),
-            Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(rupiah(l.unitPrice), style: AppText.body), Text('x${l.qty}', style: AppText.small)]),
+            const SizedBox(width: Gap.sm),
+            Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(rupiah(l.unitPrice), style: AppText.body), Text('x${l.qty}', style: AppText.small)])),
           ])),
         AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Alamat Pengiriman', style: AppText.semi),
@@ -149,7 +152,7 @@ class OrderRejectedScreen extends ConsumerWidget {
           const SizedBox(height: 6),
           Text(o.rejectReason ?? 'Pesanan ditolak penjual', key: const Key('reject-reason'), style: AppText.body),
         ])),
-        for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: 12), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), Text(rupiah(l.total), style: AppText.semi)])),
+        for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: 12), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), const SizedBox(width: Gap.sm), Flexible(child: Text(rupiah(l.total), style: AppText.semi))])),
         Row(children: [
           Expanded(child: PillButton(label: 'Kembali', outlined: true, onPressed: () => context.canPop() ? context.pop() : context.go('/orders'))),
           const SizedBox(width: 12),
@@ -196,7 +199,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
       body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
         AppCard(child: Row(children: [ProductImage(asset: o.lines.first.product.image, size: 56), const SizedBox(width: 12), Expanded(child: Text('${o.lines.first.product.name}\n${o.lines.first.variation.label}', style: AppText.body))])),
         Center(child: Text('Bagaimana pengalaman Anda?', style: AppText.semi)),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Wrap(alignment: WrapAlignment.center, children: [
           for (var i = 1; i <= 5; i++)
             IconButton(key: Key('star-$i'), tooltip: '$i bintang', iconSize: 36, icon: Icon(i <= _rating ? Icons.star : Icons.star_border, color: AppColors.star), onPressed: () => setState(() => _rating = i)),
         ]),

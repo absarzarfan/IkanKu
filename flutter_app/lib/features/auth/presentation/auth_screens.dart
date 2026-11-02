@@ -121,7 +121,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             validator: Validators.password,
             suffix: IconButton(tooltip: 'Tampilkan kata sandi', icon: Icon(_show ? Icons.visibility_off : Icons.visibility), onPressed: () => setState(() => _show = !_show)),
           ),
-          InkWell(onTap: () => context.push('/forgot'), child: Padding(padding: const EdgeInsets.symmetric(vertical: 6), child: Text('Lupa kata sandi', style: AppText.label.copyWith(color: AppColors.navy)))),
+          InkWell(onTap: () => context.push('/forgot'), child: ConstrainedBox(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), child: Align(alignment: Alignment.centerLeft, widthFactor: 1, child: Text('Lupa kata sandi', style: AppText.label.copyWith(color: AppColors.navy))))),
           const SizedBox(height: 24),
           PillButton(label: _busy ? 'Memproses...' : 'Login', height: 56, onPressed: _busy ? null : _submit),
           const SizedBox(height: 16),

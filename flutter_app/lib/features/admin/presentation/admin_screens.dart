@@ -47,10 +47,10 @@ class AdminHomeScreen extends ConsumerWidget {
   }
 }
 
-Widget _async<T>(AsyncValue<List<T>> v, Widget Function(List<T>) build) => v.when(
+Widget _async<T>(AsyncValue<List<T>> v, VoidCallback onRetry, Widget Function(List<T>) build) => v.when(
       data: (d) => d.isEmpty ? const EmptyState(AdminStrings.empty, icon: Icons.inbox_outlined) : build(d),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => const EmptyState('Gagal memuat data. Tarik untuk mencoba lagi.', icon: Icons.error_outline),
+      error: (e, _) => ErrorState(message: 'Gagal memuat data.', onRetry: onRetry),
     );
 
 class _SearchBox extends StatelessWidget {
@@ -92,7 +92,7 @@ class _UsersTabState extends ConsumerState<_UsersTab> {
     return Column(children: [
       _SearchBox(onSubmit: (v) => setState(() => _q = v)),
       Expanded(
-        child: _async(ref.watch(_adminUsersProvider(_q)), (list) => ListView(children: [
+        child: _async(ref.watch(_adminUsersProvider(_q)), () => ref.invalidate(_adminUsersProvider(_q)), (list) => ListView(children: [
               for (final u in list)
                 ListTile(
                   title: Text(u.name.isEmpty ? u.email : u.name, style: AppText.body),
@@ -110,7 +110,7 @@ class _UsersTabState extends ConsumerState<_UsersTab> {
 class _OrdersTab extends ConsumerWidget {
   const _OrdersTab();
   @override
-  Widget build(BuildContext context, WidgetRef ref) => _async(ref.watch(_adminOrdersProvider), (list) => ListView(children: [
+  Widget build(BuildContext context, WidgetRef ref) => _async(ref.watch(_adminOrdersProvider), () => ref.invalidate(_adminOrdersProvider), (list) => ListView(children: [
         for (final o in list)
           ListTile(
             title: Text('${o.code} · ${o.status}', style: AppText.body),
@@ -142,7 +142,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
   Widget build(BuildContext context) => Column(children: [
         _SearchBox(onSubmit: (v) => setState(() => _q = v)),
         Expanded(
-          child: _async(ref.watch(_adminProductsProvider(_q)), (list) => ListView(children: [
+          child: _async(ref.watch(_adminProductsProvider(_q)), () => ref.invalidate(_adminProductsProvider(_q)), (list) => ListView(children: [
                 for (final p in list)
                   ListTile(
                     title: Text(p.name, style: AppText.body),
