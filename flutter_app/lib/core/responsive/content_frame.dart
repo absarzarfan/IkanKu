@@ -18,6 +18,7 @@ class ContentFrame extends StatelessWidget {
     final pad = padded ? context.pagePadding : 0.0;
     Widget c = Align(
       alignment: Alignment.topCenter,
+      heightFactor: 1,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: maxWidth),
         child: Padding(padding: EdgeInsets.symmetric(horizontal: pad), child: child),

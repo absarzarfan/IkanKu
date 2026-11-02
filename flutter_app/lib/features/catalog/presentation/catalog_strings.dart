@@ -1,17 +1,26 @@
 /// Teks UI fitur katalog (Home, pencarian, detail produk). Satu berkas agar mudah diekstrak untuk versi bahasa Inggris.
 class CatalogStrings {
-  static String greeting(String name) => 'Hallo, $name!';
+  static String greeting(String name) => 'Halo, ${name.trim().split(' ').first}!';
+  static const tagline = 'Belanja Ikan Mudah Dengan IkanKu';
+  static const valueProps = ['Ikan Segar Langsung ke Rumah Anda', 'Mudah dan Praktis', 'Jaminan Kesegaran'];
+  static const allFish = 'Semua ikan';
+  static const categoriesEyebrow = 'Kategori';
+  static const recoEyebrow = 'Pilihan untuk Anda';
+  static const gridView = 'Tampilan grid';
+  static const listView = 'Tampilan daftar';
+  static const sortTooltip = 'Urutkan';
+  static String applyCount(int n) => 'Terapkan - $n produk';
   static const guest = 'Tamu';
-  static const searchEntry = 'Cari ikan';
-  static const searchHint = 'Cari ikan';
+  static const searchEntry = 'Cari ikan air tawar';
+  static const searchHint = 'Cari ikan air tawar';
   static const cartTooltip = 'Keranjang';
-  static const categories = 'Semua Kategori';
+  static const categories = 'Kategori ikan';
   static const seeAll = 'Lihat semua';
-  static const recommendations = 'Rekomendasi untuk anda';
+  static const recommendations = 'Rekomendasi untuk Anda';
   static const topRated = 'Rating tertinggi';
   static const moreChoices = 'Pilihan lainnya';
-  static const seeMore = 'Lihat Lebih';
-  static const buyBanner = 'Beli Sekarang';
+  static const seeMore = 'Lihat semua ikan';
+  static const buyBanner = 'Belanja Sekarang';
   static const noProducts = 'Belum ada produk';
   static const noProductsInCategory = 'Belum ada produk di kategori ini';
   static const productNotFound = 'Produk tidak ditemukan';
@@ -41,6 +50,9 @@ class CatalogStrings {
   static const addToCart = 'Masukkan Keranjang';
   static const buyNow = 'Beli Sekarang';
   static const description = 'Deskripsi';
+  static const readMore = 'Selengkapnya';
+  static const readLess = 'Lebih sedikit';
+  static const variations = 'Variasi';
   static const reviewsTitle = 'Penilaian & Ulasan Produk';
   static const noReviews = 'Belum ada ulasan';
   static const showReviews = 'Tampilkan';

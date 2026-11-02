@@ -26,7 +26,7 @@ class SellerSettingsScreen extends ConsumerWidget {
         tile(Icons.payments_outlined, 'Metode Pembayaran', '/seller/payment-methods'),
         tile(Icons.rate_review_outlined, 'Ulasan', '/seller/reviews'),
         tile(Icons.discount_outlined, 'Diskon', '/seller/discount'),
-        tile(Icons.help_outline, 'Pusat Bantuan', '/help'),
+        tile(Icons.help_outline, 'Pusat Bantuan', '/seller/help'),
         const SizedBox(height: Gap.sm),
         const SectionHeader('Metode Pengiriman'),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Kirim'), value: s.deliveryEnabled, onChanged: (v) => n.update(s.copyWith(deliveryEnabled: v || s.pickupEnabled ? v : true))),

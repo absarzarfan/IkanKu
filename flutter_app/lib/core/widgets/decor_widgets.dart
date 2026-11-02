@@ -18,8 +18,8 @@ class IconChip extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           gradient: glass ? null : AppGradients.chipTint,
-          color: glass ? const Color(0x2EFFFFFF) : null,
-          border: glass ? Border.all(color: const Color(0x47FFFFFF)) : null,
+          color: glass ? AppColors.glass : null,
+          border: glass ? Border.all(color: AppColors.glassBorder) : null,
           borderRadius: BorderRadius.circular(AppRadius.icon),
         ),
         child: Icon(icon, size: size * 0.5, color: glass ? AppColors.onPrimary : (color ?? AppColors.primary)),

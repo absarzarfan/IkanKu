@@ -17,7 +17,7 @@ void main() {
     final c = await pumpApp(tester);
     expect(c.read(routerProvider).state.uri.path, '/home');
     expect(find.text('Jelajahi Website kami'), findsNothing);
-    expect(find.text('Hallo, Miftahul Fazra!'), findsOneWidget);
+    expect(find.text('Halo, Miftahul!'), findsOneWidget);
     expect(c.read(authProvider)?.id, 'b1');
   });
 
@@ -63,8 +63,8 @@ void main() {
     await tester.tap(find.text('Masuk'));
     await tester.pumpAndSettle();
     await loginAs(tester, 'fharaa@gmail.com');
-    expect(find.text('Hallo, Miftahul Fazra!'), findsOneWidget);
-    expect(find.text('Rekomendasi untuk anda'), findsOneWidget);
+    expect(find.text('Halo, Miftahul!'), findsOneWidget);
+    expect(find.text('Rekomendasi untuk Anda'), findsOneWidget);
   });
 
   testWidgets('login penjual', (tester) async {

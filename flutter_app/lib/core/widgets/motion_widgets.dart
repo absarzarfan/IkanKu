@@ -158,7 +158,7 @@ class SkeletonList extends StatelessWidget {
       );
 }
 
-/// Kerangka berbentuk baris produk/pesanan: foto bulat + dua baris teks, dalam kartu.
+/// Kerangka berbentuk baris produk/pesanan: thumbnail persegi + dua baris teks, dalam kartu.
 class SkeletonRow extends StatelessWidget {
   const SkeletonRow({super.key});
   @override
@@ -167,7 +167,7 @@ class SkeletonRow extends StatelessWidget {
         child: const Padding(
           padding: EdgeInsets.all(12),
           child: Row(children: [
-            Skeleton(height: 60, width: 60, radius: 30),
+            Skeleton(height: 60, width: 60, radius: AppRadius.thumb),
             SizedBox(width: 12),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Skeleton(height: 14), SizedBox(height: 8), Skeleton(height: 14, width: 96)])),
           ]),

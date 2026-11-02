@@ -13,6 +13,7 @@ export 'package:ikanku/core/responsive/content_frame.dart';
 export 'package:ikanku/core/widgets/decor_widgets.dart';
 export 'package:ikanku/core/widgets/motion_widgets.dart';
 export 'package:ikanku/core/responsive/spacing.dart';
+export 'package:ikanku/core/widgets/remake_widgets.dart';
 
 /// Layout standar: kotak biru melengkung di atas (Figma "kotak"), judul, tombol kembali.
 class AppScaffold extends StatelessWidget {
@@ -26,7 +27,9 @@ class AppScaffold extends StatelessWidget {
     this.bottomNavigationBar,
     this.actions = const [],
     this.headerExtra,
+    this.maxWidth = kContentMaxWidth,
   });
+
 
   final String title;
   final Widget body;
@@ -36,6 +39,7 @@ class AppScaffold extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final List<Widget> actions;
   final Widget? headerExtra;
+  final double maxWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +79,7 @@ class AppScaffold extends StatelessWidget {
             ),
             ),
           ),
-          Expanded(child: ContentFrame(padded: false, safe: true, child: bottom == null && bottomNavigationBar == null ? SafeArea(top: false, child: body) : body)),
+          Expanded(child: ContentFrame(maxWidth: maxWidth, padded: false, safe: true, child: bottom == null && bottomNavigationBar == null ? SafeArea(top: false, child: body) : body)),
           if (bottom != null) ContentFrame(padded: false, safe: true, child: bottom!),
         ],
       ),
@@ -113,11 +117,14 @@ class PillButton extends StatelessWidget {
       constraints: BoxConstraints(minHeight: h, minWidth: expanded ? double.infinity : 64),
       padding: const EdgeInsets.symmetric(horizontal: Gap.xl, vertical: Gap.sm),
       // Tombol tidak melebar penuh (alignment membuat Container mengisi lebar) kecuali expanded.
-      alignment: expanded ? Alignment.center : null,
-      child: Stack(alignment: Alignment.center, children: [
-        Opacity(opacity: busy ? 0 : 1, child: text),
-        if (busy) SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: fg)),
-      ]),
+      child: Center(
+        heightFactor: 1,
+        widthFactor: expanded ? null : 1,
+        child: Stack(alignment: Alignment.center, children: [
+          Opacity(opacity: busy ? 0 : 1, child: text),
+          if (busy) SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: fg)),
+        ]),
+      ),
     );
     final button = Pressable(onTap: enabled ? onPressed : null, borderRadius: radius, decoration: decoration, minSize: h, child: child);
     return expanded ? SizedBox(width: double.infinity, child: button) : button;
@@ -482,14 +489,15 @@ class StatusChip extends StatelessWidget {
 
 /// Header bagian: judul (membungkus, tidak overflow) dan aksi opsional (target sentuh 48 dp), sejajar garis dasar.
 class SectionHeader extends StatelessWidget {
-  const SectionHeader(this.title, {super.key, this.action, this.onAction});
+  const SectionHeader(this.title, {super.key, this.action, this.onAction, this.eyebrow});
   final String title;
+  final String? eyebrow;
   final String? action;
   final VoidCallback? onAction;
   @override
   Widget build(BuildContext context) => Row(
         children: [
-          Expanded(child: SectionTitle(title)),
+          Expanded(child: SectionTitle(title, eyebrow: eyebrow)),
           if (action != null)
             InkWell(
               onTap: onAction,
@@ -619,17 +627,39 @@ class AnimatedCheck extends StatelessWidget {
   }
 }
 
-/// Badge hitungan kecil di atas ikon navigasi.
+/// Badge hitungan di kanan atas ikon, di LUAR kotak ikon (tidak pernah menimpa glyph): isi 18 dp, cincin putih 2 dp.
 class NavBadge extends StatelessWidget {
-  const NavBadge({super.key, required this.count, required this.child, this.label});
+  const NavBadge({super.key, required this.count, required this.child, this.label, this.badgeKey});
   final int count;
   final Widget child;
   final String? label;
+  final Key? badgeKey;
   @override
-  Widget build(BuildContext context) => Badge(
-        isLabelVisible: count > 0,
-        label: Text(count > 99 ? '99+' : '$count', semanticsLabel: label == null ? null : '$count $label'),
-        backgroundColor: AppColors.danger,
-        child: child,
-      );
+  Widget build(BuildContext context) {
+    if (count <= 0) return child;
+    final text = count > 99 ? '99+' : '$count';
+    return Stack(clipBehavior: Clip.none, children: [
+      child,
+      Positioned.fill(
+        child: Align(
+          alignment: Alignment.topRight,
+          child: FractionalTranslation(
+            translation: const Offset(1, -0.5),
+            child: Semantics(
+              label: label == null ? text : '$count $label',
+              excludeSemantics: true,
+              child: Container(
+                key: badgeKey,
+                constraints: const BoxConstraints(minWidth: AppSize.badge + 4, minHeight: AppSize.badge + 4),
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(color: AppColors.danger, shape: text.length > 1 ? BoxShape.rectangle : BoxShape.circle, borderRadius: text.length > 1 ? BorderRadius.circular(AppSize.badge) : null, border: Border.all(color: Colors.white, width: 2)),
+                child: Text(text, style: AppText.caption.copyWith(color: Colors.white, fontWeight: FontWeight.w700, height: 1.1)),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ]);
+  }
 }

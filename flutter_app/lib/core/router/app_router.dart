@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/router/tab_reselect.dart';
-import 'package:ikanku/core/theme/app_theme.dart';
 import 'package:ikanku/core/widgets/widgets.dart';
 import 'package:ikanku/features/orders/domain/orders.dart';
 import 'package:ikanku/features/orders/presentation/order_providers.dart';
@@ -22,7 +21,7 @@ import 'package:ikanku/features/seller/presentation/seller_settings_screens.dart
 
 const _publicPaths = {'/', '/login', '/register', '/register/otp', '/register/data', '/forgot', '/offline', '/pick-kecamatan', '/pick-location'};
 const _guestOnly = {'/', '/login', '/register', '/register/otp', '/register/data', '/forgot'};
-const _buyerPrefixes = ['/home', '/search', '/profile', '/cart', '/checkout', '/category', '/recommendations', '/product', '/payment', '/order-success', '/addresses', '/shop'];
+const _buyerPrefixes = ['/home', '/search', '/profile', '/cart', '/checkout', '/category', '/recommendations', '/product', '/payment', '/order-success', '/addresses', '/shop', '/orders', '/help'];
 
 String homeFor(UserRole r) => switch (r) {
       UserRole.seller => '/seller',
@@ -68,20 +67,24 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/forgot', builder: (_, _) => const ForgotPasswordScreen()),
       GoRoute(path: '/offline', builder: (_, _) => const OfflineScreen()),
       GoRoute(path: '/pick-kecamatan', builder: (_, _) => const PickKecamatanScreen()),
-      GoRoute(path: '/help', builder: (_, _) => const HelpCenterScreen()),
       GoRoute(path: '/admin', builder: (_, _) => const AdminHomeScreen()),
 
       // Pembeli: shell dengan bottom nav Beranda / Telusuri / Profil.
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => _ShellScaffold(shell: shell, items: _buyerNav, badgeIndex: 2, badgeLabel: 'pesanan aktif'),
         branches: [
-          StatefulShellBranch(routes: [GoRoute(path: '/home', builder: (_, _) => const HomeScreen())]),
+          StatefulShellBranch(routes: [
+            GoRoute(path: '/home', builder: (_, _) => const HomeScreen()),
+            GoRoute(path: '/recommendations', builder: (_, _) => const RecommendationsScreen()),
+            GoRoute(path: '/category/:name', builder: (_, s) => CategoryScreen(category: s.pathParameters['name']!)),
+                ]),
           StatefulShellBranch(routes: [GoRoute(path: '/search', builder: (_, _) => const SearchScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen())]),
+          StatefulShellBranch(routes: [
+            GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
+                        GoRoute(path: '/help', builder: (_, _) => const HelpCenterScreen()),
+          ]),
         ],
       ),
-      GoRoute(path: '/category/:name', builder: (_, s) => CategoryScreen(category: s.pathParameters['name']!)),
-      GoRoute(path: '/recommendations', builder: (_, _) => const RecommendationsScreen()),
       GoRoute(path: '/product/:id', builder: (_, s) => ProductDetailScreen(productId: s.pathParameters['id']!)),
       GoRoute(path: '/cart', builder: (_, _) => const CartScreen()),
       GoRoute(path: '/checkout', builder: (_, _) => const CheckoutScreen()),
@@ -103,9 +106,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => _ShellScaffold(shell: shell, items: _sellerNav),
         branches: [
-          StatefulShellBranch(routes: [GoRoute(path: '/seller', builder: (_, _) => const SellerHomeScreen())]),
+          StatefulShellBranch(routes: [
+            GoRoute(path: '/seller', builder: (_, _) => const SellerHomeScreen()),
+                      ]),
           StatefulShellBranch(routes: [GoRoute(path: '/seller/products', builder: (_, _) => const SellerProductsScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/seller/settings', builder: (_, _) => const SellerSettingsScreen())]),
+          StatefulShellBranch(routes: [
+            GoRoute(path: '/seller/settings', builder: (_, _) => const SellerSettingsScreen()),
+            GoRoute(path: '/seller/help', builder: (_, _) => const HelpCenterScreen()),
+          ]),
         ],
       ),
       GoRoute(path: '/seller/orders', builder: (_, s) => SellerOrdersScreen(initialTab: int.tryParse(s.uri.queryParameters['tab'] ?? '') ?? 0)),
@@ -129,61 +137,32 @@ final routerProvider = Provider<GoRouter>((ref) {
   return router;
 });
 
-const _buyerNav = [(Icons.home_outlined, 'Beranda'), (Icons.search, 'Telusuri'), (Icons.account_circle_outlined, 'Profil')];
-const _sellerNav = [(Icons.home_outlined, 'Beranda'), (Icons.inventory_2_outlined, 'Produk'), (Icons.settings_outlined, 'Pengaturan')];
+const _buyerNav = [BarItem(Icons.home_outlined, Icons.home, 'Beranda'), BarItem(Icons.search, Icons.search, 'Telusuri'), BarItem(Icons.account_circle_outlined, Icons.account_circle, 'Profil')];
+const _sellerNav = [BarItem(Icons.home_outlined, Icons.home, 'Beranda'), BarItem(Icons.inventory_2_outlined, Icons.inventory_2, 'Produk'), BarItem(Icons.settings_outlined, Icons.settings, 'Pengaturan')];
 
-/// Bottom nav biru melengkung (Figma "Tab Bar pembeli" 6443:15697).
+/// Shell dengan bottom bar putih (pil terpilih). Layar level-jelajah berada di dalam cabang shell sehingga bar selalu tampil.
 class _ShellScaffold extends ConsumerWidget {
   const _ShellScaffold({required this.shell, required this.items, this.badgeIndex, this.badgeLabel});
   final int? badgeIndex;
   final String? badgeLabel;
   final StatefulNavigationShell shell;
-  final List<(IconData, String)> items;
+  final List<BarItem> items;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Badge: jumlah pesanan aktif (menunggu, dikemas, dikirim) pada tab Profil, dari data yang sudah ada.
     final active = badgeIndex == null ? 0 : ref.watch(ordersProvider).where((o) => o.status == OrderStatus.menunggu || o.status == OrderStatus.dikemas || o.status == OrderStatus.dikirim).length;
     return Scaffold(
       body: shell,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(gradient: AppGradients.nav, borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.sheet))),
-        child: Material(
-         type: MaterialType.transparency,
-         child: SafeArea(
-          top: false,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 64),
-            child: IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              for (final (i, it) in items.indexed)
-                Expanded(
-                  child: Semantics(
-                    selected: i == shell.currentIndex,
-                    button: true,
-                    child: InkWell(
-                    onTap: () {
-                      if (i == shell.currentIndex) ref.read(tabReselectProvider.notifier).fire(i);
-                      shell.goBranch(i, initialLocation: i == shell.currentIndex);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Gap.xs, vertical: Gap.sm),
-                      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        AnimatedContainer(
-                          duration: AppMotion.of(context, AppMotion.fast),
-                          curve: AppMotion.curve,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                          decoration: BoxDecoration(color: i == shell.currentIndex ? const Color(0x2EFFFFFF) : const Color(0x00FFFFFF), borderRadius: BorderRadius.circular(AppRadius.card)),
-                          child: AnimatedScale(scale: i == shell.currentIndex ? 1.1 : 1, duration: AppMotion.of(context, AppMotion.base), curve: AppMotion.curve, child: NavBadge(count: i == badgeIndex ? active : 0, label: badgeLabel, child: Icon(it.$1, color: AppColors.onPrimary.withValues(alpha: i == shell.currentIndex ? 1 : 0.75)))),
-                        ),
-                        Text(it.$2, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.navLabel.copyWith(fontWeight: i == shell.currentIndex ? FontWeight.w600 : FontWeight.w400)),
-                      ]),
-                    ),
-                  ),
-                  ),
-                ),
-            ])),
-          ),
-         ),
-        ),
+      bottomNavigationBar: AppBottomBar(
+        items: items,
+        index: shell.currentIndex,
+        badgeIndex: badgeIndex,
+        badgeCount: active,
+        badgeLabel: badgeLabel,
+        onTap: (i) {
+          if (i == shell.currentIndex) ref.read(tabReselectProvider.notifier).fire(i);
+          shell.goBranch(i, initialLocation: i == shell.currentIndex);
+        },
       ),
     );
   }

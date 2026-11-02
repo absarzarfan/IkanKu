@@ -33,6 +33,17 @@ class AppColors {
   static const scrimClear = Color(0x00050315);
   static const shadowSoft = Color(0x33000000);
   static const shadowFaint = Color(0x0F000000);
+  // Interaksi: tint merek (bukan abu-abu). Hover ~6%, tekan ~10%, percikan ~12%.
+  static const hover = Color(0x0F1672C4);
+  static const pressed = Color(0x1A1672C4);
+  static const splash = Color(0x1F1672C4);
+  // Kaca putih di atas biru (icon chip, gelembung).
+  static const glass = Color(0x2EFFFFFF);
+  static const glassBorder = Color(0x47FFFFFF);
+  // Overlay foto: gradien bawah gelap agar teks putih >= 4.5:1.
+  static const photoShade = Color(0xCC050315);
+  static const photoShadeClear = Color(0x00050315);
+  static const buttonOnPhoto = Color(0xB3050315);
 }
 
 /// Gradien web (--grad-primary, --grad-surface) dengan selisih terang maksimal 6% dari warna datar.
@@ -50,7 +61,7 @@ class AppGradients {
 }
 
 class AppRadius {
-  static const double field = 10, chip = 7, icon = 14, card = 20, sheet = 28, pill = 30, header = 28, headerAuth = 30;
+  static const double field = 10, chip = 7, icon = 14, thumb = 16, card = 20, sheet = 28, pill = 30, header = 28, headerAuth = 30, headerCurve = 32;
 }
 
 class AppShadow {
@@ -78,7 +89,7 @@ class AppMotion {
 
 /// Dimensi kontrol (dp). Tinggi minimum tombol 48 agar lolos pedoman target sentuh.
 class AppSize {
-  static const double button = 50, buttonLarge = 56, buttonSmall = 48, searchBar = 48;
+  static const double button = 50, buttonLarge = 56, buttonSmall = 48, searchBar = 52, chipHeight = 40, badge = 18, navBar = 64, avatar = 64;
 }
 
 class AppText {
@@ -119,6 +130,10 @@ ThemeData buildTheme() {
     useMaterial3: true,
     fontFamily: 'Poppins',
     scaffoldBackgroundColor: AppColors.background,
+    hoverColor: AppColors.hover,
+    highlightColor: AppColors.pressed,
+    splashColor: AppColors.splash,
+    focusColor: AppColors.pressed,
     pageTransitionsTheme: PageTransitionsTheme(builders: {for (final p in TargetPlatform.values) p: const FadeSlidePageTransitionsBuilder()}),
     colorScheme: scheme,
     appBarTheme: const AppBarTheme(backgroundColor: AppColors.primary, foregroundColor: AppColors.onPrimary),
@@ -138,6 +153,7 @@ ThemeData buildTheme() {
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: AppColors.surface,
+      showDragHandle: false,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.sheet))),
     ),
     dialogTheme: DialogThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card))),

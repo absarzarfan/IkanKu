@@ -76,10 +76,13 @@ void main() {
         final section = Space.sectionGapFor(widthClassOf(size.width));
         const tol = 0.5;
 
-        // Atas: kategori -> banner -> titik -> judul rekomendasi.
+        // Atas: kategori -> banner -> titik -> kartu nilai jual -> judul rekomendasi (Phase 15R: strip ValuePropCard disisipkan).
         expect(r('home-banner').top - r('home-categories').bottom, closeTo(section, tol), reason: 'kategori -> banner');
         expect(r('home-banner-dots').top - r('home-banner').bottom, closeTo(Space.dotsGap, tol), reason: 'banner -> titik');
-        expect(r('home-reco-title').top - r('home-banner-dots').bottom, closeTo(section, tol), reason: 'titik -> judul');
+        expect(r('home-valueprops').top - r('home-banner-dots').bottom, closeTo(section, tol), reason: 'titik -> nilai jual');
+        await scrollTo('home-reco-title');
+        await tester.pumpAndSettle();
+        expect(r('home-reco-title').top - r('home-valueprops').bottom, closeTo(section, tol), reason: 'nilai jual -> judul');
 
         // Judul -> bagian atas foto, dan jarak horizontal antar kartu.
         await scrollTo('home-reco-photo-0');
@@ -92,12 +95,13 @@ void main() {
         await scrollTo('home-list-first');
         await tester.pumpAndSettle();
         final unitBottom = r('home-reco-card-0').bottom;
-        expect(r('home-list-first').top - unitBottom, closeTo(section, tol), reason: 'kartu -> daftar');
+        expect(r('home-all-title').top - unitBottom, closeTo(section, tol), reason: 'kartu -> judul Semua ikan');
+        expect(r('home-list-first').top - r('home-all-title').bottom, closeTo(Space.sectionTitleGap, tol), reason: 'judul -> grid');
 
         // Ujung daftar: tombol terakhir tidak tertutup tab bawah.
         await tester.drag(find.byType(Scrollable).first, const Offset(0, -3000));
         await tester.pumpAndSettle();
-        final last = tester.getRect(find.text('Lihat Lebih'));
+        final last = tester.getRect(find.text('Lihat semua ikan'));
         final navTop = tester.getRect(find.text('Beranda')).top;
         expect(last.bottom, lessThanOrEqualTo(navTop));
       });
