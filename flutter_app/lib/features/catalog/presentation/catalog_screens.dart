@@ -135,7 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         onRefresh: _refresh,
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.only(bottom: Space.minBottomClearance(context)),
           children: [
             GradientHeader(
               padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top + Gap.lg, bottom: 18),
@@ -282,7 +282,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 PillButton(label: 'Lihat Lebih', outlined: true, onPressed: () => context.push('/recommendations')),
               ]),
             ),
-            SizedBox(height: Space.minBottomClearance(context)),
           ],
         ),
       ),

@@ -146,3 +146,7 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - SectionHeader: SectionTitle polish (batang aksen) + aksi 48 dp; judul membungkus.
 - `Space.minBottomClearance` kini = inset aman + 16 (bukan + tinggi tab): tab bawah berada DI LUAR body Scaffold (bottomNavigationBar), sehingga menambah 64 dp membuat item terakhir tidak bisa dijangkau. Tes `spacing_test` 'VGap dan minBottomClearance' disesuaikan (ekspektasi lama usang).
 - `screens_test` 'Keluar dari profil': ditambah `ensureVisible` setelah `scrollUntilVisible` (scrollUntilVisible berhenti saat widget sudah dibangun di cache extent, di luar viewport, sehingga tap mengenai tab bawah). Asersi tidak berubah.
+
+## Phase 13b - clearance bawah (PART 4)
+- Semua tab (pembeli: Beranda/Telusuri/Profil; penjual: Beranda/Produk/Pengaturan) memakai `bottomNavigationBar` Scaffold, jadi tab TIDAK menimpa body. Padding bawah isi = inset aman + 16 (`Space.minBottomClearance`/`bottomClearance`). Beranda: spacer akhir diganti padding ListView.
+- Tes baru `bottom_clearance_test.dart` (360x800, 412x915, 6 tab): item terakhir terlihat penuh; jarak ke tab 16..32 dp bila isi bisa di-scroll; bila isi muat tanpa scroll cukup >= 16.
