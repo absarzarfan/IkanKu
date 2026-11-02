@@ -114,13 +114,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(rupiah(l.unitPrice), style: AppText.body), Text('x${l.qty}', style: AppText.small)]),
                   ]),
                 ),
-              Text('Metode Pengiriman', style: AppText.semi),
+              const SectionHeader('Metode Pengiriman'),
               Wrap(spacing: 8, children: [
                 if (settings.deliveryEnabled) ChoiceChip(key: const Key('ship-kirim'), label: const Text('Kirim'), selected: _shipping == ShippingMethod.kirim, onSelected: (_) => setState(() => _shipping = ShippingMethod.kirim)),
                 if (settings.pickupEnabled) ChoiceChip(key: const Key('ship-jemput'), label: const Text('Jemput'), selected: _shipping == ShippingMethod.jemput, onSelected: (_) => setState(() => _shipping = ShippingMethod.jemput)),
               ]),
               const SizedBox(height: Gap.md),
-              Text('Metode Pembayaran', style: AppText.semi),
+              const SectionHeader('Metode Pembayaran'),
               Wrap(spacing: 8, children: [
                 if (settings.transferEnabled) ChoiceChip(key: const Key('pay-transfer'), label: const Text('Transfer'), selected: _payment == PaymentMethod.transfer, onSelected: (_) => setState(() => _payment = PaymentMethod.transfer)),
                 if (settings.codEnabled) ChoiceChip(key: const Key('pay-cod'), label: const Text('COD'), selected: _payment == PaymentMethod.cod, onSelected: (_) => setState(() => _payment = PaymentMethod.cod)),
@@ -174,7 +174,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
             KeyValueRow('Total', rupiah(order.total), bold: true),
           ]),
         ),
-        Text('Bukti Pembayaran', style: AppText.semi),
+        const SectionHeader('Bukti Pembayaran'),
         const SizedBox(height: Gap.sm),
         InkWell(
           onTap: () => setState(() => _picked = true),
@@ -221,7 +221,7 @@ class OrderSuccessScreen extends ConsumerWidget {
           if (order != null)
             AppCard(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('Ringkasan Pesanan', style: AppText.semi),
+                const SectionHeader('Ringkasan Pesanan'),
                 const SizedBox(height: Gap.sm),
                 for (final l in order.lines) KeyValueRow('${l.product.name} x${l.qty}', rupiah(l.total)),
                 const Divider(),

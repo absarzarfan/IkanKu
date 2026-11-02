@@ -38,7 +38,7 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
       showBack: false,
       body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: Space.padTab(context), children: [
         Wrap(alignment: WrapAlignment.spaceBetween, crossAxisAlignment: WrapCrossAlignment.center, children: [
-          Text('Daftar Kategori', style: AppText.semi),
+          const SectionHeader('Daftar Kategori'),
           TextButton.icon(onPressed: () => context.push('/seller/categories/new'), icon: const Icon(Icons.add), label: const Text('Tambah Kategori')),
         ]),
         Wrap(spacing: 8, children: [
@@ -65,7 +65,7 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
           ),
         const SizedBox(height: Gap.md),
         Wrap(alignment: WrapAlignment.spaceBetween, crossAxisAlignment: WrapCrossAlignment.center, children: [
-          Text('Daftar Produk', style: AppText.semi),
+          const SectionHeader('Daftar Produk'),
           TextButton.icon(onPressed: () => context.push('/seller/products/new'), icon: const Icon(Icons.add), label: const Text('Tambah produk')),
         ]),
         if (items.isEmpty) const Padding(padding: EdgeInsets.all(Gap.xxxl), child: EmptyState('Belum ada produk')),
@@ -102,10 +102,10 @@ class SellerProductDetailScreen extends ConsumerWidget {
         const SizedBox(height: Gap.sm),
         Text(p.description, style: AppText.body),
         const SizedBox(height: Gap.md),
-        Text('Variasi', style: AppText.semi),
+        const SectionHeader('Variasi'),
         for (final v in p.variations) AppCard(margin: const EdgeInsets.only(top: Gap.sm), child: Row(children: [Expanded(child: Text(v.label, style: AppText.body)), Text('${rupiah(v.price)} | Stok ${v.stock}', style: AppText.small)])),
         const SizedBox(height: Gap.md),
-        Text('Penilaian & Ulasan (${p.reviews.length})', style: AppText.semi),
+        SectionHeader('Penilaian & Ulasan (${p.reviews.length})'),
         for (final r in p.reviews) AppCard(color: AppColors.field, child: Row(children: [Expanded(child: Text('${r.author}: ${r.text}', style: AppText.small)), RatingStars(rating: r.rating.toDouble(), size: 12)])),
         const SizedBox(height: Gap.md),
         PillButton(label: 'Ubah Produk', onPressed: () => context.push('/seller/products/${p.id}/edit')),

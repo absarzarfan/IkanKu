@@ -26,7 +26,7 @@ class ProfileScreen extends ConsumerWidget {
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(user?.name ?? '-', style: AppText.heading), Text(user?.email ?? '', style: AppText.small), Text(user?.phone ?? '', style: AppText.small)])),
         ]),
         const SizedBox(height: Gap.xl),
-        Text('Pesanan Saya', style: AppText.semi),
+        const SectionHeader('Pesanan Saya'),
         const SizedBox(height: Gap.sm),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           for (final (i, e) in [(Icons.account_balance_wallet_outlined, 'Belum Bayar'), (Icons.inventory_2_outlined, 'Dikemas'), (Icons.local_shipping_outlined, 'Dikirim'), (Icons.check_circle_outline, 'Selesai'), (Icons.cancel_outlined, 'Ditolak')].indexed)

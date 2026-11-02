@@ -347,7 +347,7 @@ class ShopScreen extends ConsumerWidget {
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(name, style: AppText.semi), Text('${items.length} produk', style: AppText.small)])),
           ]),
         ),
-        Text('Produk', style: AppText.semi),
+        const SectionHeader('Produk'),
         const SizedBox(height: Gap.sm),
         if (items.isEmpty)
           const EmptyState('Belum ada produk di toko ini')
@@ -497,7 +497,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         const SizedBox(height: Gap.md),
         Text('Stok: ${p.stock} ekor', style: AppText.subheading),
         const SizedBox(height: Gap.md),
-        Text('Deskripsi', style: AppText.subheading),
+        const SectionHeader('Deskripsi'),
         Text(p.description, style: AppText.body),
         const SizedBox(height: Gap.lg),
         AppCard(
@@ -509,7 +509,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             OutlinedButton(onPressed: () => context.push('/shop/${Uri.encodeComponent(p.sellerName)}'), child: Text('Kunjungi Toko', style: AppText.caption.copyWith(color: AppColors.danger))),
           ]),
         ),
-        Text('Penilaian & Ulasan Produk', style: AppText.semi),
+        const SectionHeader('Penilaian & Ulasan Produk'),
         const SizedBox(height: Gap.sm),
         AppCard(
           color: AppColors.field,
@@ -570,7 +570,7 @@ class _VariationSheetState extends State<_VariationSheet> {
       child: Padding(
         padding: EdgeInsets.fromLTRB(context.pagePadding, Gap.xl, context.pagePadding, Gap.lg),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Pilih Variasi (${p.variations.length} variasi)', style: AppText.semi),
+          SectionHeader('Pilih Variasi (${p.variations.length} variasi)'),
           const SizedBox(height: Gap.md),
           Flexible(
             child: SingleChildScrollView(

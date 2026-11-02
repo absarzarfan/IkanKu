@@ -28,7 +28,7 @@ class SellerSettingsScreen extends ConsumerWidget {
         tile(Icons.discount_outlined, 'Diskon', '/seller/discount'),
         tile(Icons.help_outline, 'Pusat Bantuan', '/help'),
         const SizedBox(height: Gap.sm),
-        Text('Metode Pengiriman', style: AppText.semi),
+        const SectionHeader('Metode Pengiriman'),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Kirim'), value: s.deliveryEnabled, onChanged: (v) => n.update(s.copyWith(deliveryEnabled: v || s.pickupEnabled ? v : true))),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Jemput'), value: s.pickupEnabled, onChanged: (v) => n.update(s.copyWith(pickupEnabled: v || s.deliveryEnabled ? v : true))),
         const SizedBox(height: Gap.md),
@@ -107,7 +107,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Transfer'), value: s.transferEnabled, onChanged: (v) => n.update(s.copyWith(transferEnabled: v || s.codEnabled ? v : true))),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('COD'), value: s.codEnabled, onChanged: (v) => n.update(s.copyWith(codEnabled: v || s.transferEnabled ? v : true))),
         const Divider(),
-        Text('Rekening', style: AppText.semi),
+        const SectionHeader('Rekening'),
         for (final (i, b) in s.banks.indexed)
           AppCard(child: Row(children: [Expanded(child: Text('${b.bank} ${b.number}\na.n. ${b.holder}', style: AppText.body)), IconButton(tooltip: 'Hapus rekening', icon: const Icon(Icons.delete_outline, color: AppColors.danger), onPressed: () => n.update(s.copyWith(banks: [...s.banks]..removeAt(i))))])),
         AppField(fieldKey: const Key('bank-name'), controller: _bank, hint: 'Nama bank'),

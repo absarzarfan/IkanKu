@@ -90,3 +90,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 ## Phase 13b - Rekonsiliasi cabang (feature/mobile-unified)
 - PART 0: baseline mvp = analyze bersih, 172 tes; polish = analyze bersih, 175 tes. Divergensi: `origin/feature/mobile-polish..origin/feature/mobile-mvp` = ed81979, 0b0fe4a, a9a6743 (token spasi, SectionHeader, HorizontalCardList, tes spasi); kebalikannya = 77204d0, 1b69136 (sistem visual web, motion, aksesibilitas).
 - PART 1: `feature/mobile-unified` dibuat dari polish, merge `--no-ff` mobile-mvp. Konflik manual: widgets.dart, catalog_screens.dart, buyer_order_screens.dart, profile_screens.dart, seller_settings_screens.dart + 3 dokumen. Hasil: analyze bersih, 183 tes lulus.
+- PART 2: judul bagian ad-hoc (Text semi/subheading) diganti SectionHeader di katalog/detail, pesanan, checkout, profil, seller (pesanan, produk, pengaturan); admin tidak punya judul bagian. 183 tes lulus.

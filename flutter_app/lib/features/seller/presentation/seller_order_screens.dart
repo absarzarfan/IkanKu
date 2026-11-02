@@ -154,7 +154,7 @@ class SellerOrderDetailScreen extends ConsumerWidget {
         const SizedBox(height: Gap.md),
         for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: Gap.md), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), Text('x${l.qty}', style: AppText.small)])),
         AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Pembeli', style: AppText.semi),
+          const SectionHeader('Pembeli'),
           Text('${o.address.recipient} | ${o.address.phone}', style: AppText.small),
           Text(o.address.full, style: AppText.small),
           const Divider(height: 20),
@@ -212,7 +212,7 @@ class _ShipProofScreenState extends ConsumerState<ShipProofScreen> {
     return AppScaffold(
       title: 'Bukti Pengiriman',
       body: ListView(padding: Space.pad(context), children: [
-        Text('Silahkan Upload Foto Pengiriman', style: AppText.semi),
+        const SectionHeader('Silahkan Upload Foto Pengiriman'),
         const SizedBox(height: Gap.sm),
         InkWell(
           key: const Key('ship-photo'),

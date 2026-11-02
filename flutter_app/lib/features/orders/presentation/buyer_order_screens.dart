@@ -115,7 +115,7 @@ class OrderDetailScreen extends ConsumerWidget {
             Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(rupiah(l.unitPrice), style: AppText.body), Text('x${l.qty}', style: AppText.small)])),
           ])),
         AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Alamat Pengiriman', style: AppText.semi),
+          const SectionHeader('Alamat Pengiriman'),
           Text('${o.address.recipient} | ${o.address.phone}', style: AppText.small),
           Text(o.address.full, style: AppText.small),
           const Divider(height: 20),
