@@ -115,3 +115,6 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART 1+3 (Phase 14): docs/flow-map.md; test/flows/ (21 tes: pembelian COD dan NON COD, siklus penjual, tolak/batal, admin, negatif, akun dan toko). Cacat: keranjang terbawa setelah logout (diperbaiki). 220 tes lulus.
 - PART 4+5 (Phase 14): form kontak dirapikan. Foto kosong: penyebab = aset PNG 1-3 MB (total 19,9 MB) yang lambat di-decode di web; diubah ke WebP maks 900/1200 px (total 0,85 MB), referensi diperbarui. 5 tangkapan ulang berurutan semua lengkap (sebelumnya 1 dari 4 kehilangan foto). 224 tes lulus.
 - PART 6-7 (Phase 14): docs/smoke-test.md; screenshot 14 layar x 3 lebar (buyer/seller/admin) di D:\Tools\shots\phase14, label peran admin dibahasakan. Gerbang: analyze bersih, 224 tes lulus (baseline 195; 14a +4, Phase 14 +25), apk debug berhasil.
+
+## Phase 15R (remake UI/UX mobile) - feature/mobile-remake
+- PART 0: cabang dari origin/feature/mobile-ux (c601d9a), merge yang tertunda di mobile-unified dibatalkan (cadangan lokal backup/mobile-unified-before-abort, tidak di-push). Baseline: analyze bersih, 224 tes lulus; test/flows/ sudah ada (21 tes), tidak ditulis ulang.
