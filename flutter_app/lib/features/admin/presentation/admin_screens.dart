@@ -18,6 +18,7 @@ class AdminStrings {
   static const unavailable = 'Panel admin memerlukan koneksi Supabase.';
   static const empty = 'Tidak ada data';
   static const logout = 'Keluar';
+  static String role(UserRole r) => switch (r) { UserRole.buyer => 'pembeli', UserRole.seller => 'penjual', UserRole.admin => 'admin' };
 }
 
 final _adminUsersProvider = FutureProvider.autoDispose.family<List<AppUser>, String>((ref, q) async => await ref.read(adminRemoteProvider)?.users(query: q) ?? const []);
@@ -96,7 +97,7 @@ class _UsersTabState extends ConsumerState<_UsersTab> {
               for (final u in list)
                 ListTile(
                   title: Text(u.name.isEmpty ? u.email : u.name, style: AppText.body),
-                  subtitle: Text('${u.email} · ${u.role.name}${u.isActive ? '' : ' · nonaktif'}'),
+                  subtitle: Text('${u.email} · ${AdminStrings.role(u.role)}${u.isActive ? '' : ' · nonaktif'}'),
                   trailing: u.id == me
                       ? null
                       : Switch(key: Key('user-${u.id}'), value: u.isActive, onChanged: (_) => _toggle(u)),

@@ -73,3 +73,8 @@ Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Va
 - Tes: 199 lulus (baseline 195; +4 di `test/flow_buyer_test.dart`: alur penuh login -> Home -> detail -> variasi -> keranjang -> checkout -> pesanan -> lini masa, Urungkan keranjang, batas stok, waktu validasi formulir). Analyze bersih; `flutter build apk --debug` berhasil.
 - Matriks responsif ukuran x skala teks 2.0 dan tes jarak/ruang bawah tetap lulus. Teks UI baru di `catalog_strings.dart`, `cart_strings.dart`, `orders_strings.dart`.
 - Belum ada tes widget terpisah untuk `StepIndicator`, `AnimatedCheck`, `SearchFilter`, `OrderTimeline` (tercakup tidak langsung oleh tes alur dan matriks).
+
+## Pembaruan Phase 14 (alur mock end-to-end)
+- Tes: 224 lulus (195 baseline; +4 di 14a; +25 di `test/flows/`: pembelian COD/NON COD, siklus penjual, tolak/batal/arsip, admin, negatif dan penjaga peran, akun dan toko). Analyze bersih; apk debug berhasil.
+- Admin kini berfungsi di mock (`MockAdminRemote`); sebelumnya hanya empty-state. Peta alur: `docs/flow-map.md` (Works 35, Partial 4, Stub 1, Missing 3). Checklist manual: `docs/smoke-test.md`.
+- Belum diuji: tiga tab admin selain Pengguna secara visual (tab tidak bisa dipicu lewat URL), mode Supabase.

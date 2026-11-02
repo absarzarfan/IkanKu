@@ -176,3 +176,13 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 | end-to-end COD | tap `pay-cod` langsung | tap `checkout-payment` lalu `pay-cod` | pilihan pembayaran kini bottom sheet. Asersi pesanan COD tetap |
 | end-to-end COD | teks `Pesanan berhasil dilakukan !` | `Pesanan berhasil dibuat` | microcopy diperbaiki (spasi sebelum tanda seru) |
 | Keluar dari profil | tap `Keluar` lalu cek `/login` | tap `Keluar`, cek dialog `Keluar dari akun?`, tap `Keluar` terakhir, cek `/login` | logout kini meminta konfirmasi. Asersi ditambah, tidak dikurangi |
+
+## Phase 14 (alur end-to-end mode mock)
+- Admin mock: `MockAdminRemote` dipasang sebagai `adminRemoteProvider` bila tidak ada klien Supabase. Pengguna berasal dari `MockAuthRepository` (akun tambahan Rina, Dedi, Budi), pesanan dari data pesanan mock, produk dari katalog mock. Mode Supabase tidak berubah; antarmuka `AdminRemote` tidak berubah.
+- Produk nonaktif (mock) disimpan di `inactiveProductsProvider` dan disaring dari katalog untuk semua peran (mock tidak punya kepemilikan produk per penjual).
+- Login pengguna nonaktif ditolak dengan pesan "Akun ini sedang dinonaktifkan. Silakan hubungi admin IkanKu."
+- Keranjang dikosongkan saat sesi berakhir (cacat ditemukan oleh tes alur).
+- Foto kosong di web: aset PNG 1-3 MB (total 19,9 MB) diubah menjadi WebP maks 900 px (banner 1200 px), total 0,85 MB. Nama berkas berubah dari `.png` ke `.webp`; referensi di lib dan test diperbarui. PNG asli tetap ada di riwayat git.
+- Bagian "formulir yang tersisa" sudah dikerjakan di 14a (validasi blur, fokus ke galat, ritme, penjaga kirim ganda); hanya formulir kontak yang ditambah action keyboard dan formatter. Login/registrasi tetap inline (keputusan 13b).
+- Tes alur memakai ProviderContainer baru per tes sebagai reset state mock; peran berganti lewat layar login sungguhan.
+- Tidak ada bagian Phase 14 yang dilewati selain yang sudah selesai di 14a (lihat atas).
