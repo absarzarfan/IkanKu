@@ -19,15 +19,19 @@ class ProductCard extends StatelessWidget {
     return LayoutBuilder(builder: (context, c) {
       final photo = (c.maxWidth * 0.55).clamp(72.0, 104.0);
       final lift = photo / 2;
-      return GestureDetector(
-        onTap: () => context.push('/product/${product.id}'),
+      return Semantics(
+        button: true,
+        label: product.name,
         child: Stack(alignment: Alignment.topCenter, children: [
           Padding(
             padding: EdgeInsets.only(top: lift),
-            child: Container(
-              width: double.infinity,
+            child: Pressable(
+              onTap: () => context.push('/product/${product.id}'),
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              decoration: AppCard.decorationFor(AppColors.surface),
+              minSize: 0,
+              child: Padding(
               padding: EdgeInsets.fromLTRB(Gap.md, lift + Gap.sm, Gap.md, Gap.md),
-              decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card), boxShadow: AppShadow.card),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Center(child: Text(product.name, style: AppText.body, maxLines: 1, overflow: TextOverflow.ellipsis)),
                 const SizedBox(height: Gap.xs),
@@ -44,8 +48,9 @@ class ProductCard extends StatelessWidget {
                 ]),
               ]),
             ),
+            ),
           ),
-          ProductImage(asset: product.image, size: photo),
+          IgnorePointer(child: ProductImage(asset: product.image, size: photo)),
         ]),
       );
     });
@@ -54,11 +59,13 @@ class ProductCard extends StatelessWidget {
 
 /// Baris produk horizontal (Figma Container 38).
 class ProductRow extends StatelessWidget {
-  const ProductRow({super.key, required this.product});
+  const ProductRow({super.key, required this.product, this.index});
   final Product product;
+  final int? index;
   @override
   Widget build(BuildContext context) {
     return AppCard(
+      revealIndex: index,
       onTap: () => context.push('/product/${product.id}'),
       child: Row(children: [
         ProductImage(asset: product.image, size: fluid(context, 60)),
@@ -117,9 +124,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           children: [
-            Container(
+            GradientHeader(
               padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top + Gap.lg, bottom: 18),
-              decoration: const BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.vertical(bottom: Radius.circular(AppRadius.header)), boxShadow: AppShadow.header),
               child: ContentFrame(
                 safe: true,
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -135,13 +141,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Semantics(
                     button: true,
                     label: 'Telusuri',
-                    child: GestureDetector(
+                    child: Pressable(
                       onTap: () => context.go('/search'),
-                      child: Container(
-                        constraints: const BoxConstraints(minHeight: AppSize.searchBar),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card)),
-                        child: const Row(children: [Icon(Icons.search, size: 16, color: AppColors.grey), SizedBox(width: Gap.sm), Text('Telusuri', style: AppText.searchHint)]),
+                      borderRadius: BorderRadius.circular(AppRadius.card),
+                      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card)),
+                      minSize: AppSize.searchBar,
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(children: [Icon(Icons.search, size: 18, color: AppColors.grey), SizedBox(width: Gap.sm), Text('Telusuri', style: AppText.searchHint)]),
                       ),
                     ),
                   ),
@@ -152,7 +159,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               safe: true,
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const SizedBox(height: Gap.md),
-                const Text('Semua Kategori', style: AppText.body),
+                const SectionTitle('Semua Kategori'),
                 const SizedBox(height: Gap.sm),
                 PeekRow(
                   gap: Gap.sm,
@@ -161,14 +168,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   max: 200,
                   children: [
                     for (final c in _cats)
-                      GestureDetector(
+                      Pressable(
                         onTap: () => context.push('/category/${c.$1}'),
-                        child: Container(
-                          constraints: const BoxConstraints(minHeight: AppSize.buttonSmall),
+                        borderRadius: BorderRadius.circular(AppRadius.card),
+                        decoration: AppCard.decorationFor(AppColors.surface),
+                        child: Padding(
                           padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card), boxShadow: AppShadow.soft),
                           child: Row(children: [
-                            ProductImage(asset: c.$2, size: fluid(context, 46), radius: AppRadius.card),
+                            ProductImage(asset: c.$2, size: fluid(context, 46), radius: AppRadius.icon),
                             const SizedBox(width: 10),
                             Expanded(child: Text(c.$1, style: AppText.body, maxLines: 2, overflow: TextOverflow.ellipsis)),
                           ]),
@@ -195,18 +202,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         borderRadius: BorderRadius.circular(AppRadius.sheet),
                         child: Stack(fit: StackFit.expand, children: [
                           Image.asset(_banners[i].$1, fit: BoxFit.cover, cacheWidth: 800, errorBuilder: (_, _, _) => Container(color: AppColors.field)),
+                          const DecoratedBox(decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: [AppColors.scrim, AppColors.scrimClear]))),
                           Padding(
                             padding: const EdgeInsets.all(14),
                             child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                               Flexible(child: Align(alignment: Alignment.centerLeft, child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: Text(_banners[i].$2, style: AppText.banner)))),
                               Align(
                                 alignment: Alignment.bottomRight,
-                                child: Material(
-                                  color: AppColors.primary,
+                                child: Pressable(
+                                  decoration: BoxDecoration(gradient: AppGradients.primary, borderRadius: BorderRadius.circular(AppRadius.chip)),
                                   borderRadius: BorderRadius.circular(AppRadius.chip),
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(AppRadius.chip),
-                                    onTap: () => context.push('/category/Semua'),
+                                  onTap: () => context.push('/category/Semua'),
+                                  child: Material(
+                                    type: MaterialType.transparency,
                                     child: IntrinsicWidth(child: Container(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), alignment: Alignment.center, padding: const EdgeInsets.symmetric(horizontal: 14), child: const Text('Beli Sekarang', textAlign: TextAlign.center, style: AppText.bannerButton))),
                                   ),
                                 ),
@@ -220,7 +228,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   for (var i = 0; i < _banners.length; i++)
-                    Container(margin: const EdgeInsets.all(Gap.xs), width: i == _banner ? 17 : 7, height: 6, decoration: BoxDecoration(color: i == _banner ? AppColors.grey : AppColors.greyLight, borderRadius: BorderRadius.circular(8))),
+                    AnimatedContainer(duration: AppMotion.of(context, AppMotion.base), curve: AppMotion.curve, margin: const EdgeInsets.all(Gap.xs), width: i == _banner ? 18 : 7, height: 6, decoration: BoxDecoration(color: i == _banner ? AppColors.primary : AppColors.greyLight, borderRadius: BorderRadius.circular(8))),
                 ]),
               ]),
             ),
@@ -230,7 +238,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 SectionRow(title: 'Rekomendasi untuk anda', action: 'Lihat semua', onAction: () => context.push('/recommendations')),
                 if (recs.isEmpty) const EmptyState('Belum ada produk') else PeekRow(gap: Gap.lg, preferred: 160, min: 140, max: 200, children: [for (final p in recs) ProductCard(product: p)]),
                 const SizedBox(height: Gap.sm),
-                for (final p in cat.products.skip(3).take(3)) ProductRow(product: p),
+                for (final (i, p) in cat.products.skip(3).take(3).indexed) ProductRow(product: p, index: i),
                 PillButton(label: 'Lihat Lebih', outlined: true, onPressed: () => context.push('/recommendations')),
                 const SizedBox(height: Gap.lg),
               ]),
@@ -319,7 +327,7 @@ class RecommendationsScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Rekomendasi',
       onBack: () => context.canPop() ? context.pop() : context.go('/home'),
-      body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: EdgeInsets.all(context.pagePadding), children: [for (final p in items) ProductRow(product: p)]),
+      body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: EdgeInsets.all(context.pagePadding), children: [for (final (i, p) in items.indexed) ProductRow(product: p, index: i)]),
     );
   }
 }
@@ -373,13 +381,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       body: _q.trim().isEmpty
           ? ListView(padding: EdgeInsets.all(context.pagePadding), children: [
               const SectionRow(title: 'Rekomendasi untuk anda'),
-              for (final p in cat.products.take(5)) ProductRow(product: p),
+              for (final (i, p) in cat.products.take(5).indexed) ProductRow(product: p, index: i),
             ])
           : results.isEmpty
               ? EmptyState('Tidak ada hasil untuk "$_q"', icon: Icons.search_off)
               : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
                   if (_submitted) Padding(padding: const EdgeInsets.only(bottom: 8), child: Text('${results.length} hasil untuk "$_q"', style: AppText.small)),
-                  for (final p in results) ProductRow(product: p),
+                  for (final (i, p) in results.indexed) ProductRow(product: p, index: i),
                 ]),
     );
   }

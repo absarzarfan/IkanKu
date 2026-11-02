@@ -138,8 +138,10 @@ class _ShellScaffold extends StatelessWidget {
     return Scaffold(
       body: shell,
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.sheet))),
-        child: SafeArea(
+        decoration: BoxDecoration(gradient: AppGradients.nav, borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.sheet))),
+        child: Material(
+         type: MaterialType.transparency,
+         child: SafeArea(
           top: false,
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 64),
@@ -151,7 +153,13 @@ class _ShellScaffold extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        Icon(it.$1, color: AppColors.onPrimary.withValues(alpha: i == shell.currentIndex ? 1 : 0.7)),
+                        AnimatedContainer(
+                          duration: AppMotion.of(context, AppMotion.fast),
+                          curve: AppMotion.curve,
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                          decoration: BoxDecoration(color: i == shell.currentIndex ? const Color(0x2EFFFFFF) : const Color(0x00FFFFFF), borderRadius: BorderRadius.circular(16)),
+                          child: AnimatedScale(scale: i == shell.currentIndex ? 1.1 : 1, duration: AppMotion.of(context, AppMotion.base), curve: AppMotion.curve, child: Icon(it.$1, color: AppColors.onPrimary.withValues(alpha: i == shell.currentIndex ? 1 : 0.75))),
+                        ),
                         Text(it.$2, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.navLabel.copyWith(fontWeight: i == shell.currentIndex ? FontWeight.w600 : FontWeight.w400)),
                       ]),
                     ),
@@ -159,6 +167,7 @@ class _ShellScaffold extends StatelessWidget {
                 ),
             ])),
           ),
+         ),
         ),
       ),
     );

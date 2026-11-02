@@ -11,9 +11,9 @@ const buyerTabs = [OrderStatus.menunggu, OrderStatus.dikemas, OrderStatus.dikiri
 const _buyerTabLabels = ['Belum Bayar', 'Dikemas', 'Dikirim', 'Selesai', 'Ditolak'];
 
 Color statusColor(OrderStatus s) => switch (s) {
-      OrderStatus.menunggu => AppColors.star,
+      OrderStatus.menunggu => AppColors.warning,
       OrderStatus.dikemas => AppColors.primary,
-      OrderStatus.dikirim => AppColors.primary,
+      OrderStatus.dikirim => AppColors.info,
       OrderStatus.selesai => AppColors.success,
       OrderStatus.ditolak => AppColors.danger,
       OrderStatus.dibatalkan => AppColors.grey,
@@ -41,19 +41,21 @@ class _BuyerOrdersScreenState extends ConsumerState<BuyerOrdersScreen> {
       headerExtra: TextTabs(labels: _buyerTabLabels, index: _tab, onChanged: (i) => setState(() => _tab = i), onDark: true),
       body: items.isEmpty
           ? EmptyState('Belum ada pesanan ${_buyerTabLabels[_tab].toLowerCase()}')
-          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: EdgeInsets.all(context.pagePadding), children: [for (final o in items) _OrderCard(order: o)]),
+          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: EdgeInsets.all(context.pagePadding), children: [for (final (i, o) in items.indexed) _OrderCard(order: o, index: i)]),
     );
   }
 }
 
 class _OrderCard extends ConsumerWidget {
-  const _OrderCard({required this.order});
+  const _OrderCard({required this.order, required this.index});
   final Order order;
+  final int index;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = order.lines.first;
     final n = ref.read(ordersProvider.notifier);
     return AppCard(
+      revealIndex: index,
       onTap: () => context.push(order.status == OrderStatus.ditolak ? '/orders/${order.id}/rejected' : '/orders/${order.id}'),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [

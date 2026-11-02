@@ -79,3 +79,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 12b P3-4: order/seller/detail overflow fixes, pull-to-refresh lists, admin error with retry, tap targets 48.
 - Phase 12b P5: responsive matrix test (3 roles x 9 sizes x 3 text scales + tap target guidelines) and helper unit tests; 164 tests pass.
 - Phase 12b P6: web build mock, headless screenshots (home 4 sizes; search/product/cart/checkout/orders/profile at 360 and 768) in D:\Tools\shots\phase12b; fixed banner button width; gates: analyze clean, 164 tests pass, APK debug built.
+- Phase 13 P0-1: branch feature/mobile-polish from clean mobile-mvp (baseline analyze clean, 164 tests incl. 81-case responsive matrix); 6 skills loaded.
+- Phase 13 P2-4: web tokens mapped into app_theme.dart, gradients, card system, IconChip, Pressable, Reveal, Skeleton, page transitions, nav motion; polish_test (contrast, widgets); 175 tests pass; docs/mobile-polish.md.

@@ -15,7 +15,7 @@ class SellerSettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(sellerSettingsProvider);
     final n = ref.read(sellerSettingsProvider.notifier);
-    Widget tile(IconData i, String t, String route) => AppCard(margin: const EdgeInsets.only(bottom: 10), onTap: () => context.push(route), child: Row(children: [Icon(i, color: AppColors.primary), const SizedBox(width: 14), Expanded(child: Text(t, style: AppText.body)), const Icon(Icons.chevron_right)]));
+    Widget tile(IconData i, String t, String route) => AppCard(margin: const EdgeInsets.only(bottom: 10), onTap: () => context.push(route), child: Row(children: [IconChip(icon: i), const SizedBox(width: 14), Expanded(child: Text(t, style: AppText.body)), const Icon(Icons.chevron_right)]));
     return AppScaffold(
       title: 'Pengaturan',
       showBack: false,

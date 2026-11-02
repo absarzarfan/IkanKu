@@ -3,9 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/responsive/breakpoints.dart';
 import 'package:ikanku/core/responsive/content_frame.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
+import 'package:ikanku/core/widgets/decor_widgets.dart';
+import 'package:ikanku/core/widgets/motion_widgets.dart';
 
 export 'package:ikanku/core/responsive/breakpoints.dart';
 export 'package:ikanku/core/responsive/content_frame.dart';
+export 'package:ikanku/core/widgets/decor_widgets.dart';
+export 'package:ikanku/core/widgets/motion_widgets.dart';
 
 /// Layout standar: kotak biru melengkung di atas (Figma "kotak"), judul, tombol kembali.
 class AppScaffold extends StatelessWidget {
@@ -37,14 +41,8 @@ class AppScaffold extends StatelessWidget {
       bottomNavigationBar: bottomNavigationBar,
       body: Column(
         children: [
-          Container(
-            width: double.infinity,
+          GradientHeader(
             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 8, bottom: 14),
-            decoration: const BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(AppRadius.header)),
-              boxShadow: AppShadow.header,
-            ),
             child: ContentFrame(
               padded: false,
               safe: true,
@@ -91,28 +89,34 @@ class PillButton extends StatelessWidget {
   final double height;
   final bool expanded;
 
-  /// true: tombol dinonaktifkan dan menampilkan indikator (cegah kirim ganda).
+  /// true: tombol dinonaktifkan dan menampilkan indikator tanpa mengubah ukuran (cegah kirim ganda).
   final bool busy;
 
   @override
   Widget build(BuildContext context) {
-    final fg = outlined ? color : AppColors.onPrimarySoft;
-    final child = ElevatedButton(
-      onPressed: busy ? null : onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: outlined ? Colors.white : color,
-        foregroundColor: fg,
-        disabledBackgroundColor: AppColors.greyLight,
-        elevation: 0,
-        minimumSize: Size(expanded ? double.infinity : 0, height < AppSize.buttonSmall ? AppSize.buttonSmall : height),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pill), side: outlined ? BorderSide(color: color) : BorderSide.none),
-      ),
-      child: busy
-          ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: fg))
-          : Text(label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.buttonLabel.copyWith(color: fg)),
+    final enabled = onPressed != null && !busy;
+    final fg = outlined ? color : AppColors.onPrimary;
+    final gradient = !outlined && enabled && color == AppColors.primary;
+    final h = height < AppSize.buttonSmall ? AppSize.buttonSmall : height;
+    final radius = BorderRadius.circular(AppRadius.pill);
+    final decoration = BoxDecoration(
+      gradient: gradient ? AppGradients.primary : null,
+      color: gradient ? null : (outlined ? AppColors.surface : (enabled ? color : AppColors.greyLight)),
+      borderRadius: radius,
+      border: outlined ? Border.all(color: color) : null,
     );
-    return expanded ? SizedBox(width: double.infinity, child: child) : child;
+    final text = Text(label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.buttonLabel.copyWith(color: fg));
+    final child = Container(
+      constraints: BoxConstraints(minHeight: h, minWidth: expanded ? double.infinity : 64),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      alignment: Alignment.center,
+      child: Stack(alignment: Alignment.center, children: [
+        Opacity(opacity: busy ? 0 : 1, child: text),
+        if (busy) SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: fg)),
+      ]),
+    );
+    final button = Pressable(onTap: enabled ? onPressed : null, borderRadius: radius, decoration: decoration, minSize: h, child: child);
+    return expanded ? SizedBox(width: double.infinity, child: button) : button;
   }
 }
 
@@ -163,25 +167,24 @@ class AppField extends StatelessWidget {
 }
 
 class AppCard extends StatelessWidget {
-  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(14), this.onTap, this.color = Colors.white, this.margin = const EdgeInsets.only(bottom: 14)});
+  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(14), this.onTap, this.color = AppColors.surface, this.margin = const EdgeInsets.only(bottom: 14), this.revealIndex});
+  final int? revealIndex;
   final Widget child;
   final EdgeInsets padding;
   final VoidCallback? onTap;
   final Color color;
   final EdgeInsets margin;
 
+  /// Sistem kartu tunggal: radius 20, border 1 px merek 12%, bayangan lembut web (.card).
+  static BoxDecoration decorationFor(Color color) => BoxDecoration(color: color, borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: AppColors.border), boxShadow: AppShadow.card);
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: margin,
-      child: Material(
-        color: color,
-        elevation: 2,
-        shadowColor: AppColors.shadow,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        child: InkWell(borderRadius: BorderRadius.circular(AppRadius.card), onTap: onTap, child: Padding(padding: padding, child: child)),
-      ),
-    );
+    final inner = Padding(padding: padding, child: child);
+    final card = onTap == null
+        ? DecoratedBox(decoration: decorationFor(color), child: inner)
+        : Pressable(onTap: onTap, borderRadius: BorderRadius.circular(AppRadius.card), decoration: decorationFor(color), child: inner);
+    return Padding(padding: margin, child: revealIndex == null ? card : Reveal(index: revealIndex!, child: card));
   }
 }
 
@@ -302,7 +305,7 @@ class ErrorState extends StatelessWidget {
 class LoadingState extends StatelessWidget {
   const LoadingState({super.key});
   @override
-  Widget build(BuildContext context) => const Center(child: CircularProgressIndicator());
+  Widget build(BuildContext context) => const SkeletonList();
 }
 
 /// Daftar yang bisa ditarik untuk memuat ulang; selalu dapat di-scroll agar gesture tarik berfungsi, juga saat kosong.
@@ -319,11 +322,18 @@ class StatusChip extends StatelessWidget {
   const StatusChip(this.label, {super.key, this.color = AppColors.primary});
   final String label;
   final Color color;
+
+  /// Warna teks turunan token: diperdalam 25% agar kontras >= 4.5:1 di atas tint 12%.
+  static Color textColor(Color c) {
+    final h = HSLColor.fromColor(c);
+    return h.withLightness((h.lightness * 0.75).clamp(0.0, 1.0)).toColor();
+  }
+
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: color)),
-        child: Text(label, style: AppText.small.copyWith(color: color, fontWeight: FontWeight.w500)),
+        child: Text(label, style: AppText.small.copyWith(color: textColor(color), fontWeight: FontWeight.w500)),
       );
 }
 
@@ -336,7 +346,7 @@ class SectionRow extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Flexible(child: Text(title, style: AppText.body, overflow: TextOverflow.ellipsis)),
+          Flexible(child: SectionTitle(title)),
           if (action != null) InkWell(onTap: onAction, child: ConstrainedBox(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), child: Align(alignment: Alignment.center, widthFactor: 1, child: Padding(padding: const EdgeInsets.only(left: Gap.md), child: Text(action!, style: AppText.body.copyWith(color: AppColors.primary)))))),
         ]),
       );

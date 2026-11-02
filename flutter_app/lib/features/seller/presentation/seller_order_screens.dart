@@ -43,7 +43,7 @@ class SellerHomeScreen extends ConsumerWidget {
                 margin: EdgeInsets.zero,
                 onTap: () => context.push('/seller/orders?tab=${sellerTabs.indexOf(c.$2)}'),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Icon(c.$3, color: AppColors.primary),
+                  IconChip(icon: c.$3, size: 40),
                   const SizedBox(height: Gap.sm),
                   Text('${count(c.$2)}', key: Key('count-${c.$2.name}'), style: AppText.price),
                   Text(c.$1.toUpperCase(), style: AppText.small, maxLines: 2, overflow: TextOverflow.ellipsis),

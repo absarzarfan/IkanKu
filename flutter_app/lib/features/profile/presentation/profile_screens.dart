@@ -15,7 +15,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authProvider);
-    Widget tile(IconData icon, String label, String route) => AppCard(margin: const EdgeInsets.only(bottom: 10), onTap: () => context.push(route), child: Row(children: [Icon(icon, color: AppColors.primary), const SizedBox(width: 14), Expanded(child: Text(label, style: AppText.body)), const Icon(Icons.chevron_right)]));
+    Widget tile(IconData icon, String label, String route) => AppCard(margin: const EdgeInsets.only(bottom: 10), onTap: () => context.push(route), child: Row(children: [IconChip(icon: icon), const SizedBox(width: 14), Expanded(child: Text(label, style: AppText.body)), const Icon(Icons.chevron_right)]));
     return AppScaffold(
       title: 'Profil',
       showBack: false,

@@ -24,14 +24,9 @@ class AuthShell extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
+            GradientHeader(
+              radius: AppRadius.headerAuth,
               padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 16, bottom: showTabs ? 0 : 20),
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(AppRadius.headerAuth)),
-                boxShadow: AppShadow.auth,
-              ),
               child: Column(children: [
                 if (onBack != null)
                   Align(alignment: Alignment.centerLeft, child: IconButton(tooltip: 'Kembali', icon: const Icon(Icons.arrow_back, color: Colors.white), onPressed: onBack)),
