@@ -68,3 +68,8 @@ Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Va
 ## Pembaruan Phase 13b
 - Tes: 195 lulus (mvp 172, polish 175; +spacing/polish tergabung 183, +12 tes jarak bawah tab). Tes baru: `bottom_clearance_test.dart`. Analyze bersih; `flutter build apk --debug` berhasil.
 - Layar admin dalam mode mock hanya empty-state (butuh Supabase).
+
+## Pembaruan Phase 14a (UX pembeli)
+- Tes: 199 lulus (baseline 195; +4 di `test/flow_buyer_test.dart`: alur penuh login -> Home -> detail -> variasi -> keranjang -> checkout -> pesanan -> lini masa, Urungkan keranjang, batas stok, waktu validasi formulir). Analyze bersih; `flutter build apk --debug` berhasil.
+- Matriks responsif ukuran x skala teks 2.0 dan tes jarak/ruang bawah tetap lulus. Teks UI baru di `catalog_strings.dart`, `cart_strings.dart`, `orders_strings.dart`.
+- Belum ada tes widget terpisah untuk `StepIndicator`, `AnimatedCheck`, `SearchFilter`, `OrderTimeline` (tercakup tidak langsung oleh tes alur dan matriks).

@@ -160,3 +160,19 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Catatan alat: `serve.mjs` membandingkan path dengan `startsWith(root)`, jadi root harus berformat Windows (`D:\Tools\builds\...`); root bergaris miring maju membuat semua aset 404 dan tangkapan kosong.
 - Pemeriksaan visual: Beranda/Telusuri/Detail/Keranjang/Pesanan/Profil (pembeli), beranda/pesanan/produk/form produk (penjual), beranda admin. Form produk: jarak antar kelompok diperbaiki (kategori & variasi memakai VGap).
 - Keterbatasan: panel admin dalam mode mock hanya menampilkan "memerlukan koneksi Supabase" (daftar pengguna/produk admin tidak dapat dilihat tanpa Supabase). Pada tangkapan 360 foto detail produk belum termuat (termuat di 768); thumbnail foto pada form produk hanya sebagian termuat (batas waktu virtual-time), jadi belum terverifikasi.
+
+## Phase 14a (UX pass pembeli)
+- Badge pesanan aktif ditempatkan di tab Profil (keranjang bukan tab; badge keranjang ada di header Home dan detail). Struktur tab tidak diubah.
+- Hero memakai tag `hero-<asal>-<id>` dan asal dikirim lewat `extra` rute, agar tag unik per layar (produk yang sama tampil di rail dan daftar Home).
+- Grid "Rating tertinggi" diletakkan setelah daftar dan sebelum "Lihat Lebih" agar tes jarak spacing (rail -> daftar) tetap berlaku.
+- Pilihan pengiriman/pembayaran menjadi bottom sheet (sesuai permintaan); kunci `ship-*`/`pay-*` dipindah ke baris opsi di sheet, baris pembuka memakai `checkout-shipping`/`checkout-payment`.
+- Banner offline dan skeleton Home dilewati (lihat docs/ux-pass.md).
+- Tombol "Batal" di checkout dihapus; tombol kembali di header menjalankan fungsi yang sama. Label tombol keranjang "Beli (n)".
+
+### Selector/ekspektasi tes yang diubah (sebelum -> sesudah, alasan)
+| Tes | Sebelum | Sesudah | Alasan |
+|---|---|---|---|
+| pencarian menyaring produk | enterText lalu pumpAndSettle | enterText lalu `pump(350 ms)` | filter kini di-debounce 300 ms; timer bukan frame sehingga pumpAndSettle tidak memajukan waktu. Asersi hasil tidak diubah |
+| end-to-end COD | tap `pay-cod` langsung | tap `checkout-payment` lalu `pay-cod` | pilihan pembayaran kini bottom sheet. Asersi pesanan COD tetap |
+| end-to-end COD | teks `Pesanan berhasil dilakukan !` | `Pesanan berhasil dibuat` | microcopy diperbaiki (spasi sebelum tanda seru) |
+| Keluar dari profil | tap `Keluar` lalu cek `/login` | tap `Keluar`, cek dialog `Keluar dari akun?`, tap `Keluar` terakhir, cek `/login` | logout kini meminta konfirmasi. Asersi ditambah, tidak dikurangi |

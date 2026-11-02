@@ -46,3 +46,22 @@ Semua enam skill berhasil dimuat (ui-ux-pro-max, emil-design-eng, animate, anima
 3. Keranjang: per toko, Undo, batas stok (tinggi/sedang) 4. Detail: sheet variasi live + konfirmasi (tinggi/sedang)
 5. Pencarian: debounce + filter/urut (sedang/sedang) 6. Navigasi: Hero, badge, scroll ke atas (sedang/rendah)
 7. Home: varian seksi (sedang/sedang) 8. Lini masa pesanan, tab hitungan (sedang/rendah) 9. Ulasan, copy, a11y (sedang/rendah)
+
+## Hasil implementasi (PART 3)
+- Navigasi: Hero foto (daftar -> detail, tag per asal daftar lewat `extra`), badge pesanan aktif di tab Profil, ketuk ulang tab = gulir ke atas (`tab_reselect.dart`), state tab dan scroll terjaga oleh `StatefulShellRoute.indexedStack`.
+- Home: tiga varian kartu (`ProductCardWithPhoto`, `ProductRow`, `ProductTile` baru), seksi rail, daftar, dan grid 2 kolom "Rating tertinggi" (urut dari data rating); "Lihat semua" berfungsi di semua seksi.
+- Pencarian: debounce 300 ms, tombol hapus, aksi keyboard, sheet filter/urut (kategori, harga, rating, urutan), jumlah hasil, keadaan kosong dengan aksi.
+- Detail: bilah aksi lengket, sheet variasi dengan harga/stok/jumlah langsung, konfirmasi dengan aksi "Lihat keranjang", haptic ringan.
+- Keranjang: per toko, geser-hapus + Urungkan, stepper dibatasi stok, total fade, bilah checkout lengket, kosong dengan tombol.
+- Checkout: indikator langkah (menyesuaikan transfer/COD), kartu alamat dengan Ubah, sheet pengiriman dan pembayaran, ringkasan bisa dilipat, loading + penjaga kirim ganda, galat alamat inline.
+- Sukses: centang beranimasi (skala 0.7 -> 1 + opacity), langkah berikutnya netral, tombol Lihat pesanan / Belanja lagi.
+- Pesanan: tab dengan hitungan, lini masa dari status/createdAt/proofUploaded saja, dialog batal, tarik untuk muat ulang. Ulasan: bintang beranimasi, penghitung 300 karakter, validasi.
+- Formulir: validasi setelah blur pertama atau kirim, fokus ke galat pertama (`validateAndFocus`), toggle sandi, autofill, formatter digit, action keyboard berantai.
+- Keadaan: `EmptyState` berilustrasi ikon+bentuk, `ErrorState` ramah, skeleton berbentuk konten (`SkeletonRow`, `SkeletonCard`).
+- Dilewati (alasan): banner offline (tanpa paket konektivitas, layar `/offline` sudah ada); skeleton Home (state katalog tidak membedakan memuat vs kosong); animasi insert/remove daftar selain Dismissible; chip kategori tetap memakai gambar aset yang ada.
+- Pembenahan dari tangkapan layar: `PillButton(expanded: false)` melebar penuh (Container beralignment mengisi lebar) -> diperbaiki; label "+Tambah Alamat" -> "Tambah alamat".
+
+## Verifikasi visual (PART 5)
+Dilihat: Home 360 dan 768, Telusuri 360 (dua kali), detail produk 360 dan 768, keranjang kosong 360 (sebelum dan sesudah perbaikan), pesanan 360, detail pesanan dengan lini masa 360, profil 360, alamat 412.
+Tidak dilihat: welcome/login/register (build mock langsung login), sheet variasi dan sheet filter, checkout berisi, sukses, ulasan, keranjang berisi, 412 untuk sebagian layar (diambil, tidak dibuka). Alasan: butuh interaksi yang tidak bisa dipicu lewat URL.
+Foto kosong pada sebagian tangkapan Telusuri/detail pesanan: halaman yang sama menghasilkan foto lengkap pada satu pengambilan dan kosong pada pengambilan lain (bukan fungsi budget waktu: 20 s dan 60 s sama-sama lengkap pada percobaan ulang), sehingga cenderung balapan decode saat headless. Penyelidikan lanjut ada di Phase 14 PART 5.
