@@ -148,7 +148,10 @@ class _ShellScaffold extends StatelessWidget {
             child: IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               for (final (i, it) in items.indexed)
                 Expanded(
-                  child: InkWell(
+                  child: Semantics(
+                    selected: i == shell.currentIndex,
+                    button: true,
+                    child: InkWell(
                     onTap: () => shell.goBranch(i, initialLocation: i == shell.currentIndex),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
@@ -163,6 +166,7 @@ class _ShellScaffold extends StatelessWidget {
                         Text(it.$2, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.navLabel.copyWith(fontWeight: i == shell.currentIndex ? FontWeight.w600 : FontWeight.w400)),
                       ]),
                     ),
+                  ),
                   ),
                 ),
             ])),

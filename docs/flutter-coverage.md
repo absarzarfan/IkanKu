@@ -59,3 +59,6 @@ Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Va
 ## Pembaruan Phase 12b (responsif + fidelity)
 - Fondasi `lib/core/responsive` (breakpoints 600/840, ContentFrame maks 560, ResponsiveGrid, PeekRow, skala fluida untuk media). Tema pusat `lib/core/theme/app_theme.dart` (token warna, radius, bayangan, teks, tema komponen).
 - Matriks tes `test/responsive_matrix_test.dart`: pembeli/penjual/admin x 280x653 .. 768x1024 + landscape 800x360 x teks 1.0/1.3/2.0, tanpa overflow. Status Figma per layar: docs/figma-fidelity.md (Beranda partial; sisanya unverified; admin tanpa frame).
+
+## Pembaruan Phase 13 (polish tema web)
+- Token tema web dipetakan ke `app_theme.dart`; widget bersama baru: Pressable, Reveal, Skeleton, IconChip, GradientHeader, SectionTitle. Detail dan inventaris gerak: docs/mobile-polish.md. Status Figma per layar tidak berubah (docs/figma-fidelity.md); gaya kini mengikuti web.

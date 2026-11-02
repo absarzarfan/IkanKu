@@ -123,3 +123,12 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Test lama `layout_overflow_test.dart` diganti `responsive_matrix_test.dart` (peran x 9 ukuran x 3 skala teks, satu aplikasi per kasus, galat dikumpulkan lewat FlutterError.onError).
 - Screenshot web: Flutter headless Edge merender layout tetapi foto aset tidak ter-decode pada beberapa layar (Beranda tanpa foto); seller dan admin tidak dipotret (butuh login, deep link dialihkan).
 - Pull-to-refresh di Beranda, Rekomendasi, Kategori, Pesanan pembeli/penjual, Produk penjual; mode mock hanya `invalidate` (tanpa loading nyata). Admin: galat dengan tombol "Coba lagi".
+
+## Phase 13 (feature/mobile-polish)
+- Warna merek app berubah dari #177BCD ke web #1672c4. Gradien dipersempit dari 43->35% (web) menjadi 43->37% agar putih >= 4.5:1 di titik terang dan selisih <= 6%.
+- Oranye tidak dipakai di app (tidak ada layar Figma yang memakainya). Lato (rating) tetap diganti Poppins; Montserrat hanya token `AppText.eyebrow`, belum dipakai karena tanpa teks baru.
+- Transisi halaman lewat `PageTransitionsTheme` (builder fade + geser 200 ms) alih-alih CustomTransitionPage per rute, agar semua rute go_router konsisten tanpa mengubah router.
+- Warna kontras diperdalam: danger #C8160D, hint #5F636C, teks chip status diperdalam 25%, judul header putih (bukan #EEE).
+- Radius kartu 20 (web 24) untuk layar kecil. Tinggi tile menu bertambah (minimal 48 dp) akibat IconChip.
+- Test `screens_test` 'Keluar dari profil' memakai scrollUntilVisible karena daftar profil kini lebih tinggi. Timeline pesanan tidak dibuat (bukan fitur yang ada).
+- Reveal hanya dipasang pada baris produk dan kartu pesanan buyer (revealIndex); layar lain memakai transisi halaman, kartu, dan Pressable.

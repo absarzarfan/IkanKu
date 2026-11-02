@@ -47,3 +47,10 @@ Font: Poppins (UI) dan Montserrat (`AppText.eyebrow`, tidak dipakai di layar kar
 | Tombol busy | spinner, ukuran tetap | - | - | proses berjalan |
 Semua durasi nol bila `MediaQuery.disableAnimations`. Maksimum 300 ms (transisi halaman 200 ms).
 Halaman memakai `PageTransitionsBuilder` di tema (bukan CustomTransitionPage per rute) agar semua rute go_router otomatis konsisten.
+
+## Layar yang direstyle dan bukti visual
+Screenshot (web mock, headless Edge, iframe) di `D:\Tools\shots\phase13\`: Beranda 360/375/412/768; Telusuri, Detail produk, Keranjang, Checkout, Pesanan, Profil, Rekomendasi di 360 dan 768. Dilihat: Beranda, Profil, Pesanan (360). Layar lain ditangkap tetapi tidak ditinjau satu per satu. Penjual dan admin tidak dipotret (butuh login); keduanya mewarisi header, kartu, tombol, dan chip yang sama.
+- Beranda: header gradien biru melengkung dengan lingkaran dekoratif, kotak telusuri dan kartu kategori/produk dalam sistem kartu web (border biru tipis, bayangan lembut), judul bagian berbatang aksen, banner dengan scrim, indikator beranimasi, tab bawah bergradien dengan pil terpilih.
+- Pesanan/Profil/layar lain: header sama, kartu seragam, chip ikon pada menu profil/penjual/pengaturan, chip status berkontras tinggi, tombol utama bergradien dengan umpan balik tekan.
+Dibanding web: palet #1672c4, tint #F3F8FD, gradien 43%-37%, kartu radius 20 (web 24), tanpa oranye.
+Tidak dibuat: timeline pesanan dan eyebrow (tidak ada fitur/teks baru). Pengujian a11y: label Semantics di item tab, bintang, tile; dekorasi dikeluarkan dari semantics; matriks responsif 81 kasus lulus tanpa perubahan.
