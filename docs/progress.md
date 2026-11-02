@@ -102,3 +102,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 
 ## Phase 14a (UX buyer flow) - branch feature/mobile-ux
 - PART 0: cabang dibuat dari feature/mobile-unified; baseline analyze bersih, 195 tes lulus.
+- PART 1-2: enam skill termuat; docs/ux-pass.md berisi bukti skill dan audit alur pembeli.
