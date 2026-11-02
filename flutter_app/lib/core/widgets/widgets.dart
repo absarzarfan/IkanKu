@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/responsive/breakpoints.dart';
 import 'package:ikanku/core/responsive/content_frame.dart';
+import 'package:ikanku/core/responsive/spacing.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
 
 export 'package:ikanku/core/responsive/breakpoints.dart';
 export 'package:ikanku/core/responsive/content_frame.dart';
+export 'package:ikanku/core/responsive/spacing.dart';
 
 /// Layout standar: kotak biru melengkung di atas (Figma "kotak"), judul, tombol kembali.
 class AppScaffold extends StatelessWidget {
@@ -163,7 +165,7 @@ class AppField extends StatelessWidget {
 }
 
 class AppCard extends StatelessWidget {
-  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(14), this.onTap, this.color = Colors.white, this.margin = const EdgeInsets.only(bottom: 14)});
+  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(14), this.onTap, this.color = Colors.white, this.margin = const EdgeInsets.only(bottom: Space.itemGap)});
   final Widget child;
   final EdgeInsets padding;
   final VoidCallback? onTap;
@@ -327,20 +329,31 @@ class StatusChip extends StatelessWidget {
       );
 }
 
-class SectionRow extends StatelessWidget {
-  const SectionRow({super.key, required this.title, this.action, this.onAction});
+/// Header bagian: judul (membungkus, tidak overflow) dan aksi opsional (target sentuh 48 dp), sejajar garis dasar.
+class SectionHeader extends StatelessWidget {
+  const SectionHeader(this.title, {super.key, this.action, this.onAction});
   final String title;
   final String? action;
   final VoidCallback? onAction;
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Flexible(child: Text(title, style: AppText.body, overflow: TextOverflow.ellipsis)),
-          if (action != null) InkWell(onTap: onAction, child: ConstrainedBox(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), child: Align(alignment: Alignment.center, widthFactor: 1, child: Padding(padding: const EdgeInsets.only(left: Gap.md), child: Text(action!, style: AppText.body.copyWith(color: AppColors.primary)))))),
-        ]),
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          Expanded(child: Text(title, style: AppText.body)),
+          if (action != null)
+            InkWell(
+              onTap: onAction,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: AppSize.buttonSmall, minWidth: AppSize.buttonSmall),
+                child: Align(alignment: Alignment.centerRight, widthFactor: 1, child: Padding(padding: const EdgeInsets.only(left: Gap.md), child: Text(action!, style: AppText.body.copyWith(color: AppColors.primary)))),
+              ),
+            ),
+        ],
       );
 }
+
+
 
 class KeyValueRow extends StatelessWidget {
   const KeyValueRow(this.k, this.v, {super.key, this.bold = false});

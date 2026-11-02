@@ -10,47 +10,60 @@ import 'package:ikanku/features/catalog/domain/catalog.dart';
 import 'package:ikanku/features/catalog/presentation/catalog_providers.dart';
 
 /// Kartu produk vertikal dengan foto bulat menimpa tepi atas (Figma Container 36).
-/// Lebar mengikuti induk, tinggi mengikuti isi; foto hidup di Stack dengan ruang atas sendiri sehingga tidak terpotong.
-class ProductCard extends StatelessWidget {
-  const ProductCard({super.key, required this.product});
+/// Satu unit: foto + kartu. Offset atas Stack = jari-jari foto, padding atas kartu = jari-jari + 8,
+/// sehingga bagian paling atas unit adalah foto (jarak dari judul bagian diukur ke foto).
+/// Lebar mengikuti induk, tinggi mengikuti isi.
+class ProductCardWithPhoto extends StatelessWidget {
+  const ProductCardWithPhoto({super.key, required this.product, this.photoKey, this.cardKey});
   final Product product;
+  final Key? photoKey;
+  final Key? cardKey;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, c) {
       final photo = (c.maxWidth * 0.55).clamp(72.0, 104.0);
-      final lift = photo / 2;
-      return GestureDetector(
-        onTap: () => context.push('/product/${product.id}'),
+      final radius = photo / 2;
+      final pad = Space.cardPadding(context);
+      return Semantics(
+        button: true,
+        label: product.name,
         child: Stack(alignment: Alignment.topCenter, children: [
           Padding(
-            padding: EdgeInsets.only(top: lift),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.fromLTRB(Gap.md, lift + Gap.sm, Gap.md, Gap.md),
-              decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card), boxShadow: AppShadow.card),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Center(child: Text(product.name, style: AppText.body, maxLines: 1, overflow: TextOverflow.ellipsis)),
-                const SizedBox(height: Gap.xs),
-                ConstrainedBox(constraints: BoxConstraints(minHeight: MediaQuery.textScalerOf(context).scale(36)), child: Text(product.description.split('\n').first, style: AppText.small, maxLines: 2, overflow: TextOverflow.ellipsis)),
-                const Divider(height: Gap.lg),
-                Row(children: [
-                  const Icon(Icons.star, size: 16, color: AppColors.star),
-                  const SizedBox(width: 2),
-                  Text('${product.rating}', style: AppText.caption),
+            padding: EdgeInsets.only(top: radius),
+            child: GestureDetector(
+              key: cardKey,
+              onTap: () => context.push('/product/${product.id}'),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.fromLTRB(pad, radius + Gap.sm, pad, pad),
+                decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(16), boxShadow: AppShadow.card),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Center(child: Text(product.name, style: AppText.body, maxLines: 1, overflow: TextOverflow.ellipsis)),
+                  const SizedBox(height: Gap.xs),
+                  ConstrainedBox(constraints: BoxConstraints(minHeight: MediaQuery.textScalerOf(context).scale(36)), child: Text(product.description.split('\n').first, style: AppText.small, maxLines: 2, overflow: TextOverflow.ellipsis)),
+                  const Divider(height: Gap.lg),
+                  Row(children: [
+                    const Icon(Icons.star, size: 16, color: AppColors.star),
+                    const SizedBox(width: Gap.xs),
+                    Text('${product.rating}', style: AppText.caption),
+                  ]),
+                  Row(children: [
+                    Expanded(child: Text(rupiah(product.startingPrice), style: AppText.body, maxLines: 1, overflow: TextOverflow.ellipsis)),
+                    const Icon(Icons.chevron_right),
+                  ]),
                 ]),
-                Row(children: [
-                  Expanded(child: Text(rupiah(product.startingPrice), style: AppText.body, maxLines: 1, overflow: TextOverflow.ellipsis)),
-                  const Icon(Icons.chevron_right),
-                ]),
-              ]),
+              ),
             ),
           ),
-          ProductImage(asset: product.image, size: photo),
+          IgnorePointer(child: SizedBox(key: photoKey, width: photo, height: photo, child: ProductImage(asset: product.image, size: photo))),
         ]),
       );
     });
   }
 }
+
+typedef ProductCard = ProductCardWithPhoto;
 
 /// Baris produk horizontal (Figma Container 38).
 class ProductRow extends StatelessWidget {
@@ -59,6 +72,7 @@ class ProductRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCard(
+      padding: EdgeInsets.all(Space.cardPadding(context)),
       onTap: () => context.push('/product/${product.id}'),
       child: Row(children: [
         ProductImage(asset: product.image, size: fluid(context, 60)),
@@ -109,6 +123,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final user = ref.watch(authProvider);
     final cartCount = ref.watch(cartCountProvider);
     final recs = cat.products.take(6).toList();
+    final list = cat.products.skip(3).take(3).toList();
     return Scaffold(
       backgroundColor: AppColors.background,
       body: RefreshIndicator(
@@ -139,7 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       onTap: () => context.go('/search'),
                       child: Container(
                         constraints: const BoxConstraints(minHeight: AppSize.searchBar),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: Gap.sm + 2),
                         decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card)),
                         child: const Row(children: [Icon(Icons.search, size: 16, color: AppColors.grey), SizedBox(width: Gap.sm), Text('Telusuri', style: AppText.searchHint)]),
                       ),
@@ -148,42 +163,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ]),
               ),
             ),
+            const VGap.section(),
+            ContentFrame(safe: true, child: const SectionHeader('Semua Kategori')),
+            const VGap.title(),
             ContentFrame(
+              padded: false,
               safe: true,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const SizedBox(height: Gap.md),
-                const Text('Semua Kategori', style: AppText.body),
-                const SizedBox(height: Gap.sm),
-                PeekRow(
-                  gap: Gap.sm,
-                  preferred: 140,
-                  min: 130,
-                  max: 200,
-                  children: [
-                    for (final c in _cats)
-                      GestureDetector(
-                        onTap: () => context.push('/category/${c.$1}'),
-                        child: Container(
-                          constraints: const BoxConstraints(minHeight: AppSize.buttonSmall),
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card), boxShadow: AppShadow.soft),
-                          child: Row(children: [
-                            ProductImage(asset: c.$2, size: fluid(context, 46), radius: AppRadius.card),
-                            const SizedBox(width: 10),
-                            Expanded(child: Text(c.$1, style: AppText.body, maxLines: 2, overflow: TextOverflow.ellipsis)),
-                          ]),
-                        ),
+              child: HorizontalCardList(
+                key: const Key('home-categories'),
+                gap: Space.itemGap,
+                preferred: 140,
+                min: 130,
+                max: 200,
+                children: [
+                  for (final c in _cats)
+                    GestureDetector(
+                      onTap: () => context.push('/category/${c.$1}'),
+                      child: Container(
+                        constraints: const BoxConstraints(minHeight: AppSize.buttonSmall),
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card), boxShadow: AppShadow.soft),
+                        child: Row(children: [
+                          ProductImage(asset: c.$2, size: fluid(context, 46), radius: AppRadius.card),
+                          const SizedBox(width: Gap.sm + 2),
+                          Expanded(child: Text(c.$1, style: AppText.body, maxLines: 2, overflow: TextOverflow.ellipsis)),
+                        ]),
                       ),
-                  ],
-                ),
-                const SizedBox(height: Gap.md),
-              ]),
+                    ),
+                ],
+              ),
             ),
+            const VGap.section(),
             ContentFrame(
               padded: false,
               safe: true,
               child: Column(children: [
                 AspectRatio(
+                  key: const Key('home-banner'),
                   aspectRatio: 1.55,
                   child: PageView.builder(
                     controller: _page,
@@ -218,23 +234,49 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                const SizedBox(height: Space.dotsGap),
+                Row(key: const Key('home-banner-dots'), mainAxisAlignment: MainAxisAlignment.center, children: [
                   for (var i = 0; i < _banners.length; i++)
-                    Container(margin: const EdgeInsets.all(Gap.xs), width: i == _banner ? 17 : 7, height: 6, decoration: BoxDecoration(color: i == _banner ? AppColors.grey : AppColors.greyLight, borderRadius: BorderRadius.circular(8))),
+                    Container(margin: const EdgeInsets.symmetric(horizontal: Gap.xs), width: i == _banner ? 17 : 7, height: 6, decoration: BoxDecoration(color: i == _banner ? AppColors.grey : AppColors.greyLight, borderRadius: BorderRadius.circular(8))),
                 ]),
               ]),
             ),
+            const VGap.section(),
+            ContentFrame(
+              safe: true,
+              child: SectionHeader('Rekomendasi untuk anda', key: const Key('home-reco-title'), action: 'Lihat semua', onAction: () => context.push('/recommendations')),
+            ),
+            const VGap.title(),
+            if (recs.isEmpty)
+              const ContentFrame(safe: true, child: EmptyState('Belum ada produk'))
+            else
+              ContentFrame(
+                padded: false,
+                safe: true,
+                child: HorizontalCardList(
+                  gap: Space.itemGap,
+                  preferred: 160,
+                  min: 140,
+                  max: 200,
+                  children: [
+                    for (final (i, p) in recs.indexed)
+                      ProductCardWithPhoto(
+                        product: p,
+                        photoKey: i < 2 ? Key('home-reco-photo-$i') : null,
+                        cardKey: i < 2 ? Key('home-reco-card-$i') : null,
+                      ),
+                  ],
+                ),
+              ),
+            const VGap.section(),
             ContentFrame(
               safe: true,
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                SectionRow(title: 'Rekomendasi untuk anda', action: 'Lihat semua', onAction: () => context.push('/recommendations')),
-                if (recs.isEmpty) const EmptyState('Belum ada produk') else PeekRow(gap: Gap.lg, preferred: 160, min: 140, max: 200, children: [for (final p in recs) ProductCard(product: p)]),
-                const SizedBox(height: Gap.sm),
-                for (final p in cat.products.skip(3).take(3)) ProductRow(product: p),
+                for (final (i, p) in list.indexed) KeyedSubtree(key: i == 0 ? const Key('home-list-first') : null, child: ProductRow(product: p)),
                 PillButton(label: 'Lihat Lebih', outlined: true, onPressed: () => context.push('/recommendations')),
-                const SizedBox(height: Gap.lg),
               ]),
             ),
+            SizedBox(height: Space.minBottomClearance(context)),
           ],
         ),
       ),
@@ -372,7 +414,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       ),
       body: _q.trim().isEmpty
           ? ListView(padding: EdgeInsets.all(context.pagePadding), children: [
-              const SectionRow(title: 'Rekomendasi untuk anda'),
+              const SectionHeader('Rekomendasi untuk anda'),
               for (final p in cat.products.take(5)) ProductRow(product: p),
             ])
           : results.isEmpty

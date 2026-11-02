@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ikanku/core/responsive/breakpoints.dart';
+import 'package:ikanku/core/responsive/spacing.dart';
 
 /// Memusatkan konten dengan lebar maksimum [maxWidth] pada layar lebar.
 /// Padding horizontal mengikuti kelas lebar (16/20/24) kecuali [padded] false.
@@ -29,7 +30,7 @@ class ContentFrame extends StatelessWidget {
 
 /// Grid responsif: tinggi baris mengikuti isi kartu (tanpa tinggi tetap), kolom dari maxCrossAxisExtent.
 class ResponsiveGrid extends StatelessWidget {
-  const ResponsiveGrid({super.key, required this.children, this.maxCrossAxisExtent = 200, this.spacing = 16, this.runSpacing = 8});
+  const ResponsiveGrid({super.key, required this.children, this.maxCrossAxisExtent = 200, this.spacing = Space.itemGap, this.runSpacing = Space.itemGap});
   final List<Widget> children;
   final double maxCrossAxisExtent;
   final double spacing;
@@ -49,19 +50,25 @@ class ResponsiveGrid extends StatelessWidget {
   }
 }
 
-/// Daftar horizontal: tinggi dari isi, item ber-lebar dari ruang tersedia dengan "intip" item berikut,
-/// item pertama sejajar dengan padding halaman.
-class PeekRow extends StatelessWidget {
-  const PeekRow({super.key, required this.children, this.gap = 16, this.preferred = 160, this.min = 120, this.max = 220});
+/// Daftar kartu horizontal: tinggi dari isi, item pertama sejajar margin layar (`screenGutter`),
+/// jarak antar item `gap`, item berikut mengintip, bayangan tidak terpotong (Clip.none).
+/// Tempatkan di luar padding halaman: widget ini mengatur sendiri inset kiri/kanan (berisi pemusatan 560 dp).
+class HorizontalCardList extends StatelessWidget {
+  const HorizontalCardList({super.key, required this.children, this.gap = Space.itemGap, this.preferred = 160, this.min = 120, this.max = 220});
   final List<Widget> children;
   final double gap, preferred, min, max;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, c) {
-      final w = peekItemWidth(c.maxWidth, inset: 0, gap: gap, preferred: preferred, min: min, max: max);
+      final g = Space.screenGutter(context);
+      final frame = c.maxWidth < kContentMaxWidth ? c.maxWidth : kContentMaxWidth;
+      final inset = (c.maxWidth - frame) / 2 + g;
+      final w = peekItemWidth(frame, inset: 2 * g, gap: gap, preferred: preferred, min: min, max: max);
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
+        clipBehavior: Clip.none,
+        padding: EdgeInsets.symmetric(horizontal: inset),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           for (final (i, ch) in children.indexed) ...[if (i > 0) SizedBox(width: gap), SizedBox(width: w, child: ch)],
         ]),
