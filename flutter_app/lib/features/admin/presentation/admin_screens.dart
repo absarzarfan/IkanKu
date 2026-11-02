@@ -107,17 +107,48 @@ class _UsersTabState extends ConsumerState<_UsersTab> {
   }
 }
 
-class _OrdersTab extends ConsumerWidget {
+class _OrdersTab extends ConsumerStatefulWidget {
   const _OrdersTab();
   @override
-  Widget build(BuildContext context, WidgetRef ref) => _async(ref.watch(_adminOrdersProvider), () => ref.invalidate(_adminOrdersProvider), (list) => ListView(children: [
-        for (final o in list)
-          ListTile(
-            title: Text('${o.code} · ${o.status}', style: AppText.body),
-            subtitle: Text('${o.buyerName} → ${o.shopName} · ${o.payment}'),
-            trailing: Text(rupiah(o.total)),
-          ),
-      ]));
+  ConsumerState<_OrdersTab> createState() => _OrdersTabState();
+}
+
+class _OrdersTabState extends ConsumerState<_OrdersTab> {
+  static const _all = 'Semua';
+  String _status = _all;
+
+  @override
+  Widget build(BuildContext context) {
+    final async = ref.watch(_adminOrdersProvider);
+    final statuses = [_all, ...{for (final o in async.value ?? const <AdminOrder>[]) o.status}];
+    return Column(children: [
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: Gap.md, vertical: Gap.sm),
+        child: Row(children: [
+          for (final s in statuses)
+            Padding(
+              padding: const EdgeInsets.only(right: Gap.sm),
+              child: ChoiceChip(key: Key('admin-status-$s'), label: Text(s), selected: _status == s, onSelected: (_) => setState(() => _status = s)),
+            ),
+        ]),
+      ),
+      Expanded(
+        child: _async(async, () => ref.invalidate(_adminOrdersProvider), (list) {
+          final shown = _status == _all ? list : list.where((o) => o.status == _status).toList();
+          if (shown.isEmpty) return const EmptyState(AdminStrings.empty, icon: Icons.inbox_outlined);
+          return ListView(children: [
+            for (final o in shown)
+              ListTile(
+                title: Text('${o.code} · ${o.status}', style: AppText.body),
+                subtitle: Text('${o.buyerName} → ${o.shopName} · ${o.payment}'),
+                trailing: Text(rupiah(o.total)),
+              ),
+          ]);
+        }),
+      ),
+    ]);
+  }
 }
 
 class _ProductsTab extends ConsumerStatefulWidget {

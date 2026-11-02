@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ikanku/core/config/app_config.dart';
 import 'package:ikanku/core/errors/app_error.dart';
+import 'package:ikanku/features/admin/data/mock_admin_remote.dart';
 import 'package:ikanku/features/admin/data/supabase_admin_remote.dart';
 import 'package:ikanku/features/admin/domain/admin.dart';
 import 'package:ikanku/features/catalog/data/supabase_catalog_remote.dart';
@@ -37,7 +38,7 @@ final profileRemoteProvider = Provider<ProfileRemote?>((ref) {
 
 final adminRemoteProvider = Provider<AdminRemote?>((ref) {
   final c = _client();
-  return c == null ? null : SupabaseAdminRemote(c);
+  return c == null ? MockAdminRemote(ref) : SupabaseAdminRemote(c);
 });
 
 /// Pesan galat backend terakhir (Indonesia); ditampilkan sebagai SnackBar oleh root aplikasi.

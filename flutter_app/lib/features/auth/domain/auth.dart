@@ -9,8 +9,8 @@ class AppUser {
   final UserRole role;
   final bool isActive;
 
-  AppUser copyWith({String? name, String? email, String? phone}) =>
-      AppUser(id: id, name: name ?? this.name, email: email ?? this.email, phone: phone ?? this.phone, role: role, isActive: isActive);
+  AppUser copyWith({String? name, String? email, String? phone, bool? isActive}) =>
+      AppUser(id: id, name: name ?? this.name, email: email ?? this.email, phone: phone ?? this.phone, role: role, isActive: isActive ?? this.isActive);
 }
 
 class AuthException implements Exception {

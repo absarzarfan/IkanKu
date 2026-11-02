@@ -31,6 +31,15 @@ class CatalogState {
   }
 }
 
+/// Id produk yang dinonaktifkan admin (hanya mode mock); produk ini tidak tampil di katalog.
+class InactiveProductsNotifier extends Notifier<Set<String>> {
+  @override
+  Set<String> build() => const {};
+  void setActive(String id, bool active) => state = active ? ({...state}..remove(id)) : {...state, id};
+}
+
+final inactiveProductsProvider = NotifierProvider<InactiveProductsNotifier, Set<String>>(InactiveProductsNotifier.new);
+
 class CatalogNotifier extends Notifier<CatalogState> {
   CatalogRepository get _repo => ref.read(catalogRepositoryProvider);
 
@@ -38,7 +47,10 @@ class CatalogNotifier extends Notifier<CatalogState> {
 
   @override
   CatalogState build() {
-    if (ref.read(catalogRemoteProvider) == null) return CatalogState(products: _repo.products(), categories: _repo.categories());
+    if (ref.read(catalogRemoteProvider) == null) {
+      final hidden = ref.watch(inactiveProductsProvider);
+      return CatalogState(products: [for (final p in _repo.products()) if (!hidden.contains(p.id)) p], categories: _repo.categories());
+    }
     // Mode Supabase: mulai kosong, muat dari server saat login dan setiap pengguna berganti.
     ref.listen(authProvider, (_, user) {
       if (user == null) {
@@ -83,7 +95,8 @@ class CatalogNotifier extends Notifier<CatalogState> {
     }
     _repo.saveProducts(p);
     _repo.saveCategories(c);
-    state = CatalogState(products: _repo.products(), categories: _repo.categories());
+    final hidden = ref.read(inactiveProductsProvider);
+    state = CatalogState(products: [for (final p in _repo.products()) if (!hidden.contains(p.id)) p], categories: _repo.categories());
   }
 
   void upsertProduct(Product product) {
