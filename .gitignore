@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Secrets (Supabase config)
+flutter_app/dart_defines.json
