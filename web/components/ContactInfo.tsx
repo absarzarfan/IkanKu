@@ -33,13 +33,13 @@ export default function ContactInfo({ items, variant }: { items: ContactItem[]; 
     );
   }
   return (
-    <ul className="grid gap-x-10 gap-y-6 text-lg text-ink sm:grid-cols-2">
+    <ul className="grid gap-x-10 gap-y-6 text-lg text-ink lg:grid-cols-2">
       {items.map((k) => {
         const d = defs[k];
         return (
-          <li key={k} className={`flex items-start gap-4 ${k === "address" ? "sm:col-span-2" : ""}`}>
+          <li key={k} className={`flex items-start gap-4 ${k === "address" ? "lg:col-span-2" : ""}`}>
             <IconChip name={d.icon} size={44} />
-            <div>
+            <div className="min-w-0">
               <p>{d.compact}</p>
               {d.href ? <a href={d.href} {...(d.external ? ext : {})} className="footer-link mt-1 block break-words">{d.value}</a> : <p className="mt-1">{d.value}</p>}
             </div>

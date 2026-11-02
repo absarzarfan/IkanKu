@@ -22,14 +22,14 @@ export default function Navbar() {
         <Link href="/" aria-label="IkanKu beranda">
           <Image src="/img/home/logo.png" alt="IkanKu" width={160} height={84} className="h-14 w-auto lg:h-[84px]" priority />
         </Link>
-        <nav className="hidden items-center gap-10 text-h3 md:flex lg:gap-[60px]" aria-label="Utama">
+        <nav className="hidden items-center gap-5 whitespace-nowrap text-base md:flex lg:gap-10 lg:text-lg xl:gap-[60px] xl:text-h3" aria-label="Utama">
           {links.map((l) => (
             <Link key={l.href} href={l.href} aria-current={active(l.href) ? "page" : undefined} className={`relative py-1 transition-colors duration-150 hover:text-brand after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:rounded after:bg-brand after:transition-transform after:duration-200 after:ease-out motion-reduce:after:transition-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand ${active(l.href) ? "text-brand after:scale-x-100" : "text-ink after:scale-x-0 hover:after:scale-x-100"}`}>
               {l.label}
             </Link>
           ))}
         </nav>
-        <Link href="/hubungi-kami" className="hidden btn-outline rounded-lg border border-black px-4 py-2 text-sm md:block">
+        <Link href="/hubungi-kami" className="hidden whitespace-nowrap btn-outline rounded-lg border border-black px-4 py-2 text-sm md:block">
           Hubungi Kami
         </Link>
         <button type="button" className="md:hidden grid size-11 cursor-pointer place-items-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand" aria-label="Buka menu" aria-expanded={open} onClick={() => setOpen(!open)}>

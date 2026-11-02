@@ -56,8 +56,8 @@ export default function Faq() {
             <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className="faq-chip">{c}</button>
           ))}
         </div>
-        <ul className="mt-8 flex flex-col gap-4 md:hidden">{render(list, "m")}</ul>
-        <div className="mt-8 hidden items-start gap-5 md:flex">
+        <ul className="mt-8 flex flex-col gap-4 lg:hidden">{render(list, "m")}</ul>
+        <div className="mt-8 hidden items-start gap-5 lg:flex">
           <ul className="flex min-w-0 flex-1 flex-col gap-5">{render(colA, "a")}</ul>
           <ul className="flex min-w-0 flex-1 flex-col gap-5">{render(colB, "b")}</ul>
         </div>

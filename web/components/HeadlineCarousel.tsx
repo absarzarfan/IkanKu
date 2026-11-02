@@ -63,7 +63,7 @@ export default function HeadlineCarousel({ items, priorityFirst = true }: { item
     >
       <ul ref={trackRef} onScroll={onScroll} aria-live={auto ? "off" : "polite"} className="hc-track flex snap-x snap-mandatory overflow-x-auto">
         {items.map((a, k) => (
-          <li key={a.slug} role="group" aria-roledescription="slide" aria-label={articleUi.carousel.slideLabel(k + 1, n)} inert={k !== i} className="relative h-[500px] w-full shrink-0 snap-center md:h-[520px]">
+          <li key={a.slug} role="group" aria-roledescription="slide" aria-label={articleUi.carousel.slideLabel(k + 1, n)} inert={k !== i} className="relative h-[540px] w-full shrink-0 snap-center md:h-[560px]">
             <Link href={`/artikel/${a.slug}`} className="img-zoom block h-full w-full text-white focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white">
               {imageWidth(a) >= 1000 ? (
                 <Image src={a.image} alt="" fill sizes="(min-width:1280px) 1200px, 100vw" priority={priorityFirst && k === 0} loading={priorityFirst && k === 0 ? undefined : "lazy"} className="object-cover" />
@@ -71,8 +71,8 @@ export default function HeadlineCarousel({ items, priorityFirst = true }: { item
                 // Low-res source: framed and capped at 1.3x its intrinsic width over the brand gradient instead of full-bleed
                 <>
                   <div aria-hidden="true" className="surface-brand absolute inset-0" />
-                  <div className="absolute right-6 top-6 aspect-video overflow-hidden rounded-2xl border border-white/40 shadow-[0_18px_36px_-20px_rgba(5,3,21,.7)] md:right-10 md:top-8" style={{ width: `min(calc(100% - 3rem), ${Math.round(imageWidth(a) * 1.3)}px)` }}>
-                    <Image src={a.image} alt="" fill sizes={`${Math.round(imageWidth(a) * 1.3)}px`} priority={priorityFirst && k === 0} loading={priorityFirst && k === 0 ? undefined : "lazy"} className="object-cover" />
+                  <div className="absolute right-6 top-6 aspect-video overflow-hidden rounded-2xl border border-white/40 shadow-[0_18px_36px_-20px_rgba(5,3,21,.7)] md:right-10 md:top-8" style={{ width: `min(calc(100% - 3rem), ${Math.min(400, Math.round(imageWidth(a) * 1.3))}px)` }}>
+                    <Image src={a.image} alt="" fill sizes={`${Math.min(400, Math.round(imageWidth(a) * 1.3))}px`} priority={priorityFirst && k === 0} loading={priorityFirst && k === 0 ? undefined : "lazy"} className="object-cover" />
                   </div>
                 </>
               )}
