@@ -99,3 +99,6 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 
 ### Branch map
 `feature/mobile-mvp` dan `feature/mobile-polish` adalah snapshot beku. Semua pekerjaan berikutnya (Phase 12c integrasi Supabase) dilakukan di `feature/mobile-unified`.
+
+## Phase 14a (UX buyer flow) - branch feature/mobile-ux
+- PART 0: cabang dibuat dari feature/mobile-unified; baseline analyze bersih, 195 tes lulus.
