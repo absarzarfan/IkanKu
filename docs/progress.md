@@ -60,3 +60,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 9a P8: verified (build, lint, routes 200, 390px no overflow, screenshots); fixed drop cap selector and Home button alignment.
 - Phase 10 P0-2: branch feature/web-polish, skills loaded, image audit, low-res heroes framed (never > 1.3x).
 - Phase 10 P3: global polish (selection, focus, disabled, scroll-margin, text-wrap, tabular-nums), form loading/error states, carousel empty state, shared shadows.
+- Phase 10 P4-7: motion inventory, a11y fixes (badge contrast, error text, skip link), perf report, verified (build, lint, routes 200, no overflow at 390/500, Tim Kami fits).

@@ -80,3 +80,9 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Phase 9a P5 NEEDS CONFIRMATION: article images 5-jenis/5-fakta do not clearly match their titles; two images carry watermarks (Unsplash+, Tribun Kaltara).
 - Phase 9a P6: HeadlineCarousel (scroll-snap + small client script) on /artikel and Home "Berita Utama"; the carousel could replace the Home hero on request. /artikel is a newspaper front page (dateline, carousel, lead + 2 secondary + numbered Terbaru, per-category sections); filter pills now filter by category and article pagination was removed (13 articles). Added pause/play icons to the icon set (same stroke style). Only the current slide is focusable (others inert). The dateline date is formatted on the client (prerendered pages cannot read the clock).
 - Phase 9a P8: verification used a CDP script (outside the repo) to click tabs/FAQ items; Tim Kami fit at 1440x900/1920x1080 not re-measured in this phase (layout untouched).
+
+## Phase 10 (feature/web-polish)
+- Low-res photos are framed and capped (<= ~1.3x) instead of full-bleed; no files edited. Needs-better-sources list in ui-polish.md. Article list cards with 258-300px sources are still ~1.4x (accepted until new files exist).
+- Orange CTA contrast (2.06-2.99) reported only, per instruction. FAQ panel keeps grid-template-rows animation (explicit earlier request).
+- Contact form "send" is simulated (600ms) because no backend exists. Carousel empty message is new state copy (Indonesian). Slide height 440 -> 500px on mobile so framed low-res photos do not collide with text; check visually on a phone.
+- Not re-measured: carousel low-res slide overlap at 768-1000px (no screenshot of those slides).

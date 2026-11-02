@@ -32,7 +32,7 @@ export default function ContactForm() {
   }
 
   const fe = (k: keyof Errors) =>
-    errors[k] ? <p id={`err-${k}`} role="alert" className="mt-1 text-sm text-[#ffd4d0]">{errors[k]}</p> : null;
+    errors[k] ? <p id={`err-${k}`} role="alert" className="mt-1 text-sm font-medium text-white">{errors[k]}</p> : null;
   const inv = (k: keyof Errors) => ({ "aria-invalid": errors[k] ? true : undefined, "aria-describedby": errors[k] ? `err-${k}` : undefined });
   const hasErrors = Object.keys(errors).length > 0;
 
