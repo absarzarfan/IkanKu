@@ -78,3 +78,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 12b P2: Figma MCP 1 call (Beranda, ok); central theme tokens (colors, radii, shadows, text styles, component themes), raw hex/font sizes moved; docs/figma-fidelity.md.
 - Phase 12b P3-4: order/seller/detail overflow fixes, pull-to-refresh lists, admin error with retry, tap targets 48.
 - Phase 12b P5: responsive matrix test (3 roles x 9 sizes x 3 text scales + tap target guidelines) and helper unit tests; 164 tests pass.
+- Phase 12b P6: web build mock, headless screenshots (home 4 sizes; search/product/cart/checkout/orders/profile at 360 and 768) in D:\Tools\shots\phase12b; fixed banner button width; gates: analyze clean, 164 tests pass, APK debug built.

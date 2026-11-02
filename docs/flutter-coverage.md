@@ -55,3 +55,7 @@ Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Va
 - Semua rute pembeli dan penjual di `test/route_lists.dart` dijalankan oleh `test/layout_overflow_test.dart` pada 360x640 (teks 1.0x) dan 412x917 (teks 1.4x); tidak ada overflow.
 - Perbaikan: baris status pesanan di `/profile` (Expanded + FittedBox), tinggi sel grid `/category/*` mengikuti skala teks, judul bagian di `/seller/products` (Expanded), `AppScaffold` memberi SafeArea bawah pada body bila tidak ada bar bawah.
 - Semua layar berstatus Inventory-only tetap **belum diverifikasi terhadap Figma**; hanya konsistensi layout yang diperiksa.
+
+## Pembaruan Phase 12b (responsif + fidelity)
+- Fondasi `lib/core/responsive` (breakpoints 600/840, ContentFrame maks 560, ResponsiveGrid, PeekRow, skala fluida untuk media). Tema pusat `lib/core/theme/app_theme.dart` (token warna, radius, bayangan, teks, tema komponen).
+- Matriks tes `test/responsive_matrix_test.dart`: pembeli/penjual/admin x 280x653 .. 768x1024 + landscape 800x360 x teks 1.0/1.3/2.0, tanpa overflow. Status Figma per layar: docs/figma-fidelity.md (Beranda partial; sisanya unverified; admin tanpa frame).

@@ -207,7 +207,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(AppRadius.chip),
                                     onTap: () => context.push('/category/Semua'),
-                                    child: Container(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), alignment: Alignment.center, padding: const EdgeInsets.symmetric(horizontal: 14), child: const Text('Beli Sekarang', style: AppText.bannerButton)),
+                                    child: IntrinsicWidth(child: Container(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), alignment: Alignment.center, padding: const EdgeInsets.symmetric(horizontal: 14), child: const Text('Beli Sekarang', textAlign: TextAlign.center, style: AppText.bannerButton))),
                                   ),
                                 ),
                               ),

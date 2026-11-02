@@ -114,3 +114,12 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Build: `kotlin.incremental=false` ditambahkan ke `android/gradle.properties` karena kompilasi Kotlin plugin gagal ("Could not close incremental caches"; kemungkinan akibat perbedaan huruf besar/kecil path `D:\projects` vs `D:\Projects`). Build APK debug berhasil setelah itu. `flutter build web` tidak dijalankan (tidak pernah diverifikasi sebelumnya).
 - Satu-satunya string `service_role` di berkas terlacak: literal nama peran di `0002_functions.sql` (`auth.role() = 'service_role'`); itu nama peran Postgres, bukan kunci.
 - Tes kontrak berjalan pada `MockAuthRepository` dan implementasi in-memory untuk katalog/pesanan/admin (`test/support/memory_remotes.dart`); implementasi Supabase belum dites (tanpa database).
+
+## Phase 12b (feature/mobile-mvp)
+- Figma: `docs/figma-export/` kosong (tanpa PNG/SVG); Figma MCP dipakai 1 kali (Beranda 2339:7724, berhasil, bingkai 412 dp). 3 panggilan sisa tidak dipakai karena keluaran sangat besar, bukan karena gagal. Layar lain tetap "Unverified" (lihat docs/figma-fidelity.md). flutter_svg tidak ditambahkan (tidak ada SVG di export).
+- Grid memakai `ResponsiveGrid` (Wrap, kolom dari maxCrossAxisExtent) dan daftar horizontal `PeekRow` (SingleChildScrollView) agar tinggi kartu mengikuti isi; bukan SliverGridDelegateWithMaxCrossAxisExtent (butuh tinggi tetap).
+- Search bar Beranda 48 dp (Figma 39) dan semua tombol min 48 dp demi pedoman target sentuh; menyimpang dari Figma, disengaja.
+- Rating angka memakai Poppins (Figma Lato tidak dibundel); ikon Material tetap (tidak ada SVG ekspor).
+- Test lama `layout_overflow_test.dart` diganti `responsive_matrix_test.dart` (peran x 9 ukuran x 3 skala teks, satu aplikasi per kasus, galat dikumpulkan lewat FlutterError.onError).
+- Screenshot web: Flutter headless Edge merender layout tetapi foto aset tidak ter-decode pada beberapa layar (Beranda tanpa foto); seller dan admin tidak dipotret (butuh login, deep link dialihkan).
+- Pull-to-refresh di Beranda, Rekomendasi, Kategori, Pesanan pembeli/penjual, Produk penjual; mode mock hanya `invalidate` (tanpa loading nyata). Admin: galat dengan tombol "Coba lagi".
