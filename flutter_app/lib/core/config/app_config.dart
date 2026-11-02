@@ -1,5 +1,5 @@
 /// Konfigurasi dari `--dart-define-from-file=dart_defines.json` (berkas tidak masuk git).
-/// Hanya kunci publik (anon). Kunci service_role tidak boleh dipakai di aplikasi.
+/// Hanya kunci publik (anon). Kunci rahasia server (service role) tidak boleh dipakai di aplikasi.
 class AppConfig {
   const AppConfig._();
 

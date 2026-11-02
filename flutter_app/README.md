@@ -1,11 +1,12 @@
 # IkanKu (Flutter)
 
-Penulisan ulang aplikasi Android IkanKu dalam Flutter (Riverpod + go_router). Data mock in-memory; tanpa backend, Firebase, atau jaringan.
+Penulisan ulang aplikasi Android IkanKu dalam Flutter (Riverpod + go_router). Tanpa kunci, aplikasi memakai data mock in-memory. Dengan `SUPABASE_URL` dan `SUPABASE_ANON_KEY` aplikasi memakai Supabase (lihat `../docs/supabase-setup.md`).
 
 ## Menjalankan
 ```
 flutter pub get
-flutter run            # Android emulator/perangkat
+flutter run            # mode mock
+flutter run --dart-define-from-file=dart_defines.json   # mode Supabase (salin dart_defines.example.json, jangan dicommit)
 ```
 Akun demo (mock): pembeli `fharaa@gmail.com`, penjual `penjual@ikanku.id`, kata sandi `Admin123`; OTP `1234`.
 

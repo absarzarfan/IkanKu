@@ -99,7 +99,7 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 
 ## Phase 12a (feature/mobile-mvp)
 - Backend Supabase (Postgres + Auth + Storage), skema di `supabase/migrations/0001-0004`, seed di `supabase/seed.sql`, panduan di `docs/supabase-setup.md`. SQL TIDAK diuji pada database hidup (tidak ada akses).
-- Aplikasi tetap berjalan di mock tanpa kunci; Supabase aktif hanya jika `SUPABASE_URL` dan `SUPABASE_ANON_KEY` (dart-define) terisi. `dart_defines.json` di-ignore di `.gitignore`; kunci `service_role` tidak boleh ada di mana pun.
+- Aplikasi tetap berjalan di mock tanpa kunci; Supabase aktif hanya jika `SUPABASE_URL` dan `SUPABASE_ANON_KEY` (dart-define) terisi. `dart_defines.json` di-ignore di `.gitignore`; kunci service role (rahasia server) tidak boleh ada di mana pun.
 - Dibuat per pesanan per toko: keranjang lintas toko dipecah menjadi beberapa pesanan oleh `place_order` (NEEDS CONFIRMATION: apakah satu checkout boleh lintas toko).
 - Kategori global: penjual boleh menambah, hanya admin yang mengubah/menghapus (aplikasi mock membolehkan penjual ubah nama; di mode Supabase tombol itu akan ditolak RLS).
 - Stok dikurangi saat pesanan dibuat; dikembalikan saat dibatalkan atau saat pesanan ditolak diarsipkan. Pesanan ditolak yang belum diarsipkan tetap menahan stok supaya "bayar ulang" bisa jalan.
@@ -107,3 +107,10 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - `is_privileged()` dan trigger penjaga sengaja SECURITY INVOKER: `current_user` di fungsi security definer adalah pemilik fungsi, sehingga akan selalu lolos. Dengan invoker, penjagaan hanya longgar untuk admin, service role, SQL editor, dan RPC definer.
 - Registrasi Supabase memakai email + kata sandi (nomor ponsel disimpan di metadata/profil, OTP SMS tidak dipakai). NEEDS CONFIRMATION: penyedia OTP telepon.
 - NEEDS CONFIRMATION: penyedia pembayaran, nominal ongkir produksi, kebijakan refund (tidak diisi; hanya `payment_method` dan `payment_status` manual).
+- Phase 12a P3: repository sync lama (katalog, pesanan) tetap dipakai UI; di mode Supabase notifier berubah hybrid (mulai kosong, muat dari server saat login, perubahan optimistis lalu disamakan dengan server, galat tampil sebagai SnackBar). Kontrak async baru: `CatalogRemote`, `OrderRemote`, `CartRemote`, `ProfileRemote`, `AdminRemote` (implementasi Supabase di `features/*/data/supabase_*.dart`).
+- Belum tersambung ke backend (tetap lokal di mode Supabase): alamat (disalin ke tabel `addresses` saat checkout), keranjang (disinkronkan hanya saat `place_order`), ongkir yang ditampilkan di checkout (memakai default; angka final dihitung server per toko), unggah bukti bayar/kirim (hanya referensi teks), ubah email, ubah/hapus kategori (hanya admin lewat RLS).
+- `AdminRemote` + layar `/admin` (cari pengguna, nonaktif/aktif pengguna dan produk, ringkasan pesanan). Mode mock memiliki akun `admin@ikanku.id` hanya untuk menguji redirect; panel menampilkan pesan "perlu Supabase".
+- Supabase init memakai parameter `anonKey` (sudah deprecated di versi paket ini, pengganti `publishableKey`); nama dart-define tetap `SUPABASE_ANON_KEY`. NEEDS CONFIRMATION: apakah proyek memakai kunci legacy anon atau kunci publishable baru.
+- Build: `kotlin.incremental=false` ditambahkan ke `android/gradle.properties` karena kompilasi Kotlin plugin gagal ("Could not close incremental caches"; kemungkinan akibat perbedaan huruf besar/kecil path `D:\projects` vs `D:\Projects`). Build APK debug berhasil setelah itu. `flutter build web` tidak dijalankan (tidak pernah diverifikasi sebelumnya).
+- Satu-satunya string `service_role` di berkas terlacak: literal nama peran di `0002_functions.sql` (`auth.role() = 'service_role'`); itu nama peran Postgres, bukan kunci.
+- Tes kontrak berjalan pada `MockAuthRepository` dan implementasi in-memory untuk katalog/pesanan/admin (`test/support/memory_remotes.dart`); implementasi Supabase belum dites (tanpa database).

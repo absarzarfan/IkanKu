@@ -39,7 +39,7 @@ Lalu jalankan `supabase/seed.sql` (kategori + produk contoh untuk penjual pertam
    { "SUPABASE_URL": "https://xxxx.supabase.co", "SUPABASE_ANON_KEY": "<anon public key>" }
    ```
    Contoh kosong: `flutter_app/dart_defines.example.json`.
-3. **Jangan pernah** menaruh `service_role` key di aplikasi, repo, atau dokumen. Kunci itu melewati RLS.
+3. **Jangan pernah** menaruh kunci service role (rahasia server) di aplikasi, repo, atau dokumen. Kunci itu melewati RLS.
 4. Jalankan: `cd flutter_app && flutter run --dart-define-from-file=dart_defines.json`. Tanpa berkas/kunci, aplikasi memakai data mock seperti sebelumnya.
 
 ## 7. Daftar uji RLS (SQL Editor)
