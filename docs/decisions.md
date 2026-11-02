@@ -95,3 +95,4 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Download link and QR centralized in web/data/site.ts (DOWNLOAD_URL = "" with "#" fallback, QR_IMAGE = /img/produk/qr.png), used by the Home "Download on Google Play", /produk, CtaBand and Footer buttons; no visual change. DOWNLOAD_URL and the QR target need real values; the origin of qr.png is unknown, verify by scanning it with a phone before publishing.
 - oxipng is not installed on this machine, so the lossless PNG step was skipped (no image changed).
 - docs/image-licenses.md and docs/approval-pack.md are generated from repo data only (scripts in D:\Tools\scripts); no source, licence or answer was invented. Article files untouched.
+- Orange CTA label set back to #ffffff on the user's explicit request (supersedes option B). Contrast is 2.06 to 3.22:1 (below AA 4.5:1); accepted risk. Single token `--color-on-cta` in globals.css controls every `.btn-cta`.

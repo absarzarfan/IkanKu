@@ -106,3 +106,5 @@ Only listed: artikel/arrow.svg, artikel/avatar.svg, home/step-dot.svg, home/step
 - NOT VERIFIED: two watermarked article images, two image/title mismatches, low-res sources.
 - NOT VERIFIED: Visi/Misi/Tujuan and FAQ facts (approval-pack.md pending team answers).
 - SKIPPED: lossless PNG pass (oxipng not installed).
+
+Orange CTA update: label is white (#ffffff) again by user decision; ratios are the "Before" column above (2.06 / 2.99 / 2.24 / 3.22), accepted risk.

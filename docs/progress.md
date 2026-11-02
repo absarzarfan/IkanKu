@@ -67,3 +67,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 11 P5-6: oxipng not installed (P5 skipped); image-licenses.md created (78 rows).
 - Phase 11 P7-8: approval-pack.md (110 lines, 19 flagged sentences), data/site.ts for download link and QR.
 - Phase 11 P9: verified (build, lint, 19 pages + 48 images 200, Tim Kami fits, screenshots in D:\Tools\shots\phase11).
+- Phase 11 follow-up: CTA label back to white (user request).

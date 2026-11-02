@@ -14,7 +14,7 @@
   --color-placeholder: #6b6f78;
   --color-link: #1672c4;
   --color-on-blue: #ffffff;
-  --color-on-cta: #050315; /* dark label on the orange gradient: 6.3-9.9:1 */
+  --color-on-cta: #ffffff; /* white label on orange, set by the user: 2.06-3.22:1 (below AA) */
   --color-dot: #d9d9d9;
 
   --color-cerulean-50: #f0f5fe;
