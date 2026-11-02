@@ -96,3 +96,14 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - oxipng is not installed on this machine, so the lossless PNG step was skipped (no image changed).
 - docs/image-licenses.md and docs/approval-pack.md are generated from repo data only (scripts in D:\Tools\scripts); no source, licence or answer was invented. Article files untouched.
 - Orange CTA label set back to #ffffff on the user's explicit request (supersedes option B). Contrast is 2.06 to 3.22:1 (below AA 4.5:1); accepted risk. Single token `--color-on-cta` in globals.css controls every `.btn-cta`.
+
+## Phase 12a (feature/mobile-mvp)
+- Backend Supabase (Postgres + Auth + Storage), skema di `supabase/migrations/0001-0004`, seed di `supabase/seed.sql`, panduan di `docs/supabase-setup.md`. SQL TIDAK diuji pada database hidup (tidak ada akses).
+- Aplikasi tetap berjalan di mock tanpa kunci; Supabase aktif hanya jika `SUPABASE_URL` dan `SUPABASE_ANON_KEY` (dart-define) terisi. `dart_defines.json` di-ignore di `.gitignore`; kunci `service_role` tidak boleh ada di mana pun.
+- Dibuat per pesanan per toko: keranjang lintas toko dipecah menjadi beberapa pesanan oleh `place_order` (NEEDS CONFIRMATION: apakah satu checkout boleh lintas toko).
+- Kategori global: penjual boleh menambah, hanya admin yang mengubah/menghapus (aplikasi mock membolehkan penjual ubah nama; di mode Supabase tombol itu akan ditolak RLS).
+- Stok dikurangi saat pesanan dibuat; dikembalikan saat dibatalkan atau saat pesanan ditolak diarsipkan. Pesanan ditolak yang belum diarsipkan tetap menahan stok supaya "bayar ulang" bisa jalan.
+- Bukti bayar dan bukti kirim: hanya kolom referensi teks (`payment_proof_ref`, `shipment_photo_ref`); unggah berkas bukti belum dibuat (bucket privat belum ada) dan tetap disimulasikan seperti mock. Bucket yang ada hanya `product-images`.
+- `is_privileged()` dan trigger penjaga sengaja SECURITY INVOKER: `current_user` di fungsi security definer adalah pemilik fungsi, sehingga akan selalu lolos. Dengan invoker, penjagaan hanya longgar untuk admin, service role, SQL editor, dan RPC definer.
+- Registrasi Supabase memakai email + kata sandi (nomor ponsel disimpan di metadata/profil, OTP SMS tidak dipakai). NEEDS CONFIRMATION: penyedia OTP telepon.
+- NEEDS CONFIRMATION: penyedia pembayaran, nominal ongkir produksi, kebijakan refund (tidak diisi; hanya `payment_method` dan `payment_status` manual).
