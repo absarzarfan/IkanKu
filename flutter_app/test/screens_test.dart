@@ -111,10 +111,12 @@ void main() {
     c.read(routerProvider).go('/search');
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(const Key('search-field')), 'cupang');
+    await tester.pump(const Duration(milliseconds: 350)); // debounce 300 ms
     await tester.pumpAndSettle();
     expect(find.text('Ikan Cupang'), findsOneWidget);
     expect(find.text('Ikan Nila'), findsNothing);
     await tester.enterText(find.byKey(const Key('search-field')), 'zzz');
+    await tester.pump(const Duration(milliseconds: 350)); // debounce 300 ms
     await tester.pumpAndSettle();
     expect(find.textContaining('Tidak ada hasil'), findsOneWidget);
   });
