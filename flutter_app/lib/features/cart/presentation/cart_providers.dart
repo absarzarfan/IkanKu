@@ -29,7 +29,15 @@ class CartNotifier extends Notifier<List<CartLine>> {
 
   void remove(String key) => state = state.where((l) => l.key != key).toList();
 
-  void removeSelected() => state = state.where((l) => !l.selected).toList();
+  /// Mengembalikan baris yang baru dihapus ke posisi semula (aksi Urungkan).
+  void restore(CartLine line, int index) {
+    if (state.any((l) => l.key == line.key)) return;
+    final list = [...state];
+    list.insert(index.clamp(0, list.length), line);
+    state = list;
+  }
+
+  void removeSelected()=> state = state.where((l) => !l.selected).toList();
 
   /// Pembelian langsung tanpa melalui keranjang (tombol "Beli Sekarang").
   List<CartLine> get selected => state.where((l) => l.selected).toList();

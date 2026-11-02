@@ -99,3 +99,11 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 
 ### Branch map
 `feature/mobile-mvp` dan `feature/mobile-polish` adalah snapshot beku. Semua pekerjaan berikutnya (Phase 12c integrasi Supabase) dilakukan di `feature/mobile-unified`.
+
+## Phase 14a (UX buyer flow) - branch feature/mobile-ux
+- PART 0: cabang dibuat dari feature/mobile-unified; baseline analyze bersih, 195 tes lulus.
+- PART 1-2: enam skill termuat; docs/ux-pass.md berisi bukti skill dan audit alur pembeli.
+- PART 3a: widget inti (AppField blur-validasi, QtyStepper batas, StepIndicator, AnimatedCheck, NavBadge), navigasi (badge, ketuk ulang tab), Home (varian ubin, Lihat semua), pencarian (debounce, filter), detail (Hero, sheet variasi live, konfirmasi aksi). 195 tes lulus.
+- PART 3b: keranjang (per toko, Undo, batas stok, total fade), checkout (langkah, sheet, loading, anti-kirim-ganda), sukses (centang animasi), pesanan (hitungan tab, lini masa, konfirmasi batal), ulasan. 195 tes lulus.
+- PART 3c: formulir (validasi setelah blur, fokus ke galat pertama, toggle sandi, autofill, formatter digit), profil berkelompok, konfirmasi keluar dan hapus alamat. 195 tes lulus. Berhenti sebelum PART 4 (tes alur), PART 5 (tangkapan layar), PART 6 (gerbang dan dokumen).
+- PART 4: test/flow_buyer_test.dart (4 tes: alur penuh login-sampai-lini-masa, Urungkan keranjang, batas stok, waktu validasi formulir) lulus.

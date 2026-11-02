@@ -30,6 +30,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Keluar'));
     await tester.pumpAndSettle();
+    expect(find.text('Keluar dari akun?'), findsOneWidget); // konfirmasi baru (Phase 14a)
+    await tester.tap(find.text('Keluar').last);
+    await tester.pumpAndSettle();
     expect(c.read(routerProvider).state.uri.path, '/login');
     c.read(routerProvider).go('/');
     await tester.pumpAndSettle();
@@ -111,10 +114,12 @@ void main() {
     c.read(routerProvider).go('/search');
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(const Key('search-field')), 'cupang');
+    await tester.pump(const Duration(milliseconds: 350)); // debounce 300 ms
     await tester.pumpAndSettle();
     expect(find.text('Ikan Cupang'), findsOneWidget);
     expect(find.text('Ikan Nila'), findsNothing);
     await tester.enterText(find.byKey(const Key('search-field')), 'zzz');
+    await tester.pump(const Duration(milliseconds: 350)); // debounce 300 ms
     await tester.pumpAndSettle();
     expect(find.textContaining('Tidak ada hasil'), findsOneWidget);
   });
@@ -135,6 +140,8 @@ void main() {
     await tester.tap(find.text('Beli Sekarang').last);
     await tester.pumpAndSettle();
     expect(find.text('Ringkasan Pemesanan'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('checkout-payment')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('pay-cod')));
     await tester.pumpAndSettle();
     await tester.drag(find.byType(ListView).last, const Offset(0, -800));
@@ -144,7 +151,7 @@ void main() {
     expect(find.text('Apakah alamat sudah benar?'), findsOneWidget);
     await tester.tap(find.text('Ya'));
     await tester.pumpAndSettle();
-    expect(find.text('Pesanan berhasil dilakukan !'), findsOneWidget);
+    expect(find.text('Pesanan berhasil dibuat'), findsOneWidget);
     expect(c.read(ordersProvider).length, before + 1);
     expect(c.read(ordersProvider).first.payment, PaymentMethod.cod);
     expect(c.read(cartProvider), isEmpty);

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ikanku/core/responsive/breakpoints.dart';
+import 'package:ikanku/core/router/tab_reselect.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
+import 'package:ikanku/core/widgets/widgets.dart';
+import 'package:ikanku/features/orders/domain/orders.dart';
+import 'package:ikanku/features/orders/presentation/order_providers.dart';
 import 'package:ikanku/features/admin/presentation/admin_screens.dart';
 import 'package:ikanku/features/auth/domain/auth.dart';
 import 'package:ikanku/features/auth/presentation/auth_providers.dart';
@@ -70,7 +73,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // Pembeli: shell dengan bottom nav Beranda / Telusuri / Profil.
       StatefulShellRoute.indexedStack(
-        builder: (_, _, shell) => _ShellScaffold(shell: shell, items: _buyerNav),
+        builder: (_, _, shell) => _ShellScaffold(shell: shell, items: _buyerNav, badgeIndex: 2, badgeLabel: 'pesanan aktif'),
         branches: [
           StatefulShellBranch(routes: [GoRoute(path: '/home', builder: (_, _) => const HomeScreen())]),
           StatefulShellBranch(routes: [GoRoute(path: '/search', builder: (_, _) => const SearchScreen())]),
@@ -130,12 +133,16 @@ const _buyerNav = [(Icons.home_outlined, 'Beranda'), (Icons.search, 'Telusuri'),
 const _sellerNav = [(Icons.home_outlined, 'Beranda'), (Icons.inventory_2_outlined, 'Produk'), (Icons.settings_outlined, 'Pengaturan')];
 
 /// Bottom nav biru melengkung (Figma "Tab Bar pembeli" 6443:15697).
-class _ShellScaffold extends StatelessWidget {
-  const _ShellScaffold({required this.shell, required this.items});
+class _ShellScaffold extends ConsumerWidget {
+  const _ShellScaffold({required this.shell, required this.items, this.badgeIndex, this.badgeLabel});
+  final int? badgeIndex;
+  final String? badgeLabel;
   final StatefulNavigationShell shell;
   final List<(IconData, String)> items;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Badge: jumlah pesanan aktif (menunggu, dikemas, dikirim) pada tab Profil, dari data yang sudah ada.
+    final active = badgeIndex == null ? 0 : ref.watch(ordersProvider).where((o) => o.status == OrderStatus.menunggu || o.status == OrderStatus.dikemas || o.status == OrderStatus.dikirim).length;
     return Scaffold(
       body: shell,
       bottomNavigationBar: Container(
@@ -153,7 +160,10 @@ class _ShellScaffold extends StatelessWidget {
                     selected: i == shell.currentIndex,
                     button: true,
                     child: InkWell(
-                    onTap: () => shell.goBranch(i, initialLocation: i == shell.currentIndex),
+                    onTap: () {
+                      if (i == shell.currentIndex) ref.read(tabReselectProvider.notifier).fire(i);
+                      shell.goBranch(i, initialLocation: i == shell.currentIndex);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: Gap.xs, vertical: Gap.sm),
                       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -162,7 +172,7 @@ class _ShellScaffold extends StatelessWidget {
                           curve: AppMotion.curve,
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                           decoration: BoxDecoration(color: i == shell.currentIndex ? const Color(0x2EFFFFFF) : const Color(0x00FFFFFF), borderRadius: BorderRadius.circular(AppRadius.card)),
-                          child: AnimatedScale(scale: i == shell.currentIndex ? 1.1 : 1, duration: AppMotion.of(context, AppMotion.base), curve: AppMotion.curve, child: Icon(it.$1, color: AppColors.onPrimary.withValues(alpha: i == shell.currentIndex ? 1 : 0.75))),
+                          child: AnimatedScale(scale: i == shell.currentIndex ? 1.1 : 1, duration: AppMotion.of(context, AppMotion.base), curve: AppMotion.curve, child: NavBadge(count: i == badgeIndex ? active : 0, label: badgeLabel, child: Icon(it.$1, color: AppColors.onPrimary.withValues(alpha: i == shell.currentIndex ? 1 : 0.75)))),
                         ),
                         Text(it.$2, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.navLabel.copyWith(fontWeight: i == shell.currentIndex ? FontWeight.w600 : FontWeight.w400)),
                       ]),

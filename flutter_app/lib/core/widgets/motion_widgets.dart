@@ -154,6 +154,47 @@ class SkeletonList extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         itemCount: count,
         separatorBuilder: (_, _) => const SizedBox(height: 12),
-        itemBuilder: (_, _) => const Skeleton(height: 84, radius: AppRadius.card),
+        itemBuilder: (_, _) => const SkeletonRow(),
       );
+}
+
+/// Kerangka berbentuk baris produk/pesanan: foto bulat + dua baris teks, dalam kartu.
+class SkeletonRow extends StatelessWidget {
+  const SkeletonRow({super.key});
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: AppCard0.decoration,
+        child: const Padding(
+          padding: EdgeInsets.all(12),
+          child: Row(children: [
+            Skeleton(height: 60, width: 60, radius: 30),
+            SizedBox(width: 12),
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Skeleton(height: 14), SizedBox(height: 8), Skeleton(height: 14, width: 96)])),
+          ]),
+        ),
+      );
+}
+
+/// Kerangka berbentuk kartu vertikal produk (foto di atas, dua baris teks).
+class SkeletonCard extends StatelessWidget {
+  const SkeletonCard({super.key});
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: AppCard0.decoration,
+        child: const Padding(
+          padding: EdgeInsets.all(12),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Skeleton(height: 96, radius: AppRadius.card),
+            SizedBox(height: 10),
+            Skeleton(height: 14),
+            SizedBox(height: 8),
+            Skeleton(height: 14, width: 72),
+          ]),
+        ),
+      );
+}
+
+/// Dekorasi kartu yang sama dengan AppCard (widgets.dart mengimpor berkas ini, jadi diulang di sini tanpa impor melingkar).
+class AppCard0 {
+  static final decoration = BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: AppColors.border), boxShadow: AppShadow.card);
 }

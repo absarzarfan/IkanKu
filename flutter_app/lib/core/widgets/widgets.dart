@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/responsive/breakpoints.dart';
 import 'package:ikanku/core/responsive/content_frame.dart';
@@ -122,12 +123,35 @@ class PillButton extends StatelessWidget {
   }
 }
 
-/// Field abu-abu radius 10 (Figma Login).
-class AppField extends StatelessWidget {
-  const AppField({super.key, required this.controller, required this.hint, this.validator, this.obscure = false, this.keyboard, this.maxLines = 1, this.readOnly = false, this.onTap, this.suffix, this.label, this.fieldKey});
+/// Field abu-abu radius 10 (Figma Login). Validasi baru tampil setelah field pertama kali kehilangan fokus
+/// atau saat formulir dikirim (lihat [validateAndFocus]); bukan saat mengetik karakter pertama.
+class AppField extends StatefulWidget {
+  const AppField({
+    super.key,
+    required this.controller,
+    required this.hint,
+    this.validator,
+    this.obscure = false,
+    this.keyboard,
+    this.maxLines = 1,
+    this.readOnly = false,
+    this.onTap,
+    this.suffix,
+    this.label,
+    this.fieldKey,
+    this.textInputAction,
+    this.autofillHints,
+    this.inputFormatters,
+    this.maxLength,
+    this.onChanged,
+    this.onSubmitted,
+    this.focusNode,
+    this.helper,
+  });
   final TextEditingController controller;
   final String hint;
   final String? label;
+  final String? helper;
   final String? Function(String?)? validator;
   final bool obscure;
   final TextInputType? keyboard;
@@ -136,35 +160,112 @@ class AppField extends StatelessWidget {
   final VoidCallback? onTap;
   final Widget? suffix;
   final Key? fieldKey;
+  final TextInputAction? textInputAction;
+  final Iterable<String>? autofillHints;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final FocusNode? focusNode;
+
+  /// true hanya selama [validateAndFocus] berjalan: galat pertama memindahkan fokus ke field itu.
+  static bool _focusFirstInvalid = false;
+  static bool _focusTaken = false;
+
+  @override
+  State<AppField> createState() => _AppFieldState();
+}
+
+class _AppFieldState extends State<AppField> {
+  FocusNode? _own;
+  FocusNode get _node => widget.focusNode ?? (_own ??= FocusNode());
+  bool _touched = false;
+  bool _hidden = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _node.addListener(_onFocus);
+  }
+
+  void _onFocus() {
+    if (!_node.hasFocus && !_touched && mounted) setState(() => _touched = true);
+  }
+
+  @override
+  void dispose() {
+    _node.removeListener(_onFocus);
+    _own?.dispose();
+    super.dispose();
+  }
+
+  String? _validate(String? v) {
+    final e = widget.validator?.call(v);
+    if (e != null && AppField._focusFirstInvalid && !AppField._focusTaken) {
+      AppField._focusTaken = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _node.requestFocus();
+      });
+    }
+    return e;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final w = widget;
+    final toggle = w.obscure
+        ? IconButton(
+            tooltip: _hidden ? 'Tampilkan kata sandi' : 'Sembunyikan kata sandi',
+            icon: Icon(_hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+            onPressed: () => setState(() => _hidden = !_hidden),
+          )
+        : null;
     return Padding(
       padding: const EdgeInsets.only(bottom: Space.itemGap),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (label != null) Padding(padding: const EdgeInsets.only(bottom: Gap.sm), child: Text(label!, style: AppText.label)),
+          if (w.label != null) Padding(padding: const EdgeInsets.only(bottom: Gap.sm), child: Text(w.label!, style: AppText.label)),
           TextFormField(
-            key: fieldKey,
-            controller: controller,
-            validator: validator,
-            obscureText: obscure,
-            keyboardType: keyboard,
-            maxLines: maxLines,
-            readOnly: readOnly,
-            onTap: onTap,
+            key: w.fieldKey,
+            controller: w.controller,
+            focusNode: _node,
+            validator: w.validator == null ? null : _validate,
+            autovalidateMode: _touched ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+            obscureText: w.obscure && _hidden,
+            keyboardType: w.keyboard,
+            textInputAction: w.textInputAction,
+            autofillHints: w.autofillHints,
+            inputFormatters: w.inputFormatters,
+            maxLength: w.maxLength,
+            onChanged: w.onChanged,
+            onFieldSubmitted: w.onSubmitted,
+            maxLines: w.obscure ? 1 : w.maxLines,
+            readOnly: w.readOnly,
+            onTap: w.onTap,
             style: AppText.input,
             scrollPadding: const EdgeInsets.fromLTRB(20, 20, 20, 140),
             decoration: InputDecoration(
-              hintText: hint,
+              hintText: w.hint,
               hintStyle: AppText.hint,
-              suffixIcon: suffix,
+              helperText: w.helper,
+              suffixIcon: w.suffix ?? toggle,
             ),
           ),
         ],
       ),
     );
+  }
+}
+
+/// Validasi formulir; galat pertama (urutan tampilan) menerima fokus. Pakai ini sebagai pengganti `validate()` saat kirim.
+bool validateAndFocus(GlobalKey<FormState> key) {
+  AppField._focusFirstInvalid = true;
+  AppField._focusTaken = false;
+  try {
+    return key.currentState?.validate() ?? false;
+  } finally {
+    AppField._focusFirstInvalid = false;
   }
 }
 
@@ -232,24 +333,34 @@ class ProductImage extends StatelessWidget {
 }
 
 class QtyStepper extends StatelessWidget {
-  const QtyStepper({super.key, required this.value, required this.onChanged, this.min = 1});
+  const QtyStepper({super.key, required this.value, required this.onChanged, this.min = 1, this.max});
   final int value;
   final int min;
+
+  /// Batas atas (stok); null = tanpa batas.
+  final int? max;
   final ValueChanged<int> onChanged;
+
+  void _set(int v) {
+    HapticFeedback.selectionClick();
+    onChanged(v);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisSize: MainAxisSize.min, children: [
-      IconButton(tooltip: 'Kurangi', icon: const Icon(Icons.remove_circle_outline), onPressed: value > min ? () => onChanged(value - 1) : null),
-      Text('$value', style: AppText.semi),
-      IconButton(tooltip: 'Tambah', icon: const Icon(Icons.add_circle_outline), onPressed: () => onChanged(value + 1)),
+      IconButton(tooltip: 'Kurangi', icon: const Icon(Icons.remove_circle_outline), onPressed: value > min ? () => _set(value - 1) : null),
+      Semantics(label: 'Jumlah $value', excludeSemantics: true, child: SizedBox(width: 28, child: Text('$value', textAlign: TextAlign.center, style: AppText.semi))),
+      IconButton(tooltip: 'Tambah', icon: const Icon(Icons.add_circle_outline), onPressed: max == null || value < max! ? () => _set(value + 1) : null),
     ]);
   }
 }
 
 /// Tab teks horizontal (Pesanan | Dikemas | ...), garis bawah aktif.
 class TextTabs extends StatelessWidget {
-  const TextTabs({super.key, required this.labels, required this.index, required this.onChanged, this.onDark = false});
+  const TextTabs({super.key, required this.labels, required this.index, required this.onChanged, this.onDark = false, this.counts});
   final List<String> labels;
+  final List<int>? counts;
   final int index;
   final ValueChanged<int> onChanged;
   final bool onDark;
@@ -270,7 +381,18 @@ class TextTabs extends StatelessWidget {
                 constraints: const BoxConstraints(minHeight: AppSize.buttonSmall, minWidth: 48),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(border: Border(bottom: BorderSide(color: i == index ? active : Colors.transparent, width: 3))),
-                child: Text(l, style: AppText.body.copyWith(fontWeight: i == index ? FontWeight.w600 : FontWeight.w400, color: i == index ? active : base)),
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  Text(l, style: AppText.body.copyWith(fontWeight: i == index ? FontWeight.w600 : FontWeight.w400, color: i == index ? active : base)),
+                  if (counts != null && counts![i] > 0) ...[
+                    const SizedBox(width: Gap.xs),
+                    Container(
+                      key: Key('tab-count-$i'),
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                      decoration: BoxDecoration(color: onDark ? Colors.white : AppColors.primary, borderRadius: BorderRadius.circular(AppRadius.chip)),
+                      child: Text('${counts![i]}', style: AppText.caption.copyWith(color: onDark ? AppColors.primary : Colors.white, fontWeight: FontWeight.w600)),
+                    ),
+                  ],
+                ]),
               ),
             ),
           ),
@@ -280,8 +402,9 @@ class TextTabs extends StatelessWidget {
 }
 
 class EmptyState extends StatelessWidget {
-  const EmptyState(this.message, {super.key, this.icon = Icons.inbox_outlined, this.actionLabel, this.onAction});
+  const EmptyState(this.message, {super.key, this.icon = Icons.inbox_outlined, this.hint, this.actionLabel, this.onAction});
   final String message;
+  final String? hint;
   final IconData icon;
   final String? actionLabel;
   final VoidCallback? onAction;
@@ -290,9 +413,22 @@ class EmptyState extends StatelessWidget {
         child: SingleChildScrollView(
           padding: Space.pad(context),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Icon(icon, size: 56, color: AppColors.greyLight),
-            const SizedBox(height: Gap.sm),
-            Text(message, style: AppText.body.copyWith(color: AppColors.grey), textAlign: TextAlign.center),
+            // Ilustrasi dari bentuk dan ikon: lingkaran besar lembut, lingkaran kecil, ikon di tengah.
+            ExcludeSemantics(
+              child: SizedBox(
+                width: 112,
+                height: 96,
+                child: Stack(alignment: Alignment.center, children: [
+                  Container(width: 88, height: 88, decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.surfaceTint)),
+                  Positioned(right: 10, top: 6, child: Container(width: 18, height: 18, decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.primary.withValues(alpha: 0.16)))),
+                  Positioned(left: 6, bottom: 8, child: Container(width: 10, height: 10, decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.primary.withValues(alpha: 0.28)))),
+                  Icon(icon, size: 44, color: AppColors.primary),
+                ]),
+              ),
+            ),
+            const SizedBox(height: Gap.md),
+            Text(message, style: AppText.semi.copyWith(color: AppColors.textStrong), textAlign: TextAlign.center),
+            if (hint != null) ...[const SizedBox(height: Gap.xs), Text(hint!, style: AppText.small.copyWith(color: AppColors.grey), textAlign: TextAlign.center)],
             if (actionLabel != null) ...[const SizedBox(height: Gap.lg), PillButton(label: actionLabel!, expanded: false, onPressed: onAction)],
           ]),
         ),
@@ -301,11 +437,11 @@ class EmptyState extends StatelessWidget {
 
 /// Galat dengan tombol "Coba lagi".
 class ErrorState extends StatelessWidget {
-  const ErrorState({super.key, this.message = 'Terjadi kesalahan. Silakan coba lagi.', required this.onRetry});
+  const ErrorState({super.key, this.message = 'Belum bisa dimuat. Periksa koneksi internetmu, lalu coba lagi.', required this.onRetry});
   final String message;
   final VoidCallback onRetry;
   @override
-  Widget build(BuildContext context) => EmptyState(message, icon: Icons.error_outline, actionLabel: 'Coba lagi', onAction: onRetry);
+  Widget build(BuildContext context) => EmptyState(message, icon: Icons.cloud_off_outlined, actionLabel: 'Coba lagi', onAction: onRetry);
 }
 
 class LoadingState extends StatelessWidget {
@@ -417,4 +553,82 @@ Future<bool> confirmDialog(BuildContext context, String title, String message, {
     ),
   );
   return r ?? false;
+}
+
+/// Snackbar dengan aksi (mis. Urungkan, Lihat keranjang).
+void showActionMsg(BuildContext context, String msg, {required String actionLabel, required VoidCallback onAction}) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(msg), action: SnackBarAction(label: actionLabel, onPressed: onAction)));
+}
+
+/// Indikator langkah: lingkaran bernomor dengan garis penghubung; langkah selesai berisi centang.
+/// Tiap langkah mendapat lebar sama dan labelnya membungkus, sehingga aman pada teks besar.
+class StepIndicator extends StatelessWidget {
+  const StepIndicator({super.key, required this.labels, required this.current});
+  final List<String> labels;
+  final int current;
+  @override
+  Widget build(BuildContext context) {
+    Widget line(bool on, bool visible) => Expanded(child: Container(height: 2, color: !visible ? Colors.transparent : (on ? AppColors.primary : AppColors.greyLight)));
+    return Semantics(
+      label: 'Langkah ${current + 1} dari ${labels.length}: ${labels[current]}',
+      excludeSemantics: true,
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        for (final (i, l) in labels.indexed)
+          Expanded(
+            child: Column(children: [
+              Row(children: [
+                line(i <= current, i > 0),
+                AnimatedContainer(
+                  duration: AppMotion.of(context, AppMotion.base),
+                  curve: AppMotion.curve,
+                  width: 28,
+                  height: 28,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: i <= current ? AppColors.primary : AppColors.surface, border: Border.all(color: i <= current ? AppColors.primary : AppColors.greyLight, width: 2)),
+                  child: i < current ? const Icon(Icons.check, size: 16, color: Colors.white) : Text('${i + 1}', style: AppText.caption.copyWith(color: i == current ? Colors.white : AppColors.grey, fontWeight: FontWeight.w600)),
+                ),
+                line(i < current, i < labels.length - 1),
+              ]),
+              const SizedBox(height: Gap.xs),
+              Text(l, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.caption.copyWith(fontWeight: i == current ? FontWeight.w600 : FontWeight.w400)),
+            ]),
+          ),
+      ]),
+    );
+  }
+}
+
+/// Centang sukses: muncul dengan skala 0.7 -> 1 dan opacity (transform + opacity saja); statis bila animasi dimatikan.
+class AnimatedCheck extends StatelessWidget {
+  const AnimatedCheck({super.key, this.size = 96});
+  final double size;
+  @override
+  Widget build(BuildContext context) {
+    final icon = Icon(Icons.check_circle, size: size, color: AppColors.success);
+    if (AppMotion.reduced(context)) return icon;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppMotion.slow,
+      curve: AppMotion.curve,
+      child: icon,
+      builder: (context, t, child) => Opacity(opacity: t, child: Transform.scale(scale: 0.7 + 0.3 * t, child: child)),
+    );
+  }
+}
+
+/// Badge hitungan kecil di atas ikon navigasi.
+class NavBadge extends StatelessWidget {
+  const NavBadge({super.key, required this.count, required this.child, this.label});
+  final int count;
+  final Widget child;
+  final String? label;
+  @override
+  Widget build(BuildContext context) => Badge(
+        isLabelVisible: count > 0,
+        label: Text(count > 99 ? '99+' : '$count', semanticsLabel: label == null ? null : '$count $label'),
+        backgroundColor: AppColors.danger,
+        child: child,
+      );
 }
