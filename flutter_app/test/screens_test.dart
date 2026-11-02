@@ -30,6 +30,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Keluar'));
     await tester.pumpAndSettle();
+    expect(find.text('Keluar dari akun?'), findsOneWidget); // konfirmasi baru (Phase 14a)
+    await tester.tap(find.text('Keluar').last);
+    await tester.pumpAndSettle();
     expect(c.read(routerProvider).state.uri.path, '/login');
     c.read(routerProvider).go('/');
     await tester.pumpAndSettle();

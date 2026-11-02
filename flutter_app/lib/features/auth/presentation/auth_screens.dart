@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
@@ -77,7 +78,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _form = GlobalKey<FormState>();
   final _id = TextEditingController();
   final _pw = TextEditingController();
-  bool _show = false;
   bool _busy = false;
 
   @override
@@ -88,7 +88,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    if (!_form.currentState!.validate()) return;
+    if (!validateAndFocus(_form)) return;
     setState(() => _busy = true);
     try {
       await ref.read(authProvider.notifier).login(_id.text, _pw.text);
@@ -107,14 +107,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       child: Form(
         key: _form,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          AppField(fieldKey: const Key('login-id'), controller: _id, hint: 'Nomor Ponsel Ex 6282387436427 atau email', keyboard: TextInputType.emailAddress, validator: (v) => Validators.required(v, 'Nomor ponsel/email')),
+          AppField(fieldKey: const Key('login-id'), controller: _id, hint: 'Nomor Ponsel Ex 6282387436427 atau email', keyboard: TextInputType.emailAddress, textInputAction: TextInputAction.next, autofillHints: const [AutofillHints.username], validator: (v) => Validators.required(v, 'Nomor ponsel/email')),
           AppField(
             fieldKey: const Key('login-pw'),
             controller: _pw,
             hint: 'Kata sandi',
-            obscure: !_show,
+            obscure: true,
+            textInputAction: TextInputAction.done,
+            autofillHints: const [AutofillHints.password],
+            onSubmitted: (_) => _busy ? null : _submit(),
             validator: Validators.password,
-            suffix: IconButton(tooltip: 'Tampilkan kata sandi', icon: Icon(_show ? Icons.visibility_off : Icons.visibility), onPressed: () => setState(() => _show = !_show)),
           ),
           InkWell(onTap: () => context.push('/forgot'), child: ConstrainedBox(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), child: Align(alignment: Alignment.centerLeft, widthFactor: 1, child: Text('Lupa kata sandi', style: AppText.label.copyWith(color: AppColors.navy))))),
           const SizedBox(height: Gap.xxl),
@@ -164,13 +166,13 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Masukkan Nomor Ponsel', style: AppText.heading),
           const SizedBox(height: Gap.md),
-          AppField(fieldKey: const Key('reg-phone'), controller: _phone, hint: 'Nomor Ponsel Ex 6282387436427', keyboard: TextInputType.phone, validator: Validators.phone),
+          AppField(fieldKey: const Key('reg-phone'), controller: _phone, hint: 'Nomor Ponsel Ex 6282387436427', keyboard: TextInputType.phone, textInputAction: TextInputAction.done, autofillHints: const [AutofillHints.telephoneNumber], inputFormatters: [FilteringTextInputFormatter.digitsOnly], validator: Validators.phone),
           const SizedBox(height: Gap.lg),
           PillButton(
             label: 'Lanjut',
             height: 56,
             onPressed: () {
-              if (!_form.currentState!.validate()) return;
+              if (!validateAndFocus(_form)) return;
               ref.read(registrationProvider.notifier).setPhone(_phone.text.trim());
               context.push('/register/otp');
             },
@@ -284,7 +286,7 @@ class _RegisterDataScreenState extends ConsumerState<RegisterDataScreen> {
   }
 
   Future<void> _submit() async {
-    if (!_form.currentState!.validate()) return;
+    if (!validateAndFocus(_form)) return;
     final k = ref.read(pickedKecamatanProvider);
     final phone = ref.read(registrationProvider).phone;
     setState(() => _busy = true);
@@ -313,10 +315,10 @@ class _RegisterDataScreenState extends ConsumerState<RegisterDataScreen> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Lengkapi Data', style: AppText.heading),
           const SizedBox(height: Gap.md),
-          AppField(fieldKey: const Key('reg-name'), controller: _name, hint: 'Nama lengkap', validator: (v) => Validators.required(v, 'Nama lengkap')),
+          AppField(fieldKey: const Key('reg-name'), controller: _name, hint: 'Nama lengkap', textInputAction: TextInputAction.next, autofillHints: const [AutofillHints.name], validator: (v) => Validators.required(v, 'Nama lengkap')),
           AppField(controller: TextEditingController(text: phone), hint: 'Nomor Ponsel', readOnly: true),
-          AppField(fieldKey: const Key('reg-email'), controller: _email, hint: 'Email', keyboard: TextInputType.emailAddress, validator: Validators.email),
-          AppField(fieldKey: const Key('reg-pw'), controller: _pw, hint: 'Kata sandi (min. 6 karakter)', obscure: true, validator: Validators.password),
+          AppField(fieldKey: const Key('reg-email'), controller: _email, hint: 'Email', keyboard: TextInputType.emailAddress, textInputAction: TextInputAction.next, autofillHints: const [AutofillHints.email], validator: Validators.email),
+          AppField(fieldKey: const Key('reg-pw'), controller: _pw, hint: 'Kata sandi (min. 6 karakter)', obscure: true, textInputAction: TextInputAction.next, autofillHints: const [AutofillHints.newPassword], validator: Validators.password),
           AppField(controller: _area, hint: 'Kota, Kecamatan, Kode Pos', readOnly: true, onTap: _pickArea, suffix: const Icon(Icons.chevron_right), validator: (v) => Validators.required(v, 'Kecamatan')),
           AppField(controller: _street, hint: 'Nama Jalan, Gedung, No. Rumah', validator: (v) => Validators.required(v, 'Alamat')),
           AppField(controller: TextEditingController(text: _location), hint: 'Sesuaikan lokasi', readOnly: true, onTap: _pickLocation, suffix: const Icon(Icons.map_outlined)),
@@ -346,7 +348,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   }
 
   Future<void> _submit() async {
-    if (!_form.currentState!.validate()) return;
+    if (!validateAndFocus(_form)) return;
     try {
       await ref.read(authRepositoryProvider).requestPasswordReset(_email.text);
       if (mounted) setState(() => _sent = true);
@@ -368,7 +370,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           const SizedBox(height: Gap.sm),
           Text('Masukkan alamat email anda', style: AppText.body.copyWith(color: AppColors.grey)),
           const SizedBox(height: Gap.md),
-          AppField(fieldKey: const Key('forgot-email'), controller: _email, hint: 'Email', keyboard: TextInputType.emailAddress, validator: Validators.email),
+          AppField(fieldKey: const Key('forgot-email'), controller: _email, hint: 'Email', keyboard: TextInputType.emailAddress, textInputAction: TextInputAction.done, autofillHints: const [AutofillHints.email], validator: Validators.email),
           if (_sent) Padding(padding: const EdgeInsets.only(bottom: Gap.md), child: Text('Tautan reset telah dikirim (simulasi) ke ${_email.text.trim()}.', key: const Key('forgot-sent'), style: AppText.body.copyWith(color: AppColors.success))),
           PillButton(label: 'Lanjut', height: 56, onPressed: _submit),
           const SizedBox(height: Gap.md),

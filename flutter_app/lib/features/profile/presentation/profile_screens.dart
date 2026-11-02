@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
@@ -32,16 +33,31 @@ class ProfileScreen extends ConsumerWidget {
           for (final (i, e) in [(Icons.account_balance_wallet_outlined, 'Belum Bayar'), (Icons.inventory_2_outlined, 'Dikemas'), (Icons.local_shipping_outlined, 'Dikirim'), (Icons.check_circle_outline, 'Selesai'), (Icons.cancel_outlined, 'Ditolak')].indexed)
             Expanded(child: InkWell(onTap: () => context.push('/orders?tab=$i'), child: Padding(padding: const EdgeInsets.symmetric(vertical: Gap.sm), child: Column(children: [Icon(e.$1, color: AppColors.primary), FittedBox(fit: BoxFit.scaleDown, child: Text(e.$2, style: AppText.caption))])))),
         ]),
-        const SizedBox(height: Gap.md),
+        const SizedBox(height: Gap.sm),
         tile(Icons.receipt_long_outlined, 'Semua Pesanan', '/orders'),
+        const SizedBox(height: Gap.md),
+        const SectionHeader('Akun'),
+        const SizedBox(height: Gap.sm),
         tile(Icons.person_outline, 'Data Profil', '/profile/data'),
         tile(Icons.location_on_outlined, 'Alamat', '/addresses'),
         tile(Icons.lock_outline, 'Ganti Kata Sandi', '/profile/password'),
         tile(Icons.email_outlined, 'Ubah Email', '/profile/email'),
         tile(Icons.phone_android, 'Ubah Nomor Ponsel', '/profile/phone'),
+        const SizedBox(height: Gap.md),
+        const SectionHeader('Bantuan'),
+        const SizedBox(height: Gap.sm),
         tile(Icons.help_outline, 'Pusat Bantuan', '/help'),
         const SizedBox(height: Gap.md),
-        PillButton(label: 'Keluar', color: AppColors.danger, onPressed: () => ref.read(authProvider.notifier).logout()),
+        PillButton(
+          label: 'Keluar',
+          color: AppColors.danger,
+          outlined: true,
+          onPressed: () async {
+            if (await confirmDialog(context, 'Keluar dari akun?', 'Kamu perlu masuk lagi untuk berbelanja.', yes: 'Keluar', no: 'Batal')) {
+              ref.read(authProvider.notifier).logout();
+            }
+          },
+        ),
       ]),
     );
   }
@@ -70,7 +86,7 @@ class _ProfileDataScreenState extends ConsumerState<ProfileDataScreen> {
       bottom: StickyActionBar(child: PillButton(
             label: 'Simpan',
             onPressed: () {
-              if (!_form.currentState!.validate()) return;
+              if (!validateAndFocus(_form)) return;
               ref.read(authProvider.notifier).updateProfile(name: _name.text.trim());
               showMsg(context, 'Profil disimpan');
               context.pop();
@@ -109,7 +125,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
   }
 
   Future<void> _save() async {
-    if (!_form.currentState!.validate()) return;
+    if (!validateAndFocus(_form)) return;
     try {
       await ref.read(authProvider.notifier).changePassword(_old.text, _new.text);
       if (!mounted) return;
@@ -155,7 +171,7 @@ class _ChangeContactScreenState extends ConsumerState<ChangeContactScreen> {
   }
 
   void _next() {
-    if (!_form.currentState!.validate()) return;
+    if (!validateAndFocus(_form)) return;
     final value = _c.text.trim();
     final phoneForOtp = ref.read(authProvider)?.phone ?? value;
     Navigator.of(context).push(MaterialPageRoute<void>(
@@ -206,7 +222,7 @@ class AddressListScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Alamat',
       body: ListView(padding: Space.pad(context), children: [
-        if (list.isEmpty) const Padding(padding: EdgeInsets.symmetric(vertical: Gap.xxxl), child: EmptyState('Belum ada alamat', icon: Icons.location_off_outlined)),
+        if (list.isEmpty) const Padding(padding: EdgeInsets.symmetric(vertical: Gap.xxxl), child: EmptyState('Belum ada alamat', icon: Icons.location_off_outlined, hint: 'Tambahkan alamat agar pesananmu bisa dikirim.')),
         for (final a in list)
           AppCard(
             onTap: pick
@@ -225,7 +241,14 @@ class AddressListScreen extends ConsumerWidget {
               ),
               PopupMenuButton<String>(
                 tooltip: 'Menu alamat',
-                onSelected: (v) => v == 'primary' ? n.setPrimary(a.id) : n.remove(a.id),
+                onSelected: (v) async {
+                  if (v == 'primary') {
+                    HapticFeedback.selectionClick();
+                    n.setPrimary(a.id);
+                  } else if (await confirmDialog(context, 'Hapus alamat ini?', '${a.recipient}\n${a.full}', yes: 'Hapus', no: 'Batal')) {
+                    n.remove(a.id);
+                  }
+                },
                 itemBuilder: (_) => [if (!a.isPrimary) const PopupMenuItem(value: 'primary', child: Text('Jadikan utama')), const PopupMenuItem(value: 'delete', child: Text('Hapus'))],
               ),
             ]),
@@ -275,7 +298,7 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
       bottom: StickyActionBar(child: PillButton(
             label: 'Simpan',
             onPressed: () {
-              if (!_form.currentState!.validate()) return;
+              if (!validateAndFocus(_form)) return;
               final k = ref.read(pickedKecamatanProvider);
               if (k == null) return;
               ref.read(addressProvider.notifier).add(Address(id: 'a${DateTime.now().microsecondsSinceEpoch}', recipient: _name.text.trim(), phone: _phone.text.trim(), street: _street.text.trim(), area: k, isPrimary: _primary));
@@ -285,8 +308,8 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
       body: Form(
         key: _form,
         child: ListView(padding: Space.pad(context), children: [
-          AppField(fieldKey: const Key('addr-name'), controller: _name, hint: 'Nama lengkap', validator: (v) => Validators.required(v, 'Nama')),
-          AppField(fieldKey: const Key('addr-phone'), controller: _phone, hint: 'Nomor Ponsel', keyboard: TextInputType.phone, validator: Validators.phone),
+          AppField(fieldKey: const Key('addr-name'), controller: _name, hint: 'Nama lengkap', textInputAction: TextInputAction.next, autofillHints: const [AutofillHints.name], validator: (v) => Validators.required(v, 'Nama')),
+          AppField(fieldKey: const Key('addr-phone'), controller: _phone, hint: 'Nomor Ponsel', keyboard: TextInputType.phone, textInputAction: TextInputAction.next, autofillHints: const [AutofillHints.telephoneNumber], inputFormatters: [FilteringTextInputFormatter.digitsOnly], validator: Validators.phone),
           AppField(
             fieldKey: const Key('addr-area'),
             controller: _area,
