@@ -14,6 +14,7 @@
   --color-placeholder: #6b6f78;
   --color-link: #1672c4;
   --color-on-blue: #ffffff;
+  --color-on-cta: #050315; /* dark label on the orange gradient: 6.3-9.9:1 */
   --color-dot: #d9d9d9;
 
   --color-cerulean-50: #f0f5fe;
@@ -55,7 +56,7 @@
     cursor: pointer;
     transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out), transform 150ms var(--ease-out);
   }
-  .btn-cta { background-image: var(--grad-cta); }
+  .btn-cta { background-image: var(--grad-cta); color: var(--color-on-cta); font-weight: 600; }
   .btn-cta:hover { background-image: var(--grad-cta-hover); }
   .btn-primary { background-image: var(--grad-primary); color: #fff; }
   .btn-primary:hover { background-image: var(--grad-primary-hover); }

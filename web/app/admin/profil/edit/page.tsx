@@ -44,7 +44,7 @@ function Form({ initial }: { initial: Profile }) {
         </select>
       </label>
       <div className="flex gap-4 sm:col-span-2">
-        <button type="submit" className="rounded-lg bg-accent px-6 py-2 text-white hover:brightness-95">Simpan</button>
+        <button type="submit" className="btn-cta inline-flex items-center rounded-lg px-6 py-2">Simpan</button>
         <button type="button" onClick={() => router.push("/admin/profil")} className="rounded-lg border border-black px-6 py-2">Batal</button>
       </div>
     </form>

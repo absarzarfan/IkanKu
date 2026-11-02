@@ -58,7 +58,7 @@ export default function ContactForm() {
           {fe("pesan")}
         </label>
       </div>
-      <button type="submit" disabled={sending} className="mt-6 inline-flex min-h-11 items-center gap-2 btn-cta rounded-lg px-[42px] text-white">{sending && <span aria-hidden className="spin size-4 rounded-full border-2 border-white/40 border-t-white" />}{sending ? "Mengirim..." : "Submit"}</button>
+      <button type="submit" disabled={sending} className="mt-6 inline-flex min-h-11 items-center gap-2 btn-cta rounded-lg px-[42px]">{sending && <span aria-hidden className="spin size-4 rounded-full border-2 border-ink/30 border-t-ink" />}{sending ? "Mengirim..." : "Submit"}</button>
       {hasErrors && !sending && <p role="alert" className="mt-4 text-sm">Periksa kembali isian yang ditandai, lalu kirim lagi.</p>}
       {sent && <p role="status" className="mt-4 text-sm">Terima kasih! Saran Anda tercatat (demo: belum dikirim ke server).</p>}
     </form>

@@ -33,7 +33,7 @@ export default function Home() {
         <div className="container-page grid items-center gap-10 pt-12 md:grid-cols-[1.1fr_0.9fr] lg:pt-0">
           <div>
             <h1 className="hero-in text-4xl font-bold leading-[1.15] md:text-h1 lg:text-display">Belanja Ikan Mudah<br />Dengan IkanKu</h1>
-            <a href="#" style={{ "--d": "80ms" } as React.CSSProperties} className="hero-in btn-cta mt-8 inline-flex h-12 items-center rounded-lg px-[42px] text-base text-white">Download on Google Play</a>
+            <a href="#" style={{ "--d": "80ms" } as React.CSSProperties} className="hero-in btn-cta mt-8 inline-flex h-12 items-center rounded-lg px-[42px] text-base">Download on Google Play</a>
           </div>
           <div className="relative mx-auto h-[320px] w-[260px] shrink-0 md:ml-auto md:mr-0 lg:mt-10 lg:h-[420px] lg:w-[335px]">
             <div aria-hidden className="absolute -right-6 top-6 h-[85%] w-[85%] rounded-[40px] border border-white/25 bg-white/10" />

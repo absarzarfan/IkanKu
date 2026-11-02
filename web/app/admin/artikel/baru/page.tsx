@@ -44,7 +44,7 @@ export default function TambahArtikel() {
         {error && <p role="alert" className="mt-3 text-red-orange-600">{error}</p>}
         <div className="mt-6 flex gap-4">
           <button type="button" onClick={() => save("DRAF")} className="rounded-lg border border-black px-6 py-2 hover:bg-surface">Simpan Draf</button>
-          <button type="button" onClick={() => save("TERBIT")} className="rounded-lg bg-accent px-6 py-2 text-white hover:brightness-95">Terbitkan</button>
+          <button type="button" onClick={() => save("TERBIT")} className="btn-cta inline-flex items-center rounded-lg px-6 py-2">Terbitkan</button>
         </div>
       </div>
     </AdminShell>

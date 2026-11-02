@@ -20,7 +20,7 @@ export default function Dashboard() {
     <AdminShell>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-brand">Dashboard</h1>
-        <Link href="/admin/artikel/baru" className="rounded-lg bg-accent px-6 py-2 text-white hover:brightness-95">Tambah Artikel</Link>
+        <Link href="/admin/artikel/baru" className="btn-cta inline-flex items-center rounded-lg px-6 py-2">Tambah Artikel</Link>
       </div>
       <div className="mt-8 rounded-2xl bg-white p-6">
         {posts.length === 0 ? (

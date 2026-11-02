@@ -66,3 +66,13 @@ Build passes (Next 16.4.3 prints no First Load JS table; chunks total 837 KB on 
 
 ## Verification
 Screenshots in D:\Tools\shots\phase10. Tim Kami section (viewport shots, smooth-scroll off): 1440x900 bottom at 767px, 1920x1080 bottom at 803px, both fit. All routes and 14 article slugs 200; lint and build pass.
+
+## Orange CTA (Phase 11, option B)
+Gradient and hue unchanged; label colour moved to the dark token `--color-on-cta` (#050315, semibold) in `.btn-cta` only; admin buttons now use `.btn-cta` instead of flat `bg-accent`. Focus ring: white on blue bands, brand blue elsewhere (2px, offset 2px).
+| State | Before (white) | After (dark) |
+|---|---|---|
+| Base, light stop | 2.06 | 9.91 |
+| Base, dark stop | 2.99 | 6.81 |
+| Hover, light stop | 2.24 | 9.10 |
+| Hover, dark stop | 3.22 | 6.33 |
+Active state only scales (no colour change). Minimum now 6.33:1.

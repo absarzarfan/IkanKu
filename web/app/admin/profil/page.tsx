@@ -13,7 +13,7 @@ export default function Profil() {
     <AdminShell>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-brand">{p.nama}</h1>
-        <Link href="/admin/profil/edit" className="rounded-lg bg-accent px-6 py-2 text-white hover:brightness-95">Edit Profil</Link>
+        <Link href="/admin/profil/edit" className="btn-cta inline-flex items-center rounded-lg px-6 py-2">Edit Profil</Link>
       </div>
       <dl className="mt-8 grid gap-6 rounded-2xl bg-white p-6 sm:grid-cols-2">
         {rows.map(([k, v]) => (
