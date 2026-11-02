@@ -59,3 +59,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 9a P7: kit applied (waves on Home Kenapa and Produk Keunggulan bands, bubbles on blue bands and CTA, eyebrows, soft tinted sections on Tentang intro and Hubungi Satu Klik).
 - Phase 9a P8: verified (build, lint, routes 200, 390px no overflow, screenshots); fixed drop cap selector and Home button alignment.
 - Phase 10 P0-2: branch feature/web-polish, skills loaded, image audit, low-res heroes framed (never > 1.3x).
+- Phase 10 P3: global polish (selection, focus, disabled, scroll-margin, text-wrap, tabular-nums), form loading/error states, carousel empty state, shared shadows.
