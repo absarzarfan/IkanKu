@@ -92,3 +92,6 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - a3.png NOT restored: the backup is a different picture; the current small file is the user's replacement and renders correctly (low-res, listed in "Needs better source files").
 - Deleted (git rm, zero references): img/hubungi/map.png and 7 ic-*.svg icons (home: ic-basket, ic-fish, ic-review, ic-truck; hubungi: ic-mail, ic-pin, ic-wa). Other unreferenced files are only listed in docs/ui-polish.md.
 - Responsive: navbar text smaller with nowrap below xl, FAQ columns only from lg, footer contact single column below lg, carousel low-res frame capped at 400px and slides taller (540/560px).
+- Download link and QR centralized in web/data/site.ts (DOWNLOAD_URL = "" with "#" fallback, QR_IMAGE = /img/produk/qr.png), used by the Home "Download on Google Play", /produk, CtaBand and Footer buttons; no visual change. DOWNLOAD_URL and the QR target need real values; the origin of qr.png is unknown, verify by scanning it with a phone before publishing.
+- oxipng is not installed on this machine, so the lossless PNG step was skipped (no image changed).
+- docs/image-licenses.md and docs/approval-pack.md are generated from repo data only (scripts in D:\Tools\scripts); no source, licence or answer was invented. Article files untouched.

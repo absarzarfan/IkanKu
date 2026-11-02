@@ -1,3 +1,4 @@
+import { downloadHref } from "@/data/site";
 import Reveal from "./Reveal";
 import { Bubbles } from "@/components/kit";
 
@@ -9,7 +10,7 @@ export default function CtaBand() {
         <Reveal className="band-blue flex flex-col items-center justify-between gap-6 overflow-hidden rounded-3xl px-8 py-10 text-center sm:flex-row sm:text-left lg:px-16">
           <Bubbles />
           <p className="text-2xl font-semibold leading-tight lg:text-h2">Mari Bergabung Bersama Kami</p>
-          <a href="#" className="btn-cta inline-flex h-12 shrink-0 items-center rounded-lg px-[42px]">Unduh Aplikasi</a>
+          <a href={downloadHref} className="btn-cta inline-flex h-12 shrink-0 items-center rounded-lg px-[42px]">Unduh Aplikasi</a>
         </Reveal>
       </div>
     </section>

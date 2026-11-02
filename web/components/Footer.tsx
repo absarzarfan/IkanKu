@@ -1,3 +1,4 @@
+import { downloadHref } from "@/data/site";
 import Image from "next/image";
 import Link from "next/link";
 import ContactInfo from "@/components/ContactInfo";
@@ -22,7 +23,7 @@ export default function Footer({ showContact = true }: { showContact?: boolean }
         </div>
         <div>
           <p className="mb-6 text-h3 font-bold text-ink">Download Aplikasi</p>
-          <a href="#" className="inline-flex h-12 items-center btn-cta rounded-lg px-[42px]">Unduh Aplikasi</a>
+          <a href={downloadHref} className="inline-flex h-12 items-center btn-cta rounded-lg px-[42px]">Unduh Aplikasi</a>
         </div>
         <nav className="flex flex-col gap-6 text-h3 text-ink" aria-label="Footer">
           <Link className="link-u w-fit" href="/tentang-kami">Tentang kami</Link>

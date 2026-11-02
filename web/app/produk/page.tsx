@@ -1,3 +1,4 @@
+import { downloadHref, QR_IMAGE } from "@/data/site";
 import Image from "next/image";
 import type { Metadata } from "next";
 import SiteShell from "@/components/SiteShell";
@@ -33,8 +34,8 @@ export default function ProdukPage() {
               <Image src="/img/home/phone.png" alt="Aplikasi IkanKu" fill sizes="335px" className="object-cover object-top" />
             </div>
             <div className="flex flex-col items-center gap-10">
-              <Image src="/img/produk/qr.png" alt="Kode QR unduh aplikasi" width={200} height={200} className="rounded-lg bg-white" />
-              <a href="#" className="inline-flex items-center btn-cta rounded-lg px-[42px] py-[7px]">Unduh Aplikasi</a>
+              <Image src={QR_IMAGE} alt="Kode QR unduh aplikasi" width={200} height={200} className="rounded-lg bg-white" />
+              <a href={downloadHref} className="inline-flex items-center btn-cta rounded-lg px-[42px] py-[7px]">Unduh Aplikasi</a>
             </div>
           </div>
         </div>

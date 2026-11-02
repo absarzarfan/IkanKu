@@ -64,3 +64,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 11 P1: 768-1000px fixes (carousel frame cap/height, navbar nowrap, footer contact grid, FAQ single column below lg).
 - Phase 11 P2: orange CTA label switched to dark token (min 6.33:1), admin buttons on .btn-cta.
 - Phase 11 P3-4: asset integrity (a3 kept, different picture), refs 0 broken, 8 unused files removed, others listed.
+- Phase 11 P5-6: oxipng not installed (P5 skipped); image-licenses.md created (78 rows).
