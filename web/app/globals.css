@@ -226,3 +226,20 @@ body {
 }
 @media (hover: hover) and (pointer: fine) { .hc-btn:hover { background: rgba(255,255,255,.28); } }
 @media (prefers-reduced-motion: reduce) { .hc-btn { transition: none; } }
+
+/* Phase 10 polish: selection, focus, disabled, anchors, text rhythm, skip link. */
+::selection { background: color-mix(in srgb, var(--color-brand) 22%, transparent); color: inherit; }
+.band-blue ::selection, .surface-brand ::selection { background: rgba(255,255,255,.3); color: #fff; }
+[id] { scroll-margin-top: 7rem; }
+p, li, blockquote { text-wrap: pretty; }
+.tnum, time, .kit-step-num, .badge { font-variant-numeric: tabular-nums; }
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+.band-blue :where(a, button, input, select, textarea):focus-visible, .surface-brand :where(a, button, input, select, textarea):focus-visible { outline-color: #fff; }
+a.card, .card-lift, button:not(:disabled), [role="tab"], select { cursor: pointer; }
+.card-lift:active { transform: translateY(0) scale(.995); }
+button:disabled, .btn-cta[aria-disabled="true"], .btn-primary[aria-disabled="true"] { cursor: not-allowed; opacity: .55; }
+.skip-link { position: fixed; left: 1rem; top: 1rem; z-index: 100; transform: translateY(-200%); background: #fff; color: var(--color-brand); padding: .75rem 1.25rem; border-radius: .75rem; font-weight: 600; box-shadow: 0 8px 24px rgba(5,3,21,.3); }
+.skip-link:focus { transform: none; }
+.spin { animation: spin 800ms linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }

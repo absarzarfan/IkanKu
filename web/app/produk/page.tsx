@@ -29,7 +29,7 @@ export default function ProdukPage() {
           </div>
           <h1 className="mt-12 max-w-[800px] text-4xl font-extrabold leading-tight text-white md:text-display" style={{ textWrap: "balance" }}>Dapatkan Ikan Segar Dengan Mudah Dimana Saja</h1>
           <div className="mt-12 flex flex-col items-center gap-10 sm:flex-row sm:gap-[60px] lg:mt-16">
-            <div className="relative h-[300px] w-[260px] overflow-hidden rounded-t-3xl shadow-[4px_0_4px_rgba(0,0,0,.25)] lg:h-[410px] lg:w-[335px]">
+            <div className="relative h-[300px] w-[260px] overflow-hidden rounded-t-3xl shadow-[0_18px_40px_-18px_rgba(5,3,21,.55)] lg:h-[410px] lg:w-[335px]">
               <Image src="/img/home/phone.png" alt="Aplikasi IkanKu" fill sizes="335px" className="object-cover object-top" />
             </div>
             <div className="flex flex-col items-center gap-10">
@@ -58,7 +58,7 @@ export default function ProdukPage() {
         <ul className="container-page scrollbar-thin mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-6 pb-4 min-[900px]:grid min-[900px]:grid-cols-6 min-[900px]:overflow-visible" aria-label="Keunggulan produk">
           {adv.map((a, i) => (
             <li key={a.t} className={`${i === 3 ? "min-[900px]:col-start-2 " : ""}min-[900px]:col-span-2 card-lift flex h-[360px] w-[min(380px,78vw)] shrink-0 snap-start items-center gap-4 rounded-2xl border border-black/10 bg-white p-5 shadow-sm min-[900px]:w-auto min-[900px]:min-w-0 min-[900px]:gap-5`}>
-              <div className="relative aspect-[141/300] w-[38%] max-w-[141px] shrink-0 overflow-hidden rounded-xl shadow-[6px_4px_4px_rgba(0,0,0,.25)]">
+              <div className="relative aspect-[141/300] w-[38%] max-w-[141px] shrink-0 overflow-hidden rounded-xl shadow-[0_18px_40px_-18px_rgba(5,3,21,.55)]">
                 <Image src={`/img/produk/${a.img}`} alt="" fill sizes="141px" className="object-cover" />
               </div>
               <div className="flex min-w-0 flex-1 flex-col items-center gap-4">

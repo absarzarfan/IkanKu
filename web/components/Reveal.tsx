@@ -28,7 +28,7 @@ export default function Reveal({
     return () => io.disconnect();
   }, []);
   return (
-    <div ref={ref} className={`reveal ${className}`} style={delay ? ({ "--d": `${delay}ms` } as React.CSSProperties) : undefined}>
+    <div ref={ref} className={`reveal ${className}`} style={delay ? ({ "--d": `${Math.min(delay, 140)}ms` } as React.CSSProperties) : undefined}>
       {children}
     </div>
   );

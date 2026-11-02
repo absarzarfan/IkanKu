@@ -48,6 +48,7 @@ export default function HeadlineCarousel({ items, priorityFirst = true }: { item
     else if (e.key === "ArrowLeft") { e.preventDefault(); goTo(i - 1); }
   };
 
+  if (n === 0) return <p role="status" className="rounded-3xl bg-white p-8 text-center text-muted shadow-sm">Belum ada berita utama. Silakan kembali lagi nanti.</p>;
   const auto = playing && !held;
   return (
     <section

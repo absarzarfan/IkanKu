@@ -47,7 +47,7 @@ export default function Faq() {
 
   return (
     <section id="faq" className="container-page section-y">
-      <div className="band-blue relative overflow-hidden rounded-2xl px-6 py-12 shadow-[0_8px_8px_rgba(0,0,0,.25)] md:px-[64px] md:pb-[80px]">
+      <div className="band-blue relative overflow-hidden rounded-2xl px-6 py-12 shadow-[0_18px_40px_-18px_rgba(5,3,21,.55)] md:px-[64px] md:pb-[80px]">
         <Bubbles />
         <h2 className="text-3xl font-bold tracking-tight text-white md:text-h1 md:leading-[1.2]">{faqUi.title}</h2>
         <p className="mt-3 max-w-[60ch] text-white">{faqUi.intro}</p>

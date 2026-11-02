@@ -37,9 +37,9 @@ export default function Navbar() {
         </button>
       </div>
       {open && (
-        <nav className="flex flex-col gap-4 border-t border-black/10 bg-white px-6 py-4 text-lg md:hidden" aria-label="Menu seluler">
+        <nav className="flex flex-col gap-1 border-t border-black/10 bg-white px-6 py-4 text-lg md:hidden" aria-label="Menu seluler">
           {[...links, { href: "/hubungi-kami", label: "Hubungi Kami" }].map((l) => (
-            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className={active(l.href) ? "text-brand" : ""}>
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className={`flex min-h-11 items-center ${active(l.href) ? "text-brand" : ""}`}>
               {l.label}
             </Link>
           ))}
