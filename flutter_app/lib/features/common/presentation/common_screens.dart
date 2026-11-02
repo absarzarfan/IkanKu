@@ -74,7 +74,7 @@ class PickLocationScreen extends StatelessWidget {
             key: const Key('map-placeholder'),
             width: double.infinity,
             margin: Space.pad(context),
-            decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)),
+            decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(AppRadius.card)),
             child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Icon(Icons.location_on, size: 56, color: AppColors.danger),
               SizedBox(height: Gap.sm),

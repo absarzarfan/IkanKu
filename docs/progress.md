@@ -93,3 +93,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART 2: judul bagian ad-hoc (Text semi/subheading) diganti SectionHeader di katalog/detail, pesanan, checkout, profil, seller (pesanan, produk, pengaturan); admin tidak punya judul bagian. 183 tes lulus.
 - PART 3: StickyActionBar (via AppScaffold.bottom, tinggi mengurangi area scroll) di formulir profil, kata sandi, alamat, produk, variasi, kategori, ongkir; AppField jarak = Space.itemGap; gaya helper/error seragam di tema. Formulir dengan dua tombol (kontak, checkout) dan login/registrasi tetap inline (keputusan konservatif).
 - PART 4: tes jarak bawah 12 kasus lulus; clearance = inset + 16 (tab di luar body).
+- PART 5: radius kartu 20 via token, rating Poppins tabular.

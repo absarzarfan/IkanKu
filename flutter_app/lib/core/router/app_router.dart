@@ -161,7 +161,7 @@ class _ShellScaffold extends StatelessWidget {
                           duration: AppMotion.of(context, AppMotion.fast),
                           curve: AppMotion.curve,
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                          decoration: BoxDecoration(color: i == shell.currentIndex ? const Color(0x2EFFFFFF) : const Color(0x00FFFFFF), borderRadius: BorderRadius.circular(16)),
+                          decoration: BoxDecoration(color: i == shell.currentIndex ? const Color(0x2EFFFFFF) : const Color(0x00FFFFFF), borderRadius: BorderRadius.circular(AppRadius.card)),
                           child: AnimatedScale(scale: i == shell.currentIndex ? 1.1 : 1, duration: AppMotion.of(context, AppMotion.base), curve: AppMotion.curve, child: Icon(it.$1, color: AppColors.onPrimary.withValues(alpha: i == shell.currentIndex ? 1 : 0.75))),
                         ),
                         Text(it.$2, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.navLabel.copyWith(fontWeight: i == shell.currentIndex ? FontWeight.w600 : FontWeight.w400)),

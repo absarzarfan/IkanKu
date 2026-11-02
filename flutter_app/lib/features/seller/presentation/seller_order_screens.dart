@@ -219,7 +219,7 @@ class _ShipProofScreenState extends ConsumerState<ShipProofScreen> {
           onTap: () => setState(() => _photo = true),
           child: Container(
             height: 140,
-            decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)),
+            decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(AppRadius.card)),
             child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [Icon(_photo ? Icons.check_circle : Icons.add_a_photo_outlined, size: 36, color: _photo ? AppColors.success : AppColors.grey), Text(_photo ? 'Foto terpilih (simulasi)' : 'Upload Disini (simulasi)', style: AppText.small)])),
           ),
         ),

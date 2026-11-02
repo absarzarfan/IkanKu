@@ -150,3 +150,7 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 ## Phase 13b - clearance bawah (PART 4)
 - Semua tab (pembeli: Beranda/Telusuri/Profil; penjual: Beranda/Produk/Pengaturan) memakai `bottomNavigationBar` Scaffold, jadi tab TIDAK menimpa body. Padding bawah isi = inset aman + 16 (`Space.minBottomClearance`/`bottomClearance`). Beranda: spacer akhir diganti padding ListView.
 - Tes baru `bottom_clearance_test.dart` (360x800, 412x915, 6 tab): item terakhir terlihat penuh; jarak ke tab 16..32 dp bila isi bisa di-scroll; bila isi muat tanpa scroll cukup >= 16.
+
+## Phase 13b - radius dan font rating (PART 5)
+- `AppRadius.card` = 20 (tema). Radius literal di widget dipindah ke token: auth (30->pill, 10->field), cart swipe-bg, catalog (16->card, 28->sheet, 8->chip), common, profile (10->field), seller order/product (16->card, 28->sheet), chip tab bawah (16->card). Sisa literal sengaja: bar dekoratif 3-4 dp.
+- Rating: `AppText.rating` / `AppText.ratingLarge` (Poppins, `FontFeature.tabularFigures`) dipakai di kartu produk, baris produk, dan skor detail. Tidak ada referensi Lato tersisa (grep bersih); tidak ada keluarga font baru.

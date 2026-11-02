@@ -95,7 +95,7 @@ class SellerProductDetailScreen extends ConsumerWidget {
     return AppScaffold(
       title: p.name,
       body: ListView(padding: Space.pad(context), children: [
-        ClipRRect(borderRadius: BorderRadius.circular(28), child: SizedBox(height: 200, child: productPicture(p.image, cacheWidth: 900))),
+        ClipRRect(borderRadius: BorderRadius.circular(AppRadius.sheet), child: SizedBox(height: 200, child: productPicture(p.image, cacheWidth: 900))),
         const SizedBox(height: Gap.md),
         Text(rupiah(p.startingPrice), style: AppText.price),
         Text('Kategori: ${p.category}  |  Rating ${p.rating}', style: AppText.small),
@@ -418,7 +418,7 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
           ),
           Text('Gambar Kategori*', style: AppText.label),
           const SizedBox(height: Gap.sm),
-          InkWell(onTap: () => showMsg(context, 'Unggah foto belum tersedia (placeholder)'), child: Container(height: 90, decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)), child: const Center(child: Text('Tambah foto (placeholder)')))),
+          InkWell(onTap: () => showMsg(context, 'Unggah foto belum tersedia (placeholder)'), child: Container(height: 90, decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(AppRadius.card)), child: const Center(child: Text('Tambah foto (placeholder)')))),
         ]),
       ),
     );

@@ -123,7 +123,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           Center(child: Text('Atau', style: AppText.heading.copyWith(color: AppColors.navy))),
           const SizedBox(height: Gap.lg),
           OutlinedButton(
-            style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(58), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), side: const BorderSide(color: AppColors.greyLight)),
+            style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(58), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pill)), side: const BorderSide(color: AppColors.greyLight)),
             onPressed: () => showMsg(context, 'Login dengan Google belum tersedia (backend belum ditentukan)'),
             child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text('G', style: AppText.googleMark),
@@ -238,7 +238,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
           style: AppText.otp,
-          decoration: InputDecoration(counterText: '', errorText: _error, filled: true, fillColor: AppColors.field, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none)),
+          decoration: InputDecoration(counterText: '', errorText: _error, filled: true, fillColor: AppColors.field, border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.field), borderSide: BorderSide.none)),
         ),
         const SizedBox(height: Gap.xl),
         PillButton(label: 'Lanjut', height: 56, onPressed: _verify),

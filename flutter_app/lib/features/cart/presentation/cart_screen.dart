@@ -47,7 +47,7 @@ class CartScreen extends ConsumerWidget {
                 Dismissible(
                   key: ValueKey(l.key),
                   direction: DismissDirection.endToStart,
-                  background: Container(alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: Gap.xl), margin: const EdgeInsets.only(bottom: Gap.md), decoration: BoxDecoration(color: AppColors.danger, borderRadius: BorderRadius.circular(16)), child: const Icon(Icons.delete, color: Colors.white)),
+                  background: Container(alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: Gap.xl), margin: const EdgeInsets.only(bottom: Gap.md), decoration: BoxDecoration(color: AppColors.danger, borderRadius: BorderRadius.circular(AppRadius.card)), child: const Icon(Icons.delete, color: Colors.white)),
                   onDismissed: (_) => cart.remove(l.key),
                   child: AppCard(
                     child: Row(children: [

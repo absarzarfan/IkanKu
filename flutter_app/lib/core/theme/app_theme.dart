@@ -93,6 +93,9 @@ class AppText {
   static const heading = TextStyle(fontFamily: _f, fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textStrong);
   static const title = TextStyle(fontFamily: _f, fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.titleOnPrimary);
   static const price = TextStyle(fontFamily: _f, fontSize: 20, fontWeight: FontWeight.w600, color: AppColors.textStrong);
+  /// Angka penilaian: Poppins, angka tabular agar lebar konsisten.
+  static const rating = TextStyle(fontFamily: _f, fontSize: 11, fontWeight: FontWeight.w500, color: AppColors.textStrong, fontFeatures: [FontFeature.tabularFigures()]);
+  static const ratingLarge = TextStyle(fontFamily: _f, fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.textStrong, fontFeatures: [FontFeature.tabularFigures()]);
   static const score = TextStyle(fontFamily: _f, fontSize: 20, color: AppColors.textStrong);
   static const greeting = TextStyle(fontFamily: _f, fontSize: 20, color: AppColors.onPrimary);
   static const banner = TextStyle(fontFamily: _f, fontSize: 30, color: AppColors.onPrimary);

@@ -323,7 +323,7 @@ class _PickKecamatanScreenState extends ConsumerState<PickKecamatanScreen> {
     return AppScaffold(
       title: 'Pilih Kecamatan',
       body: Column(children: [
-        Padding(padding: const EdgeInsets.all(Gap.lg), child: TextField(onChanged: (v) => setState(() => _q = v), decoration: InputDecoration(hintText: 'Cari kecamatan', prefixIcon: const Icon(Icons.search), filled: true, fillColor: AppColors.field, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none)))),
+        Padding(padding: const EdgeInsets.all(Gap.lg), child: TextField(onChanged: (v) => setState(() => _q = v), decoration: InputDecoration(hintText: 'Cari kecamatan', prefixIcon: const Icon(Icons.search), filled: true, fillColor: AppColors.field, border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.field), borderSide: BorderSide.none)))),
         Expanded(
           child: ListView(children: [
             for (final k in items)

@@ -49,7 +49,7 @@ class ProductCardWithPhoto extends StatelessWidget {
                     Row(children: [
                       const Icon(Icons.star, size: 16, color: AppColors.star),
                       const SizedBox(width: Gap.xs),
-                      Text('${product.rating}', style: AppText.caption),
+                      Text('${product.rating}', style: AppText.rating),
                     ]),
                     Row(children: [
                       Expanded(child: Text(rupiah(product.startingPrice), style: AppText.body, maxLines: 1, overflow: TextOverflow.ellipsis)),
@@ -92,7 +92,7 @@ class ProductRow extends StatelessWidget {
         const SizedBox(width: Gap.sm),
         Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
           const Icon(Icons.chevron_right),
-          Row(mainAxisSize: MainAxisSize.min, children: [const Icon(Icons.star, size: 16, color: AppColors.star), Text('${product.rating}', style: AppText.caption)]),
+          Row(mainAxisSize: MainAxisSize.min, children: [const Icon(Icons.star, size: 16, color: AppColors.star), Text('${product.rating}', style: AppText.rating)]),
         ]),
       ]),
     );
@@ -243,7 +243,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 const SizedBox(height: Space.dotsGap),
                 Row(key: const Key('home-banner-dots'), mainAxisAlignment: MainAxisAlignment.center, children: [
                   for (var i = 0; i < _banners.length; i++)
-                    AnimatedContainer(duration: AppMotion.of(context, AppMotion.base), curve: AppMotion.curve, margin: const EdgeInsets.symmetric(horizontal: Gap.xs), width: i == _banner ? 18 : 7, height: 6, decoration: BoxDecoration(color: i == _banner ? AppColors.primary : AppColors.greyLight, borderRadius: BorderRadius.circular(8))),
+                    AnimatedContainer(duration: AppMotion.of(context, AppMotion.base), curve: AppMotion.curve, margin: const EdgeInsets.symmetric(horizontal: Gap.xs), width: i == _banner ? 18 : 7, height: 6, decoration: BoxDecoration(color: i == _banner ? AppColors.primary : AppColors.greyLight, borderRadius: BorderRadius.circular(AppRadius.chip))),
                 ]),
               ]),
             ),
@@ -413,7 +413,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             filled: true,
             fillColor: Colors.white,
             isDense: true,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.card), borderSide: BorderSide.none),
           ),
         ),
       ),
@@ -448,7 +448,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.sheet))),
       builder: (_) => _VariationSheet(product: p, actionLabel: buyNow ? 'Beli Sekarang' : 'Masukkan Keranjang'),
     );
     if (v == null || !mounted) return;
@@ -514,7 +514,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           color: AppColors.field,
           child: Row(children: [
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('${p.rating}/5', style: AppText.score),
+              Text('${p.rating}/5', style: AppText.ratingLarge),
               RatingStars(rating: p.rating, size: 16),
               Text('(${reviews.length} Ulasan)', style: AppText.small),
             ]),
