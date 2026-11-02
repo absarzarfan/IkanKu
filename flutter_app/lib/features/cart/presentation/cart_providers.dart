@@ -1,10 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ikanku/features/auth/presentation/auth_providers.dart';
 import 'package:ikanku/features/catalog/domain/catalog.dart';
 import 'package:ikanku/features/orders/domain/orders.dart';
 
 class CartNotifier extends Notifier<List<CartLine>> {
   @override
-  List<CartLine> build() => const [];
+  List<CartLine> build() {
+    // Keluar (sesi berakhir) mengosongkan keranjang agar tidak terbawa ke pengguna berikutnya.
+    ref.listen(authProvider, (prev, next) {
+      if (next == null) state = const [];
+    });
+    return const [];
+  }
 
   /// Menambah item; variasi yang sama digabung (qty dijumlah, dibatasi stok).
   void add(Product product, Variation variation, {int qty = 1}) {

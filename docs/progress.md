@@ -112,3 +112,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 ## Phase 14 (alur end-to-end mode mock) - lanjutan di feature/mobile-ux
 - PART 0: devtools_options.yaml di-ignore; baseline analyze bersih, 199 tes lulus. Dilewati dari Phase 14 karena sudah dikerjakan di 14a: formulir login/register/checkout (validasi blur, ritme, penjaga kirim ganda, StickyActionBar checkout).
 - PART 2 (Phase 14): MockAdminRemote (pengguna, pesanan semua status, produk), admin berfungsi di mode mock, filter status pesanan; nonaktif pengguna menolak login, produk nonaktif hilang dari katalog.
+- PART 1+3 (Phase 14): docs/flow-map.md; test/flows/ (21 tes: pembelian COD dan NON COD, siklus penjual, tolak/batal, admin, negatif, akun dan toko). Cacat: keranjang terbawa setelah logout (diperbaiki). 220 tes lulus.
