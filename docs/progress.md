@@ -70,3 +70,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 11 follow-up: CTA label back to white (user request).
 - Phase 12a P0: branch feature/mobile-mvp from web-acc-1, dart_defines.json ignored; baseline flutter analyze clean, flutter test 92 passed.
 - Phase 12a P1: docs/mvp-spec.md written.
+- Phase 12a P2: supabase migrations 0001-0004, seed.sql, supabase-setup.md (untested, no live DB).
