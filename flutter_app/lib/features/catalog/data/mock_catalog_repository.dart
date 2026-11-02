@@ -24,15 +24,15 @@ List<Variation> _vars(String p, int base) => [
 class MockCatalogRepository implements CatalogRepository {
   MockCatalogRepository()
       : _products = [
-          Product(id: 'nila', name: 'Ikan Nila', description: _nilaDesc, category: 'Air Tawar', image: 'assets/images/cat_air_tawar.png', variations: _vars('nila', 31000), rating: 4.5, reviews: _reviews),
-          Product(id: 'discus', name: 'Ikan Discus', description: 'Ikan discus berasal dari Amazon, Brazil', category: 'Hias', image: 'assets/images/fish_discus.png', variations: _vars('discus', 100000), rating: 4.5),
-          Product(id: 'cupang', name: 'Ikan Cupang', description: 'Ikan lokal dg ekor dan sirip yang cantik', category: 'Hias', image: 'assets/images/fish_cupang.png', variations: _vars('cupang', 40000), rating: 4.5),
-          Product(id: 'bluedevil', name: 'Ikan Blue Devil', description: 'Ikan hias berwarna biru cerah.', category: 'Hias', image: 'assets/images/fish_blue_devil.png', variations: _vars('bluedevil', 500000), rating: 4),
-          Product(id: 'fire', name: 'Ikan Fire', description: 'Ikan hias berwarna merah menyala.', category: 'Hias', image: 'assets/images/fish_fire.png', variations: _vars('fire', 700000), rating: 4),
-          Product(id: 'botia', name: 'Ikan Botia', description: 'Ikan hias aktif dan jinak.', category: 'Hias', image: 'assets/images/fish_botia.png', variations: _vars('botia', 800000), rating: 3.5),
-          Product(id: 'salmon', name: 'Ikan Salmon', description: 'Salmon segar, kaya omega-3.', category: 'Laut', image: 'assets/images/fish_3.png', variations: _vars('salmon', 90000), rating: 4.5),
-          Product(id: 'gurita', name: 'Gurita', description: 'Gurita segar hasil tangkapan harian.', category: 'Laut', image: 'assets/images/fish_4.png', variations: _vars('gurita', 75000), rating: 4.5),
-          Product(id: 'bibit-nila', name: 'Bibit Nila', description: 'Bibit nila ukuran 3-5 cm.', category: 'Bibit', image: 'assets/images/cat_bibit.png', variations: _vars('bibit', 5000), rating: 4.5),
+          Product(id: 'nila', name: 'Ikan Nila', description: _nilaDesc, category: 'Air Tawar', image: 'assets/images/cat_air_tawar.webp', variations: _vars('nila', 31000), rating: 4.5, reviews: _reviews),
+          Product(id: 'discus', name: 'Ikan Discus', description: 'Ikan discus berasal dari Amazon, Brazil', category: 'Hias', image: 'assets/images/fish_discus.webp', variations: _vars('discus', 100000), rating: 4.5),
+          Product(id: 'cupang', name: 'Ikan Cupang', description: 'Ikan lokal dg ekor dan sirip yang cantik', category: 'Hias', image: 'assets/images/fish_cupang.webp', variations: _vars('cupang', 40000), rating: 4.5),
+          Product(id: 'bluedevil', name: 'Ikan Blue Devil', description: 'Ikan hias berwarna biru cerah.', category: 'Hias', image: 'assets/images/fish_blue_devil.webp', variations: _vars('bluedevil', 500000), rating: 4),
+          Product(id: 'fire', name: 'Ikan Fire', description: 'Ikan hias berwarna merah menyala.', category: 'Hias', image: 'assets/images/fish_fire.webp', variations: _vars('fire', 700000), rating: 4),
+          Product(id: 'botia', name: 'Ikan Botia', description: 'Ikan hias aktif dan jinak.', category: 'Hias', image: 'assets/images/fish_botia.webp', variations: _vars('botia', 800000), rating: 3.5),
+          Product(id: 'salmon', name: 'Ikan Salmon', description: 'Salmon segar, kaya omega-3.', category: 'Laut', image: 'assets/images/fish_3.webp', variations: _vars('salmon', 90000), rating: 4.5),
+          Product(id: 'gurita', name: 'Gurita', description: 'Gurita segar hasil tangkapan harian.', category: 'Laut', image: 'assets/images/fish_4.webp', variations: _vars('gurita', 75000), rating: 4.5),
+          Product(id: 'bibit-nila', name: 'Bibit Nila', description: 'Bibit nila ukuran 3-5 cm.', category: 'Bibit', image: 'assets/images/cat_bibit.webp', variations: _vars('bibit', 5000), rating: 4.5),
         ],
         _categories = ['Air Tawar', 'Laut', 'Hias', 'Bibit'];
 

@@ -10,12 +10,12 @@ import 'package:ikanku/features/catalog/domain/catalog.dart';
 import 'package:ikanku/features/catalog/presentation/catalog_providers.dart';
 
 const _photoChoices = [
-  'assets/images/cat_air_tawar.png',
-  'assets/images/fish_discus.png',
-  'assets/images/fish_cupang.png',
-  'assets/images/fish_3.png',
-  'assets/images/fish_4.png',
-  'assets/images/cat_bibit.png',
+  'assets/images/cat_air_tawar.webp',
+  'assets/images/fish_discus.webp',
+  'assets/images/fish_cupang.webp',
+  'assets/images/fish_3.webp',
+  'assets/images/fish_4.webp',
+  'assets/images/cat_bibit.webp',
 ];
 
 /// Daftar produk & kategori penjual (Figma 1114:13648 dst).

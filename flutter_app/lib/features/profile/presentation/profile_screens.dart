@@ -199,7 +199,7 @@ class _ChangeContactScreenState extends ConsumerState<ChangeContactScreen> {
         child: ListView(padding: Space.pad(context), children: [
           Text(widget.isEmail ? 'Email saat ini: ${user?.email}' : 'Nomor saat ini: ${user?.phone}', style: AppText.body),
           const SizedBox(height: Gap.md),
-          AppField(fieldKey: const Key('contact-new'), controller: _c, hint: widget.isEmail ? 'Email baru' : 'Nomor ponsel baru', keyboard: widget.isEmail ? TextInputType.emailAddress : TextInputType.phone, validator: widget.isEmail ? Validators.email : Validators.phone),
+          AppField(fieldKey: const Key('contact-new'), controller: _c, hint: widget.isEmail ? 'Email baru' : 'Nomor ponsel baru', keyboard: widget.isEmail ? TextInputType.emailAddress : TextInputType.phone, textInputAction: TextInputAction.done, autofillHints: [widget.isEmail ? AutofillHints.email : AutofillHints.telephoneNumber], inputFormatters: widget.isEmail ? null : [FilteringTextInputFormatter.digitsOnly], onSubmitted: (_) => _next(), validator: widget.isEmail ? Validators.email : Validators.phone),
           Row(children: [
             Expanded(child: PillButton(label: 'Batal', outlined: true, color: AppColors.danger, onPressed: () => context.pop())),
             const SizedBox(width: Gap.md),

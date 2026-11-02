@@ -154,8 +154,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _page = PageController(viewportFraction: 0.88);
   final _scroll = ScrollController();
   int _banner = 0;
-  static const _banners = [('assets/images/banner1.png', 'Diskon 75%'), ('assets/images/banner2.png', 'Diskon 30%'), ('assets/images/banner3.png', 'Diskon 25%')];
-  static const _cats = [('Hias', 'assets/images/cat_hias.png'), ('Air Tawar', 'assets/images/cat_air_tawar.png'), ('Bibit', 'assets/images/cat_bibit.png')];
+  static const _banners = [('assets/images/banner1.webp', 'Diskon 75%'), ('assets/images/banner2.webp', 'Diskon 30%'), ('assets/images/banner3.webp', 'Diskon 25%')];
+  static const _cats = [('Hias', 'assets/images/cat_hias.webp'), ('Air Tawar', 'assets/images/cat_air_tawar.webp'), ('Bibit', 'assets/images/cat_bibit.webp')];
 
   @override
   void dispose() {

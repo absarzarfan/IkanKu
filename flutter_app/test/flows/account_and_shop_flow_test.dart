@@ -72,7 +72,7 @@ void main() {
     final c = await startApp(tester);
     await switchTo(tester, c, sellerEmail);
     final cat = c.read(catalogProvider.notifier);
-    const p = Product(id: 'flow-1', name: 'Ikan Flow', description: 'Uji alur', category: 'Air Tawar', image: 'assets/images/cat_air_tawar.png', variations: [Variation(id: 'flow-1-1', weight: '1 Kg', count: 2, price: 20000, stock: 5)]);
+    const p = Product(id: 'flow-1', name: 'Ikan Flow', description: 'Uji alur', category: 'Air Tawar', image: 'assets/images/cat_air_tawar.webp', variations: [Variation(id: 'flow-1-1', weight: '1 Kg', count: 2, price: 20000, stock: 5)]);
     cat.upsertProduct(p);
     expect(c.read(catalogProvider).byId('flow-1')?.name, 'Ikan Flow');
     cat.upsertProduct(p.copyWith(name: 'Ikan Flow Baru'));
