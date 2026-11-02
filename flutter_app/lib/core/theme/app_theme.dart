@@ -59,7 +59,7 @@ class AppText {
   static const banner = TextStyle(fontFamily: _f, fontSize: 30, color: AppColors.onPrimary);
   static const bannerButton = TextStyle(fontFamily: _f, fontWeight: FontWeight.w500, fontSize: 15, color: AppColors.onPrimary);
   static const tabOnPrimary = TextStyle(fontFamily: _f, fontWeight: FontWeight.w600, fontSize: 18, color: AppColors.onPrimary);
-  static const navLabel = TextStyle(fontFamily: _f, fontSize: 13, color: AppColors.onPrimary);
+  static const navLabel = TextStyle(fontFamily: _f, fontSize: 15, color: AppColors.onPrimary);
   static const searchHint = TextStyle(fontFamily: _f, fontSize: 14, color: AppColors.grey);
   static const googleMark = TextStyle(fontFamily: _f, fontWeight: FontWeight.w700, fontSize: 22, color: AppColors.primary);
   static const googleButton = TextStyle(fontFamily: _f, fontSize: 16, color: AppColors.googleLabel);

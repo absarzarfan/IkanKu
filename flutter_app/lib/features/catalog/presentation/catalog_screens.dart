@@ -184,7 +184,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               safe: true,
               child: Column(children: [
                 AspectRatio(
-                  aspectRatio: 1.7,
+                  aspectRatio: 1.55,
                   child: PageView.builder(
                     controller: _page,
                     itemCount: _banners.length,
@@ -197,13 +197,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           Image.asset(_banners[i].$1, fit: BoxFit.cover, cacheWidth: 800, errorBuilder: (_, _, _) => Container(color: AppColors.field)),
                           Padding(
                             padding: const EdgeInsets.all(14),
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              alignment: Alignment.bottomLeft,
-                              child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                Text(_banners[i].$2, style: AppText.banner),
-                                const SizedBox(height: Gap.sm),
-                                Material(
+                            child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                              Flexible(child: Align(alignment: Alignment.centerLeft, child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: Text(_banners[i].$2, style: AppText.banner)))),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Material(
                                   color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(AppRadius.chip),
                                   child: InkWell(
@@ -212,8 +210,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     child: Container(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), alignment: Alignment.center, padding: const EdgeInsets.symmetric(horizontal: 14), child: const Text('Beli Sekarang', style: AppText.bannerButton)),
                                   ),
                                 ),
-                              ]),
-                            ),
+                              ),
+                            ]),
                           ),
                         ]),
                       ),
