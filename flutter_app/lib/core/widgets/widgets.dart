@@ -112,7 +112,8 @@ class PillButton extends StatelessWidget {
     final child = Container(
       constraints: BoxConstraints(minHeight: h, minWidth: expanded ? double.infinity : 64),
       padding: const EdgeInsets.symmetric(horizontal: Gap.xl, vertical: Gap.sm),
-      alignment: Alignment.center,
+      // Tombol tidak melebar penuh (alignment membuat Container mengisi lebar) kecuali expanded.
+      alignment: expanded ? Alignment.center : null,
       child: Stack(alignment: Alignment.center, children: [
         Opacity(opacity: busy ? 0 : 1, child: text),
         if (busy) SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: fg)),

@@ -253,7 +253,7 @@ class AddressListScreen extends ConsumerWidget {
               ),
             ]),
           ),
-        PillButton(label: '+Tambah Alamat', onPressed: () => context.push('/addresses/add')),
+        PillButton(label: 'Tambah alamat', onPressed: () => context.push('/addresses/add')),
       ]),
     );
   }
