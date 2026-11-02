@@ -118,3 +118,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 
 ## Phase 15R (remake UI/UX mobile) - feature/mobile-remake
 - PART 0: cabang dari origin/feature/mobile-ux (c601d9a), merge yang tertunda di mobile-unified dibatalkan (cadangan lokal backup/mobile-unified-before-abort, tidak di-push). Baseline: analyze bersih, 224 tes lulus; test/flows/ sudah ada (21 tes), tidak ditulis ulang.
+- PART 1-3: 6 skill dimuat (semua berhasil); docs/remake-brief.md dan docs/mobile-remake.md (blueprint) ditulis. Keputusan: tab kedua tetap 'Telusuri'; status 'Belum Bayar' -> 'Menunggu'.
