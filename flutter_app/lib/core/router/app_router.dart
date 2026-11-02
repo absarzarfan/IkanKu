@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ikanku/core/responsive/breakpoints.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
 import 'package:ikanku/features/admin/presentation/admin_screens.dart';
 import 'package:ikanku/features/auth/domain/auth.dart';
@@ -154,7 +155,7 @@ class _ShellScaffold extends StatelessWidget {
                     child: InkWell(
                     onTap: () => shell.goBranch(i, initialLocation: i == shell.currentIndex),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: Gap.xs, vertical: Gap.sm),
                       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                         AnimatedContainer(
                           duration: AppMotion.of(context, AppMotion.fast),

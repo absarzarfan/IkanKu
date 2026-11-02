@@ -82,3 +82,11 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 13 P0-1: branch feature/mobile-polish from clean mobile-mvp (baseline analyze clean, 164 tests incl. 81-case responsive matrix); 6 skills loaded.
 - Phase 13 P2-4: web tokens mapped into app_theme.dart, gradients, card system, IconChip, Pressable, Reveal, Skeleton, page transitions, nav motion; polish_test (contrast, widgets); 175 tests pass; docs/mobile-polish.md.
 - Phase 13 P5-7: a11y labels, web screenshots in D:\Tools\shots\phase13, docs; gates: analyze clean, 175 tests pass, APK debug built.
+- Phase 12b-fix P0: baseline on mobile-mvp clean and pushed; analyze clean, 164 tests pass.
+- Phase 12b-fix P1-2,4: spacing tokens (lib/core/responsive/spacing.dart), SectionHeader, HorizontalCardList, ProductCardWithPhoto, Home rhythm + keys, spacing_test; 172 tests pass.
+- Phase 12b-fix P3: ~146 literal gaps/paddings replaced by Gap/Space tokens, 36 list paddings via Space.pad/padTab (bottom clearance); analyze clean, 172 tests pass.
+- Phase 12b-fix P5: web build, headless screenshots (home top and recommendations, search, product, cart, orders at 360/412/768) in D:\Tools\shots\phase12bfix with photos loaded; gates: analyze clean, 172 tests pass, APK debug built.
+
+## Phase 13b - Rekonsiliasi cabang (feature/mobile-unified)
+- PART 0: baseline mvp = analyze bersih, 172 tes; polish = analyze bersih, 175 tes. Divergensi: `origin/feature/mobile-polish..origin/feature/mobile-mvp` = ed81979, 0b0fe4a, a9a6743 (token spasi, SectionHeader, HorizontalCardList, tes spasi); kebalikannya = 77204d0, 1b69136 (sistem visual web, motion, aksesibilitas).
+- PART 1: `feature/mobile-unified` dibuat dari polish, merge `--no-ff` mobile-mvp. Konflik manual: widgets.dart, catalog_screens.dart, buyer_order_screens.dart, profile_screens.dart, seller_settings_screens.dart + 3 dokumen. Hasil: analyze bersih, 183 tes lulus.

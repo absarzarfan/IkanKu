@@ -132,3 +132,17 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Radius kartu 20 (web 24) untuk layar kecil. Tinggi tile menu bertambah (minimal 48 dp) akibat IconChip.
 - Test `screens_test` 'Keluar dari profil' memakai scrollUntilVisible karena daftar profil kini lebih tinggi. Timeline pesanan tidak dibuat (bukan fitur yang ada).
 - Reveal hanya dipasang pada baris produk dan kartu pesanan buyer (revealIndex); layar lain memakai transisi halaman, kartu, dan Pressable.
+## Phase 12b-fix (spacing, feature/mobile-mvp)
+- Token spasi di `lib/core/responsive/spacing.dart`: screenGutter 16/20/24, sectionGap 24 (compact) / 28, sectionTitleGap 12, itemGap 12, cardPadding 12 (compact) / 16, dotsGap 8, minBottomClearance = 64 + inset aman + 16 (layar tab) dan bottomClearance = inset + 16 (layar non-tab). Widget: SectionHeader, VGap.section/title/item, HorizontalCardList (Clip.none, tanpa padding vertikal agar jarak tepat token), ProductCardWithPhoto (offset atas = jari-jari foto; jarak judul diukur ke foto).
+- Tab bawah berada di luar body Scaffold, jadi ruang bawah minimum pada layar tab bersifat tambahan (lega), bukan koreksi tumpang tindih; dipertahankan sesuai spesifikasi.
+- Pengecualian yang dipertahankan: lebar logo/gambar (width fluida), Spacer di Row (cart, kategori), SizedBox(width: 48) pada slot AppBar (target sentuh), scrollPadding 20/20/20/140 pada AppField (ruang keyboard), padding optik 0 dan sisa literal non-skala (divider, ikon), tinggi minimum 48/56 tombol. Angka di luar skala dibulatkan: 6->8, 10/14->12, 18->16, 30/40->32.
+- Header bagian di layar lain masih sebagian memakai `Text` + `AppText.semi`; hanya Home, Rekomendasi, dan Telusuri memakai SectionHeader. Form: jarak antar field = itemGap lewat AppField; jarak antar kelompok belum seragam.
+- Server statis mengembalikan 404 untuk berkas dengan ekstensi yang tidak ada (hanya /favicon.ico yang 404, bawaan browser). Foto tampil di screenshot headless setelah menunggu >7 detik virtual (script gulir di wrapper); tanpa menunggu foto belum ter-decode.
+- Cabang `feature/mobile-polish` memiliki versi Home sendiri (Phase 13); perbaikan spasi ini hanya di `feature/mobile-mvp`, merge berikutnya akan konflik di `catalog_screens.dart`.
+
+## Phase 13b - keputusan merge
+- Prinsip: struktur/ritme dari mvp (token Space, Gap/VGap, SectionHeader, HorizontalCardList, Key pengukuran); gaya visual dari polish (Pressable, AppCard.decorationFor, IconChip, gradien, Reveal, motion). Satu versi per widget (AppCard, PillButton, SectionHeader, ProductCardWithPhoto, kartu kategori, titik banner, bilah Telusuri).
+- AppCard: padding default `Space.cardPadding`, margin `Space.itemGap`, tetap mendukung `revealIndex`.
+- SectionHeader: SectionTitle polish (batang aksen) + aksi 48 dp; judul membungkus.
+- `Space.minBottomClearance` kini = inset aman + 16 (bukan + tinggi tab): tab bawah berada DI LUAR body Scaffold (bottomNavigationBar), sehingga menambah 64 dp membuat item terakhir tidak bisa dijangkau. Tes `spacing_test` 'VGap dan minBottomClearance' disesuaikan (ekspektasi lama usang).
+- `screens_test` 'Keluar dari profil': ditambah `ensureVisible` setelah `scrollUntilVisible` (scrollUntilVisible berhenti saat widget sudah dibangun di cache extent, di luar viewport, sehingga tap mengenai tab bawah). Asersi tidak berubah.

@@ -91,12 +91,12 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       title: 'Ringkasan Pemesanan',
       body: lines.isEmpty
           ? const EmptyState('Tidak ada item dipilih')
-          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+          : ListView(padding: Space.pad(context), children: [
               AppCard(
                 onTap: () => context.push('/addresses?pick=1'),
                 child: Row(children: [
                   const Icon(Icons.location_on_outlined, color: AppColors.primary),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: Gap.md),
                   Expanded(
                     child: address == null
                         ? const Text('Pilih alamat pengiriman')
@@ -109,7 +109,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 AppCard(
                   child: Row(children: [
                     ProductImage(asset: l.product.image, size: 60),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: Gap.md),
                     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(l.product.name, style: AppText.body), Text(l.variation.label, style: AppText.small)])),
                     Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(rupiah(l.unitPrice), style: AppText.body), Text('x${l.qty}', style: AppText.small)]),
                   ]),
@@ -119,13 +119,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 if (settings.deliveryEnabled) ChoiceChip(key: const Key('ship-kirim'), label: const Text('Kirim'), selected: _shipping == ShippingMethod.kirim, onSelected: (_) => setState(() => _shipping = ShippingMethod.kirim)),
                 if (settings.pickupEnabled) ChoiceChip(key: const Key('ship-jemput'), label: const Text('Jemput'), selected: _shipping == ShippingMethod.jemput, onSelected: (_) => setState(() => _shipping = ShippingMethod.jemput)),
               ]),
-              const SizedBox(height: 10),
+              const SizedBox(height: Gap.md),
               Text('Metode Pembayaran', style: AppText.semi),
               Wrap(spacing: 8, children: [
                 if (settings.transferEnabled) ChoiceChip(key: const Key('pay-transfer'), label: const Text('Transfer'), selected: _payment == PaymentMethod.transfer, onSelected: (_) => setState(() => _payment = PaymentMethod.transfer)),
                 if (settings.codEnabled) ChoiceChip(key: const Key('pay-cod'), label: const Text('COD'), selected: _payment == PaymentMethod.cod, onSelected: (_) => setState(() => _payment = PaymentMethod.cod)),
               ]),
-              const SizedBox(height: 14),
+              const SizedBox(height: Gap.md),
               AppField(controller: _note, hint: 'Opsional: Catatan untuk penjual', maxLines: 2),
               AppCard(
                 child: Column(children: [
@@ -137,7 +137,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               ),
               Row(children: [
                 Expanded(child: PillButton(label: 'Batal', outlined: true, color: AppColors.danger, onPressed: () => context.canPop() ? context.pop() : context.go('/home'))),
-                const SizedBox(width: 12),
+                const SizedBox(width: Gap.md),
                 Expanded(child: PillButton(label: 'Buat Pesanan', onPressed: _place)),
               ]),
             ]),
@@ -163,7 +163,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
     final bank = settings.banks.isEmpty ? null : settings.banks.first;
     return AppScaffold(
       title: 'Pembayaran',
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         AppCard(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Transfer ke', style: AppText.small),
@@ -175,7 +175,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
           ]),
         ),
         Text('Bukti Pembayaran', style: AppText.semi),
-        const SizedBox(height: 8),
+        const SizedBox(height: Gap.sm),
         InkWell(
           onTap: () => setState(() => _picked = true),
           child: Container(
@@ -186,7 +186,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
             child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [Icon(_picked ? Icons.check_circle : Icons.upload_file, size: 36, color: _picked ? AppColors.success : AppColors.grey), Text(_picked ? 'Bukti terpilih (simulasi)' : 'Unggah bukti transfer (simulasi)', style: AppText.small)])),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: Gap.xl),
         PillButton(
           label: 'Kirim',
           onPressed: _picked
@@ -212,17 +212,17 @@ class OrderSuccessScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: ContentFrame(padded: false, child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
-          const SizedBox(height: 40),
+        child: ContentFrame(padded: false, child: ListView(padding: Space.pad(context), children: [
+          const SizedBox(height: Gap.xxxl),
           const Icon(Icons.check_circle, size: 96, color: AppColors.success),
-          const SizedBox(height: 12),
+          const SizedBox(height: Gap.md),
           Center(child: Text('Pesanan berhasil dilakukan !', style: AppText.heading)),
-          const SizedBox(height: 24),
+          const SizedBox(height: Gap.xxl),
           if (order != null)
             AppCard(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text('Ringkasan Pesanan', style: AppText.semi),
-                const SizedBox(height: 8),
+                const SizedBox(height: Gap.sm),
                 for (final l in order.lines) KeyValueRow('${l.product.name} x${l.qty}', rupiah(l.total)),
                 const Divider(),
                 KeyValueRow('Subtotal', rupiah(order.subtotal)),
@@ -232,7 +232,7 @@ class OrderSuccessScreen extends ConsumerWidget {
               ]),
             ),
           PillButton(label: 'Lihat Pesanan', outlined: true, onPressed: () => context.go('/orders')),
-          const SizedBox(height: 12),
+          const SizedBox(height: Gap.md),
           PillButton(label: 'Kembali ke Beranda', onPressed: () => context.go('/home')),
         ])),
       ),

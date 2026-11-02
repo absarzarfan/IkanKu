@@ -49,9 +49,9 @@ class OfflineScreen extends StatelessWidget {
           padding: const EdgeInsets.all(Gap.xxxl),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             const Icon(Icons.wifi_off, size: 96, color: AppColors.grey),
-            const SizedBox(height: 16),
+            const SizedBox(height: Gap.lg),
             Text('Koneksi Internet Terputus!', style: AppText.heading, textAlign: TextAlign.center),
-            const SizedBox(height: 24),
+            const SizedBox(height: Gap.xxl),
             PillButton(label: 'Coba Kembali', onPressed: () => context.canPop() ? context.pop() : context.go('/')),
           ]),
         ),
@@ -73,17 +73,17 @@ class PickLocationScreen extends StatelessWidget {
           child: Container(
             key: const Key('map-placeholder'),
             width: double.infinity,
-            margin: EdgeInsets.all(context.pagePadding),
+            margin: Space.pad(context),
             decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)),
             child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Icon(Icons.location_on, size: 56, color: AppColors.danger),
-              SizedBox(height: 8),
+              SizedBox(height: Gap.sm),
               Text('Peta belum tersedia (placeholder statis)', textAlign: TextAlign.center, style: AppText.small.copyWith(color: AppColors.grey)),
             ]),
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(context.pagePadding, 0, context.pagePadding, 20),
+          padding: EdgeInsets.fromLTRB(context.pagePadding, 0, context.pagePadding, Gap.xl),
           child: PillButton(label: 'Gunakan Lokasi Ini', onPressed: () => context.pop(placeholderLabel)),
         ),
       ]),

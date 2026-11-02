@@ -36,7 +36,7 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
     return AppScaffold(
       title: 'Produk',
       showBack: false,
-      body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: EdgeInsets.all(context.pagePadding), children: [
+      body: RefreshableList(onRefresh: () async => ref.invalidate(catalogProvider), padding: Space.padTab(context), children: [
         Wrap(alignment: WrapAlignment.spaceBetween, crossAxisAlignment: WrapCrossAlignment.center, children: [
           Text('Daftar Kategori', style: AppText.semi),
           TextButton.icon(onPressed: () => context.push('/seller/categories/new'), icon: const Icon(Icons.add), label: const Text('Tambah Kategori')),
@@ -63,18 +63,18 @@ class _SellerProductsScreenState extends ConsumerState<SellerProductsScreen> {
             alignment: Alignment.centerLeft,
             child: TextButton.icon(onPressed: () => context.push('/seller/categories/${Uri.encodeComponent(_cat)}/edit'), icon: const Icon(Icons.edit_outlined), label: const Text('Ubah Kategori')),
           ),
-        const SizedBox(height: 12),
+        const SizedBox(height: Gap.md),
         Wrap(alignment: WrapAlignment.spaceBetween, crossAxisAlignment: WrapCrossAlignment.center, children: [
           Text('Daftar Produk', style: AppText.semi),
           TextButton.icon(onPressed: () => context.push('/seller/products/new'), icon: const Icon(Icons.add), label: const Text('Tambah produk')),
         ]),
-        if (items.isEmpty) const Padding(padding: EdgeInsets.all(30), child: EmptyState('Belum ada produk')),
+        if (items.isEmpty) const Padding(padding: EdgeInsets.all(Gap.xxxl), child: EmptyState('Belum ada produk')),
         for (final p in items)
           AppCard(
             onTap: () => context.push('/seller/products/${p.id}'),
             child: Row(children: [
               ProductImage(asset: p.image, size: 56),
-              const SizedBox(width: 12),
+              const SizedBox(width: Gap.md),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(p.name, style: AppText.body), Text('${p.category} | Stok ${p.stock}', style: AppText.small), Text(rupiah(p.startingPrice), style: AppText.semi)])),
               IconButton(tooltip: 'Ubah', icon: const Icon(Icons.edit_outlined), onPressed: () => context.push('/seller/products/${p.id}/edit')),
             ]),
@@ -94,24 +94,24 @@ class SellerProductDetailScreen extends ConsumerWidget {
     if (p == null) return const AppScaffold(title: 'Produk', body: EmptyState('Produk tidak ditemukan'));
     return AppScaffold(
       title: p.name,
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         ClipRRect(borderRadius: BorderRadius.circular(28), child: SizedBox(height: 200, child: productPicture(p.image, cacheWidth: 900))),
-        const SizedBox(height: 12),
+        const SizedBox(height: Gap.md),
         Text(rupiah(p.startingPrice), style: AppText.price),
         Text('Kategori: ${p.category}  |  Rating ${p.rating}', style: AppText.small),
-        const SizedBox(height: 8),
+        const SizedBox(height: Gap.sm),
         Text(p.description, style: AppText.body),
-        const SizedBox(height: 12),
+        const SizedBox(height: Gap.md),
         Text('Variasi', style: AppText.semi),
-        for (final v in p.variations) AppCard(margin: const EdgeInsets.only(top: 8), child: Row(children: [Expanded(child: Text(v.label, style: AppText.body)), Text('${rupiah(v.price)} | Stok ${v.stock}', style: AppText.small)])),
-        const SizedBox(height: 12),
+        for (final v in p.variations) AppCard(margin: const EdgeInsets.only(top: Gap.sm), child: Row(children: [Expanded(child: Text(v.label, style: AppText.body)), Text('${rupiah(v.price)} | Stok ${v.stock}', style: AppText.small)])),
+        const SizedBox(height: Gap.md),
         Text('Penilaian & Ulasan (${p.reviews.length})', style: AppText.semi),
         for (final r in p.reviews) AppCard(color: AppColors.field, child: Row(children: [Expanded(child: Text('${r.author}: ${r.text}', style: AppText.small)), RatingStars(rating: r.rating.toDouble(), size: 12)])),
-        const SizedBox(height: 12),
+        const SizedBox(height: Gap.md),
         PillButton(label: 'Ubah Produk', onPressed: () => context.push('/seller/products/${p.id}/edit')),
-        const SizedBox(height: 10),
+        const SizedBox(height: Gap.md),
         PillButton(label: 'Atur Variasi', outlined: true, onPressed: () => context.push('/seller/products/${p.id}/variants')),
-        const SizedBox(height: 10),
+        const SizedBox(height: Gap.md),
         PillButton(
           label: 'Hapus Produk',
           color: AppColors.danger,
@@ -184,12 +184,12 @@ class _VariationsEditorState extends State<VariationsEditor> {
           child: Column(children: [
             Row(children: [
               Expanded(child: TextFormField(controller: r.weight, key: Key('var-weight-$i'), validator: (v) => Validators.required(v, 'Berat'), decoration: const InputDecoration(labelText: 'Berat (mis. 1 Kg)'))),
-              const SizedBox(width: 8),
+              const SizedBox(width: Gap.sm),
               Expanded(child: TextFormField(controller: r.count, key: Key('var-count-$i'), keyboardType: TextInputType.number, validator: num, decoration: const InputDecoration(labelText: 'Isi (ekor)'))),
             ]),
             Row(children: [
               Expanded(child: TextFormField(controller: r.price, key: Key('var-price-$i'), keyboardType: TextInputType.number, validator: num, decoration: const InputDecoration(labelText: 'Harga (Rp)'))),
-              const SizedBox(width: 8),
+              const SizedBox(width: Gap.sm),
               Expanded(child: TextFormField(controller: r.stock, key: Key('var-stock-$i'), keyboardType: TextInputType.number, validator: num, decoration: const InputDecoration(labelText: 'Stok'))),
               IconButton(tooltip: 'Hapus variasi', icon: const Icon(Icons.delete_outline, color: AppColors.danger), onPressed: _rows.length <= 1 ? null : () => setState(() => _rows.removeAt(i).dispose())),
             ]),
@@ -286,16 +286,16 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
       title: _existing == null ? 'Tambah produk' : 'Ubah Produk',
       body: Form(
         key: _form,
-        child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+        child: ListView(padding: Space.pad(context), children: [
           Text('Foto (pilih contoh)', style: AppText.label),
-          const SizedBox(height: 6),
+          const SizedBox(height: Gap.sm),
           SizedBox(
             height: 72,
             child: ListView(scrollDirection: Axis.horizontal, children: [
               for (final a in _photoChoices)
                 GestureDetector(
                   onTap: () => setState(() => _image = a),
-                  child: Container(margin: const EdgeInsets.only(right: 8), padding: const EdgeInsets.all(3), decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: a == _image ? AppColors.primary : Colors.transparent, width: 3)), child: ProductImage(asset: a, size: 60)),
+                  child: Container(margin: const EdgeInsets.only(right: Gap.sm), padding: const EdgeInsets.all(3), decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: a == _image ? AppColors.primary : Colors.transparent, width: 3)), child: ProductImage(asset: a, size: 60)),
                 ),
             ]),
           ),
@@ -309,15 +309,15 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 label: Text(_uploading ? 'Mengunggah...' : 'Unggah dari galeri'),
               ),
             ),
-          const SizedBox(height: 14),
+          const SizedBox(height: Gap.md),
           AppField(fieldKey: const Key('prod-name'), label: 'Nama', controller: _name, hint: 'Nama produk', validator: (v) => Validators.required(v, 'Nama')),
           AppField(label: 'Deskripsi', controller: _desc, hint: 'Deskripsi produk', maxLines: 3),
           Text('Kategori', style: AppText.label),
           Wrap(spacing: 8, children: [for (final c in cats) ChoiceChip(label: Text(c), selected: _category == c, onSelected: (_) => setState(() => _category = c))]),
-          const SizedBox(height: 14),
+          const SizedBox(height: Gap.md),
           Text('Variasi', style: AppText.label),
           VariationsEditor(initial: _initialVars, controllerOut: _varOut),
-          const SizedBox(height: 10),
+          const SizedBox(height: Gap.md),
           PillButton(label: 'Simpan', onPressed: _save),
         ]),
       ),
@@ -350,7 +350,7 @@ class _VariantsScreenState extends ConsumerState<VariantsScreen> {
       title: 'Variasi',
       body: Form(
         key: _form,
-        child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+        child: ListView(padding: Space.pad(context), children: [
           Text(p.name, style: AppText.semi),
           VariationsEditor(initial: p.variations, controllerOut: _out),
           PillButton(
@@ -391,7 +391,7 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
       title: widget.editing == null ? 'Tambah Kategori' : 'Ubah Kategori',
       body: Form(
         key: _form,
-        child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+        child: ListView(padding: Space.pad(context), children: [
           AppField(
             fieldKey: const Key('cat-name'),
             label: 'Kategori',
@@ -405,9 +405,9 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
             },
           ),
           Text('Gambar Kategori*', style: AppText.label),
-          const SizedBox(height: 6),
+          const SizedBox(height: Gap.sm),
           InkWell(onTap: () => showMsg(context, 'Unggah foto belum tersedia (placeholder)'), child: Container(height: 90, decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)), child: const Center(child: Text('Tambah foto (placeholder)')))),
-          const SizedBox(height: 20),
+          const SizedBox(height: Gap.xl),
           PillButton(
             label: widget.editing == null ? 'Tambah Kategori' : 'Simpan Perubahan',
             onPressed: () {
@@ -452,11 +452,11 @@ class _DiscountScreenState extends ConsumerState<DiscountScreen> {
     }
     return AppScaffold(
       title: 'Diskon',
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         for (final p in products)
           AppCard(child: Row(children: [
             ProductImage(asset: p.image, size: 46),
-            const SizedBox(width: 12),
+            const SizedBox(width: Gap.md),
             Expanded(child: Text(p.name, style: AppText.body)),
             SizedBox(width: 80, child: TextField(key: Key('disc-${p.id}'), controller: _c[p.id], keyboardType: TextInputType.number, decoration: const InputDecoration(suffixText: '%', isDense: true))),
           ])),

@@ -30,9 +30,9 @@ class SellerHomeScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Toko Saya',
       showBack: false,
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.padTab(context), children: [
         Text('SELAMAT DATANG, ${(user?.name ?? '').toUpperCase()}!', style: AppText.heading),
-        const SizedBox(height: 14),
+        const SizedBox(height: Gap.md),
         ResponsiveGrid(
           maxCrossAxisExtent: 220,
           spacing: Gap.md,
@@ -51,11 +51,11 @@ class SellerHomeScreen extends ConsumerWidget {
               ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: Gap.lg),
         PillButton(label: 'Semua Pesanan', onPressed: () => context.push('/seller/orders')),
-        const SizedBox(height: 10),
+        const SizedBox(height: Gap.md),
         PillButton(label: 'Ulasan Pembeli', outlined: true, onPressed: () => context.push('/seller/reviews')),
-        const SizedBox(height: 10),
+        const SizedBox(height: Gap.md),
         PillButton(label: 'Atur Diskon', outlined: true, onPressed: () => context.push('/seller/discount')),
       ]),
     );
@@ -87,7 +87,7 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
       body: Column(children: [
         if (done)
           Padding(
-            padding: EdgeInsets.fromLTRB(context.pagePadding, 12, context.pagePadding, 0),
+            padding: EdgeInsets.fromLTRB(context.pagePadding, Gap.md, context.pagePadding, 0),
             child: Wrap(spacing: 8, children: [
               for (final (i, l) in ['Semua', 'COD', 'NON COD'].indexed) ChoiceChip(key: Key('filter-$i'), label: Text(l), selected: _pay == i, onSelected: (_) => setState(() => _pay = i)),
             ]),
@@ -95,14 +95,14 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
         Expanded(
           child: items.isEmpty
           ? EmptyState('Belum ada pesanan ${sellerTabLabels[_tab].toLowerCase()}')
-          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: EdgeInsets.all(context.pagePadding), children: [
+          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: Space.pad(context), children: [
               for (final o in items)
                 AppCard(
                   onTap: () => context.push('/seller/orders/${o.id}'),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Row(children: [
                       ProductImage(asset: o.lines.first.product.image, size: 60),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: Gap.md),
                       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text(o.lines.first.product.name, style: AppText.body, maxLines: 2, overflow: TextOverflow.ellipsis),
                         Text(o.lines.first.variation.label, style: AppText.small),
@@ -112,7 +112,7 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
                         StatusChip(o.status.label, color: statusColor(o.status)),
                       ])),
                     ]),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: Gap.sm),
                     Wrap(alignment: WrapAlignment.end, children: [
                       if (o.status == OrderStatus.menunggu) TextButton(onPressed: () => context.push('/seller/orders/${o.id}'), child: const Text('Proses Pesanan')),
                       if (o.status == OrderStatus.dikemas) TextButton(onPressed: () => context.push('/seller/orders/${o.id}/ship'), child: const Text('Kirim')),
@@ -149,10 +149,10 @@ class SellerOrderDetailScreen extends ConsumerWidget {
     final n = ref.read(ordersProvider.notifier);
     return AppScaffold(
       title: o.status == OrderStatus.menunggu ? 'Proses Pesanan' : 'Detail Pesanan',
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(o.id, style: AppText.semi)), const SizedBox(width: Gap.sm), StatusChip(o.status.label, color: statusColor(o.status))]),
-        const SizedBox(height: 12),
-        for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: 12), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), Text('x${l.qty}', style: AppText.small)])),
+        const SizedBox(height: Gap.md),
+        for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: Gap.md), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), Text('x${l.qty}', style: AppText.small)])),
         AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Pembeli', style: AppText.semi),
           Text('${o.address.recipient} | ${o.address.phone}', style: AppText.small),
@@ -168,7 +168,7 @@ class SellerOrderDetailScreen extends ConsumerWidget {
         if (o.status == OrderStatus.menunggu)
           Row(children: [
             Expanded(child: PillButton(label: 'Tolak', color: AppColors.danger, outlined: true, onPressed: () => _reject(context, ref, o))),
-            const SizedBox(width: 12),
+            const SizedBox(width: Gap.md),
             Expanded(
               child: PillButton(
                 label: 'Terima',
@@ -211,9 +211,9 @@ class _ShipProofScreenState extends ConsumerState<ShipProofScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: 'Bukti Pengiriman',
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         Text('Silahkan Upload Foto Pengiriman', style: AppText.semi),
-        const SizedBox(height: 8),
+        const SizedBox(height: Gap.sm),
         InkWell(
           key: const Key('ship-photo'),
           onTap: () => setState(() => _photo = true),
@@ -223,7 +223,7 @@ class _ShipProofScreenState extends ConsumerState<ShipProofScreen> {
             child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [Icon(_photo ? Icons.check_circle : Icons.add_a_photo_outlined, size: 36, color: _photo ? AppColors.success : AppColors.grey), Text(_photo ? 'Foto terpilih (simulasi)' : 'Upload Disini (simulasi)', style: AppText.small)])),
           ),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: Gap.md),
         AppField(controller: _note, hint: 'Catatan', maxLines: 3),
         PillButton(
           label: 'Kirim',
@@ -249,13 +249,13 @@ class SellerReviewsScreen extends ConsumerWidget {
       title: 'Ulasan',
       body: reviewed.isEmpty
           ? const EmptyState('Belum ada ulasan')
-          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+          : ListView(padding: Space.pad(context), children: [
               for (final o in reviewed)
                 AppCard(
                   onTap: () => context.push('/orders/${o.id}/review/view'),
                   child: Row(children: [
                     ProductImage(asset: o.lines.first.product.image, size: 50),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: Gap.md),
                     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(o.lines.first.product.name, style: AppText.body), Text(o.review!.text, style: AppText.small, maxLines: 2, overflow: TextOverflow.ellipsis)])),
                     RatingStars(rating: o.review!.rating.toDouble()),
                   ]),

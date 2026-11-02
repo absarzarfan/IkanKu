@@ -18,6 +18,9 @@ extension ResponsiveContext on BuildContext {
 
   /// Padding horizontal halaman: 16 / 20 / 24 menurut kelas lebar.
   double get pagePadding => pagePaddingFor(widthClass);
+
+  /// Nama semantik untuk [pagePadding]: margin kiri/kanan layar.
+  double get screenGutter => pagePaddingFor(widthClass);
 }
 
 double pagePaddingFor(WidthClass c) => switch (c) {

@@ -15,23 +15,23 @@ class SellerSettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(sellerSettingsProvider);
     final n = ref.read(sellerSettingsProvider.notifier);
-    Widget tile(IconData i, String t, String route) => AppCard(margin: const EdgeInsets.only(bottom: 10), onTap: () => context.push(route), child: Row(children: [IconChip(icon: i), const SizedBox(width: 14), Expanded(child: Text(t, style: AppText.body)), const Icon(Icons.chevron_right)]));
+    Widget tile(IconData i, String t, String route) => AppCard(margin: const EdgeInsets.only(bottom: Space.itemGap), onTap: () => context.push(route), child: Row(children: [IconChip(icon: i), const SizedBox(width: Gap.md), Expanded(child: Text(t, style: AppText.body)), const Icon(Icons.chevron_right)]));
     return AppScaffold(
       title: 'Pengaturan',
       showBack: false,
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.padTab(context), children: [
         Text(s.shopName, style: AppText.heading),
-        const SizedBox(height: 12),
+        const SizedBox(height: Gap.md),
         tile(Icons.local_shipping_outlined, 'Biaya Ongkir', '/seller/ongkir'),
         tile(Icons.payments_outlined, 'Metode Pembayaran', '/seller/payment-methods'),
         tile(Icons.rate_review_outlined, 'Ulasan', '/seller/reviews'),
         tile(Icons.discount_outlined, 'Diskon', '/seller/discount'),
         tile(Icons.help_outline, 'Pusat Bantuan', '/help'),
-        const SizedBox(height: 6),
+        const SizedBox(height: Gap.sm),
         Text('Metode Pengiriman', style: AppText.semi),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Kirim'), value: s.deliveryEnabled, onChanged: (v) => n.update(s.copyWith(deliveryEnabled: v || s.pickupEnabled ? v : true))),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Jemput'), value: s.pickupEnabled, onChanged: (v) => n.update(s.copyWith(pickupEnabled: v || s.deliveryEnabled ? v : true))),
-        const SizedBox(height: 10),
+        const SizedBox(height: Gap.md),
         PillButton(label: 'Keluar', color: AppColors.danger, onPressed: () => ref.read(authProvider.notifier).logout()),
       ]),
     );
@@ -62,7 +62,7 @@ class _OngkirScreenState extends ConsumerState<OngkirScreen> {
       title: 'Biaya Ongkir',
       body: Form(
         key: _form,
-        child: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+        child: ListView(padding: Space.pad(context), children: [
           AppField(fieldKey: const Key('ongkir-fee'), label: 'Biaya ongkir (Rp)', controller: _fee, hint: '10000', keyboard: TextInputType.number, validator: (v) => Validators.number(v, 'Biaya')),
           AppField(fieldKey: const Key('ongkir-free'), label: 'Gratis ongkir untuk subtotal minimal (0 = nonaktif)', controller: _free, hint: '0', keyboard: TextInputType.number, validator: (v) => Validators.number(v, 'Nilai')),
           PillButton(
@@ -103,7 +103,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     final n = ref.read(sellerSettingsProvider.notifier);
     return AppScaffold(
       title: 'Metode Pembayaran',
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Transfer'), value: s.transferEnabled, onChanged: (v) => n.update(s.copyWith(transferEnabled: v || s.codEnabled ? v : true))),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('COD'), value: s.codEnabled, onChanged: (v) => n.update(s.copyWith(codEnabled: v || s.transferEnabled ? v : true))),
         const Divider(),

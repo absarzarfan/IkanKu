@@ -26,6 +26,8 @@ void main() {
     c.read(routerProvider).go('/profile');
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(find.text('Keluar'), 200);
+    await tester.ensureVisible(find.text('Keluar'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Keluar'));
     await tester.pumpAndSettle();
     expect(c.read(routerProvider).state.uri.path, '/login');

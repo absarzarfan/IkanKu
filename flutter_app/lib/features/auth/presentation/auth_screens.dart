@@ -32,7 +32,7 @@ class AuthShell extends StatelessWidget {
                   Align(alignment: Alignment.centerLeft, child: IconButton(tooltip: 'Kembali', icon: const Icon(Icons.arrow_back, color: Colors.white), onPressed: onBack)),
                 Image.asset('assets/images/logo.png', width: fluid(context, 196), fit: BoxFit.contain, errorBuilder: (_, _, _) => const SizedBox(height: 97)),
                 if (showTabs) ...[
-                  const SizedBox(height: 40),
+                  const SizedBox(height: Gap.xxxl),
                   ContentFrame(padded: false, child: Row(children: [
                     Expanded(child: _Tab('Login', tab == 0, () => context.go('/login'))),
                     Expanded(child: _Tab('Daftar', tab == 1, () => context.go('/register'))),
@@ -57,11 +57,11 @@ class _Tab extends StatelessWidget {
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.only(top: 12),
+          padding: const EdgeInsets.only(top: Gap.md),
           child: Column(children: [
             Text(label, style: AppText.tabOnPrimary),
-            const SizedBox(height: 10),
-            FractionallySizedBox(widthFactor: 0.8, child: Container(height: 3, margin: const EdgeInsets.only(bottom: 4), decoration: BoxDecoration(color: active ? AppColors.onPrimary : Colors.transparent, borderRadius: BorderRadius.circular(40)))),
+            const SizedBox(height: Gap.md),
+            FractionallySizedBox(widthFactor: 0.8, child: Container(height: 3, margin: const EdgeInsets.only(bottom: Gap.xs), decoration: BoxDecoration(color: active ? AppColors.onPrimary : Colors.transparent, borderRadius: BorderRadius.circular(40)))),
           ]),
         ),
       );
@@ -117,21 +117,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             suffix: IconButton(tooltip: 'Tampilkan kata sandi', icon: Icon(_show ? Icons.visibility_off : Icons.visibility), onPressed: () => setState(() => _show = !_show)),
           ),
           InkWell(onTap: () => context.push('/forgot'), child: ConstrainedBox(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), child: Align(alignment: Alignment.centerLeft, widthFactor: 1, child: Text('Lupa kata sandi', style: AppText.label.copyWith(color: AppColors.navy))))),
-          const SizedBox(height: 24),
+          const SizedBox(height: Gap.xxl),
           PillButton(label: _busy ? 'Memproses...' : 'Login', height: 56, onPressed: _busy ? null : _submit),
-          const SizedBox(height: 16),
+          const SizedBox(height: Gap.lg),
           Center(child: Text('Atau', style: AppText.heading.copyWith(color: AppColors.navy))),
-          const SizedBox(height: 16),
+          const SizedBox(height: Gap.lg),
           OutlinedButton(
             style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(58), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), side: const BorderSide(color: AppColors.greyLight)),
             onPressed: () => showMsg(context, 'Login dengan Google belum tersedia (backend belum ditentukan)'),
             child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text('G', style: AppText.googleMark),
-              SizedBox(width: 12),
+              SizedBox(width: Gap.md),
               Flexible(child: Text('Login dengan google', overflow: TextOverflow.ellipsis, style: AppText.googleButton)),
             ]),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: Gap.lg),
           Text('Demo: pembeli fharaa@gmail.com, penjual penjual@ikanku.id, kata sandi Admin123', style: AppText.caption.copyWith(color: AppColors.grey)),
         ]),
       ),
@@ -163,9 +163,9 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
         key: _form,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Masukkan Nomor Ponsel', style: AppText.heading),
-          const SizedBox(height: 14),
+          const SizedBox(height: Gap.md),
           AppField(fieldKey: const Key('reg-phone'), controller: _phone, hint: 'Nomor Ponsel Ex 6282387436427', keyboard: TextInputType.phone, validator: Validators.phone),
-          const SizedBox(height: 16),
+          const SizedBox(height: Gap.lg),
           PillButton(
             label: 'Lanjut',
             height: 56,
@@ -228,9 +228,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       onBack: () => Navigator.of(context).maybePop(),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(widget.title, style: AppText.heading),
-        const SizedBox(height: 6),
+        const SizedBox(height: Gap.sm),
         Text('Kode 4 digit dikirim ke $phone (mock: 1234)', style: AppText.small.copyWith(color: AppColors.grey)),
-        const SizedBox(height: 14),
+        const SizedBox(height: Gap.md),
         TextField(
           key: const Key('otp-field'),
           controller: _code,
@@ -240,7 +240,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
           style: AppText.otp,
           decoration: InputDecoration(counterText: '', errorText: _error, filled: true, fillColor: AppColors.field, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none)),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: Gap.xl),
         PillButton(label: 'Lanjut', height: 56, onPressed: _verify),
       ]),
     );
@@ -312,7 +312,7 @@ class _RegisterDataScreenState extends ConsumerState<RegisterDataScreen> {
         key: _form,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Lengkapi Data', style: AppText.heading),
-          const SizedBox(height: 14),
+          const SizedBox(height: Gap.md),
           AppField(fieldKey: const Key('reg-name'), controller: _name, hint: 'Nama lengkap', validator: (v) => Validators.required(v, 'Nama lengkap')),
           AppField(controller: TextEditingController(text: phone), hint: 'Nomor Ponsel', readOnly: true),
           AppField(fieldKey: const Key('reg-email'), controller: _email, hint: 'Email', keyboard: TextInputType.emailAddress, validator: Validators.email),
@@ -320,7 +320,7 @@ class _RegisterDataScreenState extends ConsumerState<RegisterDataScreen> {
           AppField(controller: _area, hint: 'Kota, Kecamatan, Kode Pos', readOnly: true, onTap: _pickArea, suffix: const Icon(Icons.chevron_right), validator: (v) => Validators.required(v, 'Kecamatan')),
           AppField(controller: _street, hint: 'Nama Jalan, Gedung, No. Rumah', validator: (v) => Validators.required(v, 'Alamat')),
           AppField(controller: TextEditingController(text: _location), hint: 'Sesuaikan lokasi', readOnly: true, onTap: _pickLocation, suffix: const Icon(Icons.map_outlined)),
-          const SizedBox(height: 8),
+          const SizedBox(height: Gap.sm),
           PillButton(label: _busy ? 'Memproses...' : 'Lengkapi Data', height: 56, onPressed: _busy ? null : _submit),
         ]),
       ),
@@ -365,13 +365,13 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         key: _form,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Lupa Kata sandi?', style: AppText.heading),
-          const SizedBox(height: 6),
+          const SizedBox(height: Gap.sm),
           Text('Masukkan alamat email anda', style: AppText.body.copyWith(color: AppColors.grey)),
-          const SizedBox(height: 14),
+          const SizedBox(height: Gap.md),
           AppField(fieldKey: const Key('forgot-email'), controller: _email, hint: 'Email', keyboard: TextInputType.emailAddress, validator: Validators.email),
-          if (_sent) Padding(padding: const EdgeInsets.only(bottom: 14), child: Text('Tautan reset telah dikirim (simulasi) ke ${_email.text.trim()}.', key: const Key('forgot-sent'), style: AppText.body.copyWith(color: AppColors.success))),
+          if (_sent) Padding(padding: const EdgeInsets.only(bottom: Gap.md), child: Text('Tautan reset telah dikirim (simulasi) ke ${_email.text.trim()}.', key: const Key('forgot-sent'), style: AppText.body.copyWith(color: AppColors.success))),
           PillButton(label: 'Lanjut', height: 56, onPressed: _submit),
-          const SizedBox(height: 12),
+          const SizedBox(height: Gap.md),
           TextButton(onPressed: () => context.go('/login'), child: const Text('Kembali ke Login')),
         ]),
       ),

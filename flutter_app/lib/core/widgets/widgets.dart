@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/responsive/breakpoints.dart';
 import 'package:ikanku/core/responsive/content_frame.dart';
+import 'package:ikanku/core/responsive/spacing.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
 import 'package:ikanku/core/widgets/decor_widgets.dart';
 import 'package:ikanku/core/widgets/motion_widgets.dart';
@@ -10,6 +11,7 @@ export 'package:ikanku/core/responsive/breakpoints.dart';
 export 'package:ikanku/core/responsive/content_frame.dart';
 export 'package:ikanku/core/widgets/decor_widgets.dart';
 export 'package:ikanku/core/widgets/motion_widgets.dart';
+export 'package:ikanku/core/responsive/spacing.dart';
 
 /// Layout standar: kotak biru melengkung di atas (Figma "kotak"), judul, tombol kembali.
 class AppScaffold extends StatelessWidget {
@@ -108,7 +110,7 @@ class PillButton extends StatelessWidget {
     final text = Text(label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.buttonLabel.copyWith(color: fg));
     final child = Container(
       constraints: BoxConstraints(minHeight: h, minWidth: expanded ? double.infinity : 64),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: Gap.xl, vertical: Gap.sm),
       alignment: Alignment.center,
       child: Stack(alignment: Alignment.center, children: [
         Opacity(opacity: busy ? 0 : 1, child: text),
@@ -138,11 +140,11 @@ class AppField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(bottom: Gap.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (label != null) Padding(padding: const EdgeInsets.only(bottom: 6), child: Text(label!, style: AppText.label)),
+          if (label != null) Padding(padding: const EdgeInsets.only(bottom: Gap.sm), child: Text(label!, style: AppText.label)),
           TextFormField(
             key: fieldKey,
             controller: controller,
@@ -167,10 +169,10 @@ class AppField extends StatelessWidget {
 }
 
 class AppCard extends StatelessWidget {
-  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(14), this.onTap, this.color = AppColors.surface, this.margin = const EdgeInsets.only(bottom: 14), this.revealIndex});
+  const AppCard({super.key, required this.child, this.padding, this.onTap, this.color = AppColors.surface, this.margin = const EdgeInsets.only(bottom: Space.itemGap), this.revealIndex});
   final int? revealIndex;
   final Widget child;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final VoidCallback? onTap;
   final Color color;
   final EdgeInsets margin;
@@ -180,7 +182,7 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final inner = Padding(padding: padding, child: child);
+    final inner = Padding(padding: padding ?? EdgeInsets.all(Space.cardPadding(context)), child: child);
     final card = onTap == null
         ? DecoratedBox(decoration: decorationFor(color), child: inner)
         : Pressable(onTap: onTap, borderRadius: BorderRadius.circular(AppRadius.card), decoration: decorationFor(color), child: inner);
@@ -261,7 +263,7 @@ class TextTabs extends StatelessWidget {
       child: Row(children: [
         for (final (i, l) in labels.indexed)
           Padding(
-            padding: EdgeInsets.only(right: i == labels.length - 1 ? 0 : 18),
+            padding: EdgeInsets.only(right: i == labels.length - 1 ? 0 : Gap.lg),
             child: InkWell(
               onTap: () => onChanged(i),
               child: Container(
@@ -286,7 +288,7 @@ class EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(context.pagePadding),
+          padding: Space.pad(context),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Icon(icon, size: 56, color: AppColors.greyLight),
             const SizedBox(height: Gap.sm),
@@ -335,26 +337,35 @@ class StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: Gap.md, vertical: Gap.xs),
         decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: color)),
         child: Text(label, style: AppText.small.copyWith(color: textColor(color), fontWeight: FontWeight.w500)),
       );
 }
 
-class SectionRow extends StatelessWidget {
-  const SectionRow({super.key, required this.title, this.action, this.onAction});
+/// Header bagian: judul (membungkus, tidak overflow) dan aksi opsional (target sentuh 48 dp), sejajar garis dasar.
+class SectionHeader extends StatelessWidget {
+  const SectionHeader(this.title, {super.key, this.action, this.onAction});
   final String title;
   final String? action;
   final VoidCallback? onAction;
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Flexible(child: SectionTitle(title)),
-          if (action != null) InkWell(onTap: onAction, child: ConstrainedBox(constraints: const BoxConstraints(minHeight: AppSize.buttonSmall), child: Align(alignment: Alignment.center, widthFactor: 1, child: Padding(padding: const EdgeInsets.only(left: Gap.md), child: Text(action!, style: AppText.body.copyWith(color: AppColors.primary)))))),
-        ]),
+  Widget build(BuildContext context) => Row(
+        children: [
+          Expanded(child: SectionTitle(title)),
+          if (action != null)
+            InkWell(
+              onTap: onAction,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: AppSize.buttonSmall, minWidth: AppSize.buttonSmall),
+                child: Align(alignment: Alignment.centerRight, widthFactor: 1, child: Padding(padding: const EdgeInsets.only(left: Gap.md), child: Text(action!, style: AppText.body.copyWith(color: AppColors.primary)))),
+              ),
+            ),
+        ],
       );
 }
+
+
 
 class KeyValueRow extends StatelessWidget {
   const KeyValueRow(this.k, this.v, {super.key, this.bold = false});
@@ -363,10 +374,10 @@ class KeyValueRow extends StatelessWidget {
   final bool bold;
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(vertical: Gap.xs),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(k, style: bold ? AppText.semi : AppText.body),
-          const SizedBox(width: 12),
+          const SizedBox(width: Gap.md),
           Flexible(child: Text(v, textAlign: TextAlign.right, style: bold ? AppText.semi : AppText.body)),
         ]),
       );

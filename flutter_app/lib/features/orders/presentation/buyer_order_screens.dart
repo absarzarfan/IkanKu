@@ -41,7 +41,7 @@ class _BuyerOrdersScreenState extends ConsumerState<BuyerOrdersScreen> {
       headerExtra: TextTabs(labels: _buyerTabLabels, index: _tab, onChanged: (i) => setState(() => _tab = i), onDark: true),
       body: items.isEmpty
           ? EmptyState('Belum ada pesanan ${_buyerTabLabels[_tab].toLowerCase()}')
-          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: EdgeInsets.all(context.pagePadding), children: [for (final (i, o) in items.indexed) _OrderCard(order: o, index: i)]),
+          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: Space.pad(context), children: [for (final (i, o) in items.indexed) _OrderCard(order: o, index: i)]),
     );
   }
 }
@@ -60,7 +60,7 @@ class _OrderCard extends ConsumerWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           ProductImage(asset: l.product.image, size: 64),
-          const SizedBox(width: 12),
+          const SizedBox(width: Gap.md),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(l.product.name + (order.lines.length > 1 ? ' +${order.lines.length - 1}' : ''), style: AppText.body, maxLines: 2, overflow: TextOverflow.ellipsis),
@@ -69,7 +69,7 @@ class _OrderCard extends ConsumerWidget {
             ]),
           ),
         ]),
-        const SizedBox(height: 10),
+        const SizedBox(height: Gap.md),
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(padding: const EdgeInsets.only(top: Gap.md), child: StatusChip(order.status.label, color: statusColor(order.status))),
           const SizedBox(width: Gap.sm),
@@ -103,13 +103,13 @@ class OrderDetailScreen extends ConsumerWidget {
     if (o == null) return const AppScaffold(title: 'Detail Pesanan', body: EmptyState('Pesanan tidak ditemukan'));
     return AppScaffold(
       title: o.status == OrderStatus.dikirim ? 'Detail Pengiriman' : 'Detail Pesanan',
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Flexible(child: Text(o.id, style: AppText.semi)), const SizedBox(width: Gap.sm), StatusChip(o.status.label, color: statusColor(o.status))]),
-        const SizedBox(height: 12),
+        const SizedBox(height: Gap.md),
         for (final l in o.lines)
           AppCard(child: Row(children: [
             ProductImage(asset: l.product.image, size: 60),
-            const SizedBox(width: 12),
+            const SizedBox(width: Gap.md),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(l.product.name, style: AppText.body), Text('Pilih Variasi ${l.variation.label}', style: AppText.small)])),
             const SizedBox(width: Gap.sm),
             Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(rupiah(l.unitPrice), style: AppText.body), Text('x${l.qty}', style: AppText.small)])),
@@ -148,16 +148,16 @@ class OrderRejectedScreen extends ConsumerWidget {
     if (o == null) return const AppScaffold(title: 'Pesanan Ditolak', body: EmptyState('Pesanan tidak ditemukan'));
     return AppScaffold(
       title: 'Pesanan Ditolak',
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+      body: ListView(padding: Space.pad(context), children: [
         AppCard(color: AppColors.dangerSoft, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('Alasan ditolak', style: AppText.semi.copyWith(color: AppColors.danger)),
-          const SizedBox(height: 6),
+          const SizedBox(height: Gap.sm),
           Text(o.rejectReason ?? 'Pesanan ditolak penjual', key: const Key('reject-reason'), style: AppText.body),
         ])),
-        for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: 12), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), const SizedBox(width: Gap.sm), Flexible(child: Text(rupiah(l.total), style: AppText.semi))])),
+        for (final l in o.lines) AppCard(child: Row(children: [ProductImage(asset: l.product.image, size: 56), const SizedBox(width: Gap.md), Expanded(child: Text('${l.product.name}\n${l.variation.label}', style: AppText.body)), const SizedBox(width: Gap.sm), Flexible(child: Text(rupiah(l.total), style: AppText.semi))])),
         Row(children: [
           Expanded(child: PillButton(label: 'Kembali', outlined: true, onPressed: () => context.canPop() ? context.pop() : context.go('/orders'))),
-          const SizedBox(width: 12),
+          const SizedBox(width: Gap.md),
           Expanded(
             child: PillButton(
               label: 'Bayar Ulang',
@@ -198,8 +198,8 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
     if (o == null) return const AppScaffold(title: 'Beri Ulasan', body: EmptyState('Pesanan tidak ditemukan'));
     return AppScaffold(
       title: 'Beri Ulasan',
-      body: ListView(padding: EdgeInsets.all(context.pagePadding), children: [
-        AppCard(child: Row(children: [ProductImage(asset: o.lines.first.product.image, size: 56), const SizedBox(width: 12), Expanded(child: Text('${o.lines.first.product.name}\n${o.lines.first.variation.label}', style: AppText.body))])),
+      body: ListView(padding: Space.pad(context), children: [
+        AppCard(child: Row(children: [ProductImage(asset: o.lines.first.product.image, size: 56), const SizedBox(width: Gap.md), Expanded(child: Text('${o.lines.first.product.name}\n${o.lines.first.variation.label}', style: AppText.body))])),
         Center(child: Text('Bagaimana pengalaman Anda?', style: AppText.semi)),
         Wrap(alignment: WrapAlignment.center, children: [
           for (var i = 1; i <= 5; i++)
@@ -233,10 +233,10 @@ class ViewReviewScreen extends ConsumerWidget {
       title: 'Ulasan',
       body: r == null
           ? const EmptyState('Belum ada ulasan')
-          : ListView(padding: EdgeInsets.all(context.pagePadding), children: [
+          : ListView(padding: Space.pad(context), children: [
               AppCard(color: AppColors.field, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(r.author, style: AppText.semi), RatingStars(rating: r.rating.toDouble())]),
-                const SizedBox(height: 6),
+                const SizedBox(height: Gap.sm),
                 Text(r.text.isEmpty ? '(tanpa komentar)' : r.text, style: AppText.body),
               ])),
             ]),
