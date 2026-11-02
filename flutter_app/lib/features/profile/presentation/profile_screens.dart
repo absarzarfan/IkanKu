@@ -67,15 +67,7 @@ class _ProfileDataScreenState extends ConsumerState<ProfileDataScreen> {
     final user = ref.watch(authProvider);
     return AppScaffold(
       title: 'Data Profil',
-      body: Form(
-        key: _form,
-        child: ListView(padding: Space.pad(context), children: [
-          AppField(label: 'Nama lengkap', controller: _name, hint: 'Nama lengkap', validator: (v) => Validators.required(v, 'Nama')),
-          AppField(label: 'Email', controller: TextEditingController(text: user?.email), hint: '', readOnly: true),
-          AppField(label: 'Nomor Ponsel', controller: TextEditingController(text: user?.phone), hint: '', readOnly: true),
-          Text('Email dan nomor ponsel diubah lewat menu Ubah Email / Ubah Nomor Ponsel.', style: AppText.small.copyWith(color: AppColors.grey)),
-          const SizedBox(height: Gap.lg),
-          PillButton(
+      bottom: StickyActionBar(child: PillButton(
             label: 'Simpan',
             onPressed: () {
               if (!_form.currentState!.validate()) return;
@@ -83,7 +75,14 @@ class _ProfileDataScreenState extends ConsumerState<ProfileDataScreen> {
               showMsg(context, 'Profil disimpan');
               context.pop();
             },
-          ),
+          )),
+      body: Form(
+        key: _form,
+        child: ListView(padding: Space.pad(context), children: [
+          AppField(label: 'Nama lengkap', controller: _name, hint: 'Nama lengkap', validator: (v) => Validators.required(v, 'Nama')),
+          AppField(label: 'Email', controller: TextEditingController(text: user?.email), hint: '', readOnly: true),
+          AppField(label: 'Nomor Ponsel', controller: TextEditingController(text: user?.phone), hint: '', readOnly: true),
+          Text('Email dan nomor ponsel diubah lewat menu Ubah Email / Ubah Nomor Ponsel.', style: AppText.small.copyWith(color: AppColors.grey)),
         ]),
       ),
     );
@@ -125,13 +124,13 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: 'Ganti Password',
+      bottom: StickyActionBar(child: PillButton(label: 'Simpan', onPressed: _save)),
       body: Form(
         key: _form,
         child: ListView(padding: Space.pad(context), children: [
           AppField(fieldKey: const Key('pw-old'), controller: _old, hint: 'Kata sandi lama', obscure: true, validator: Validators.password),
           AppField(fieldKey: const Key('pw-new'), controller: _new, hint: 'Kata sandi baru', obscure: true, validator: Validators.password),
           AppField(fieldKey: const Key('pw-confirm'), controller: _confirm, hint: 'Konfirmasi kata sandi baru', obscure: true, validator: (v) => v != _new.text ? 'Konfirmasi tidak sama' : null),
-          PillButton(label: 'Simpan', onPressed: _save),
         ]),
       ),
     );
@@ -273,6 +272,16 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: 'Tambah Alamat',
+      bottom: StickyActionBar(child: PillButton(
+            label: 'Simpan',
+            onPressed: () {
+              if (!_form.currentState!.validate()) return;
+              final k = ref.read(pickedKecamatanProvider);
+              if (k == null) return;
+              ref.read(addressProvider.notifier).add(Address(id: 'a${DateTime.now().microsecondsSinceEpoch}', recipient: _name.text.trim(), phone: _phone.text.trim(), street: _street.text.trim(), area: k, isPrimary: _primary));
+              context.pop();
+            },
+          )),
       body: Form(
         key: _form,
         child: ListView(padding: Space.pad(context), children: [
@@ -293,17 +302,6 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
           ),
           AppField(fieldKey: const Key('addr-street'), controller: _street, hint: 'Nama Jalan, Gedung, No. Rumah', validator: (v) => Validators.required(v, 'Alamat')),
           SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Atur sebagai alamat utama'), value: _primary, onChanged: (v) => setState(() => _primary = v)),
-          const SizedBox(height: Gap.md),
-          PillButton(
-            label: 'Simpan',
-            onPressed: () {
-              if (!_form.currentState!.validate()) return;
-              final k = ref.read(pickedKecamatanProvider);
-              if (k == null) return;
-              ref.read(addressProvider.notifier).add(Address(id: 'a${DateTime.now().microsecondsSinceEpoch}', recipient: _name.text.trim(), phone: _phone.text.trim(), street: _street.text.trim(), area: k, isPrimary: _primary));
-              context.pop();
-            },
-          ),
         ]),
       ),
     );

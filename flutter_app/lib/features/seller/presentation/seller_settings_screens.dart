@@ -60,12 +60,7 @@ class _OngkirScreenState extends ConsumerState<OngkirScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: 'Biaya Ongkir',
-      body: Form(
-        key: _form,
-        child: ListView(padding: Space.pad(context), children: [
-          AppField(fieldKey: const Key('ongkir-fee'), label: 'Biaya ongkir (Rp)', controller: _fee, hint: '10000', keyboard: TextInputType.number, validator: (v) => Validators.number(v, 'Biaya')),
-          AppField(fieldKey: const Key('ongkir-free'), label: 'Gratis ongkir untuk subtotal minimal (0 = nonaktif)', controller: _free, hint: '0', keyboard: TextInputType.number, validator: (v) => Validators.number(v, 'Nilai')),
-          PillButton(
+      bottom: StickyActionBar(child: PillButton(
             label: 'Simpan',
             onPressed: () {
               if (!_form.currentState!.validate()) return;
@@ -73,7 +68,12 @@ class _OngkirScreenState extends ConsumerState<OngkirScreen> {
               ref.read(sellerSettingsProvider.notifier).update(s.copyWith(shippingFee: int.parse(_fee.text.trim()), freeShippingMin: int.parse(_free.text.trim())));
               context.pop();
             },
-          ),
+          )),
+      body: Form(
+        key: _form,
+        child: ListView(padding: Space.pad(context), children: [
+          AppField(fieldKey: const Key('ongkir-fee'), label: 'Biaya ongkir (Rp)', controller: _fee, hint: '10000', keyboard: TextInputType.number, validator: (v) => Validators.number(v, 'Biaya')),
+          AppField(fieldKey: const Key('ongkir-free'), label: 'Gratis ongkir untuk subtotal minimal (0 = nonaktif)', controller: _free, hint: '0', keyboard: TextInputType.number, validator: (v) => Validators.number(v, 'Nilai')),
         ]),
       ),
     );

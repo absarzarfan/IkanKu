@@ -284,6 +284,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
     final cats = ref.watch(catalogProvider).categories;
     return AppScaffold(
       title: _existing == null ? 'Tambah produk' : 'Ubah Produk',
+      bottom: StickyActionBar(child: PillButton(label: 'Simpan', onPressed: _save)),
       body: Form(
         key: _form,
         child: ListView(padding: Space.pad(context), children: [
@@ -317,8 +318,6 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
           const SizedBox(height: Gap.md),
           Text('Variasi', style: AppText.label),
           VariationsEditor(initial: _initialVars, controllerOut: _varOut),
-          const SizedBox(height: Gap.md),
-          PillButton(label: 'Simpan', onPressed: _save),
         ]),
       ),
     );
@@ -348,19 +347,19 @@ class _VariantsScreenState extends ConsumerState<VariantsScreen> {
     if (p == null) return const AppScaffold(title: 'Variasi', body: EmptyState('Produk tidak ditemukan'));
     return AppScaffold(
       title: 'Variasi',
-      body: Form(
-        key: _form,
-        child: ListView(padding: Space.pad(context), children: [
-          Text(p.name, style: AppText.semi),
-          VariationsEditor(initial: p.variations, controllerOut: _out),
-          PillButton(
+      bottom: StickyActionBar(child: PillButton(
             label: 'Simpan',
             onPressed: () {
               if (!_form.currentState!.validate()) return;
               ref.read(catalogProvider.notifier).upsertProduct(p.copyWith(variations: _out.value!()));
               context.pop();
             },
-          ),
+          )),
+      body: Form(
+        key: _form,
+        child: ListView(padding: Space.pad(context), children: [
+          Text(p.name, style: AppText.semi),
+          VariationsEditor(initial: p.variations, controllerOut: _out),
         ]),
       ),
     );
@@ -389,6 +388,19 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: widget.editing == null ? 'Tambah Kategori' : 'Ubah Kategori',
+      bottom: StickyActionBar(child: PillButton(
+            label: widget.editing == null ? 'Tambah Kategori' : 'Simpan Perubahan',
+            onPressed: () {
+              if (!_form.currentState!.validate()) return;
+              final old = widget.editing;
+              if (old == null) {
+                ref.read(catalogProvider.notifier).addCategory(_name.text);
+              } else {
+                ref.read(catalogProvider.notifier).renameCategory(old, _name.text);
+              }
+              context.canPop() ? context.pop() : context.go('/seller/products');
+            },
+          )),
       body: Form(
         key: _form,
         child: ListView(padding: Space.pad(context), children: [
@@ -407,20 +419,6 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
           Text('Gambar Kategori*', style: AppText.label),
           const SizedBox(height: Gap.sm),
           InkWell(onTap: () => showMsg(context, 'Unggah foto belum tersedia (placeholder)'), child: Container(height: 90, decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(16)), child: const Center(child: Text('Tambah foto (placeholder)')))),
-          const SizedBox(height: Gap.xl),
-          PillButton(
-            label: widget.editing == null ? 'Tambah Kategori' : 'Simpan Perubahan',
-            onPressed: () {
-              if (!_form.currentState!.validate()) return;
-              final old = widget.editing;
-              if (old == null) {
-                ref.read(catalogProvider.notifier).addCategory(_name.text);
-              } else {
-                ref.read(catalogProvider.notifier).renameCategory(old, _name.text);
-              }
-              context.canPop() ? context.pop() : context.go('/seller/products');
-            },
-          ),
         ]),
       ),
     );

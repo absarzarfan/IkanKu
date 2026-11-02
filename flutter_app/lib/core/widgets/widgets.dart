@@ -140,7 +140,7 @@ class AppField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: Gap.md),
+      padding: const EdgeInsets.only(bottom: Space.itemGap),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -366,6 +366,21 @@ class SectionHeader extends StatelessWidget {
 }
 
 
+
+/// Bilah aksi lengket di bawah layar formulir. Dipasang lewat `AppScaffold.bottom`, sehingga tingginya
+/// otomatis mengurangi area scroll dan isi tidak pernah tertutup.
+class StickyActionBar extends StatelessWidget {
+  const StickyActionBar({super.key, required this.child});
+  final Widget child;
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(color: AppColors.surface, boxShadow: AppShadow.card),
+        child: SafeArea(
+          top: false,
+          child: Padding(padding: EdgeInsets.fromLTRB(Space.screenGutter(context), Space.itemGap, Space.screenGutter(context), Space.itemGap), child: child),
+        ),
+      );
+}
 
 class KeyValueRow extends StatelessWidget {
   const KeyValueRow(this.k, this.v, {super.key, this.bold = false});

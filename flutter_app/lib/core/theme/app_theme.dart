@@ -126,6 +126,8 @@ ThemeData buildTheme() {
       filled: true,
       fillColor: AppColors.field,
       hintStyle: AppText.hint,
+      helperStyle: AppText.small,
+      errorStyle: AppText.small.copyWith(color: AppColors.danger),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       border: border(),
       errorBorder: border(AppColors.danger),
