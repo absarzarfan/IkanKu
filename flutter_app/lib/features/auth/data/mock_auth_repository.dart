@@ -1,3 +1,4 @@
+import 'package:ikanku/core/config/app_config.dart';
 import 'package:ikanku/features/auth/domain/auth.dart';
 
 /// Autentikasi in-memory. Akun demo (bukan rahasia, hanya data mock):
@@ -16,8 +17,18 @@ class MockAuthRepository implements AuthRepository {
   /// Akun pembeli demo; aplikasi dibuka langsung sebagai akun ini (backend masih mock).
   static const demoBuyer = AppUser(id: 'b1', name: 'Miftahul Fazra', email: 'fharaa@gmail.com', phone: '6285274088734', role: UserRole.buyer);
 
+  /// Hanya kelas mock ini yang membaca `MOCK_AUTOLOGIN_ROLE` (buyer|seller|admin); tidak ada di jalur Supabase.
+  /// Dipakai untuk pemeriksaan visual tanpa login: `--dart-define=MOCK_AUTOLOGIN_ROLE=seller`.
+  static const _autologinRole = String.fromEnvironment('MOCK_AUTOLOGIN_ROLE');
+
   @override
-  AppUser? get initialUser => demoBuyer;
+  AppUser? get initialUser {
+    if (AppConfig.useSupabase || _autologinRole.isEmpty) return demoBuyer;
+    for (final a in _accounts) {
+      if (a.user.role.name == _autologinRole) return a.user;
+    }
+    return demoBuyer;
+  }
 
   @override
   Future<void> restoreSession() async {}

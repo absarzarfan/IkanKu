@@ -94,3 +94,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - PART 3: StickyActionBar (via AppScaffold.bottom, tinggi mengurangi area scroll) di formulir profil, kata sandi, alamat, produk, variasi, kategori, ongkir; AppField jarak = Space.itemGap; gaya helper/error seragam di tema. Formulir dengan dua tombol (kontak, checkout) dan login/registrasi tetap inline (keputusan konservatif).
 - PART 4: tes jarak bawah 12 kasus lulus; clearance = inset + 16 (tab di luar body).
 - PART 5: radius kartu 20 via token, rating Poppins tabular.
+- PART 6: MOCK_AUTOLOGIN_ROLE (mock-only); tangkapan layar di D:\Tools\shots\phase13b (pembeli 6, penjual 4, admin 1 layar empty-state).

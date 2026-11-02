@@ -154,3 +154,9 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 ## Phase 13b - radius dan font rating (PART 5)
 - `AppRadius.card` = 20 (tema). Radius literal di widget dipindah ke token: auth (30->pill, 10->field), cart swipe-bg, catalog (16->card, 28->sheet, 8->chip), common, profile (10->field), seller order/product (16->card, 28->sheet), chip tab bawah (16->card). Sisa literal sengaja: bar dekoratif 3-4 dp.
 - Rating: `AppText.rating` / `AppText.ratingLarge` (Poppins, `FontFeature.tabularFigures`) dipakai di kartu produk, baris produk, dan skor detail. Tidak ada referensi Lato tersisa (grep bersih); tidak ada keluarga font baru.
+
+## Phase 13b - MOCK_AUTOLOGIN_ROLE (PART 6)
+- `String.fromEnvironment('MOCK_AUTOLOGIN_ROLE')` (buyer|seller|admin) dibaca HANYA di `MockAuthRepository.initialUser`, dan diabaikan bila `AppConfig.useSupabase` true atau nilai kosong. Tidak ada di `SupabaseAuthRepository` maupun jalur Supabase lain. Nilai tak dikenal -> pembeli demo (perilaku lama). Pemakaian: `flutter build web --dart-define=MOCK_AUTOLOGIN_ROLE=seller`.
+- Catatan alat: `serve.mjs` membandingkan path dengan `startsWith(root)`, jadi root harus berformat Windows (`D:\Tools\builds\...`); root bergaris miring maju membuat semua aset 404 dan tangkapan kosong.
+- Pemeriksaan visual: Beranda/Telusuri/Detail/Keranjang/Pesanan/Profil (pembeli), beranda/pesanan/produk/form produk (penjual), beranda admin. Form produk: jarak antar kelompok diperbaiki (kategori & variasi memakai VGap).
+- Keterbatasan: panel admin dalam mode mock hanya menampilkan "memerlukan koneksi Supabase" (daftar pengguna/produk admin tidak dapat dilihat tanpa Supabase). Pada tangkapan 360 foto detail produk belum termuat (termuat di 768); thumbnail foto pada form produk hanya sebagian termuat (batas waktu virtual-time), jadi belum terverifikasi.
