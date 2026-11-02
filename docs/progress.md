@@ -68,3 +68,5 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 11 P7-8: approval-pack.md (110 lines, 19 flagged sentences), data/site.ts for download link and QR.
 - Phase 11 P9: verified (build, lint, 19 pages + 48 images 200, Tim Kami fits, screenshots in D:\Tools\shots\phase11).
 - Phase 11 follow-up: CTA label back to white (user request).
+- Phase 12a P0: branch feature/mobile-mvp from web-acc-1, dart_defines.json ignored; baseline flutter analyze clean, flutter test 92 passed.
+- Phase 12a P1: docs/mvp-spec.md written.
