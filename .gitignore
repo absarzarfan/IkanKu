@@ -16,3 +16,6 @@ local.properties
 
 # Secrets (Supabase config)
 flutter_app/dart_defines.json
+
+# Dihasilkan DevTools
+flutter_app/devtools_options.yaml
