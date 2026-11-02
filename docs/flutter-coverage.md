@@ -59,3 +59,6 @@ Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Va
 ## Pembaruan Phase 12b (responsif + fidelity)
 - Fondasi `lib/core/responsive` (breakpoints 600/840, ContentFrame maks 560, ResponsiveGrid, PeekRow, skala fluida untuk media). Tema pusat `lib/core/theme/app_theme.dart` (token warna, radius, bayangan, teks, tema komponen).
 - Matriks tes `test/responsive_matrix_test.dart`: pembeli/penjual/admin x 280x653 .. 768x1024 + landscape 800x360 x teks 1.0/1.3/2.0, tanpa overflow. Status Figma per layar: docs/figma-fidelity.md (Beranda partial; sisanya unverified; admin tanpa frame).
+
+## Pembaruan Phase 12b-fix (spasi)
+- Spasi memakai token `Space`/`Gap`/`VGap`; Home diuji jarak ukurannya (`test/spacing_test.dart`, 360/412/768 x teks 1.0/1.3). Layar lain: literal diganti token, padding daftar memakai `Space.pad`/`padTab`.

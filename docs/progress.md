@@ -82,3 +82,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 12b-fix P0: baseline on mobile-mvp clean and pushed; analyze clean, 164 tests pass.
 - Phase 12b-fix P1-2,4: spacing tokens (lib/core/responsive/spacing.dart), SectionHeader, HorizontalCardList, ProductCardWithPhoto, Home rhythm + keys, spacing_test; 172 tests pass.
 - Phase 12b-fix P3: ~146 literal gaps/paddings replaced by Gap/Space tokens, 36 list paddings via Space.pad/padTab (bottom clearance); analyze clean, 172 tests pass.
+- Phase 12b-fix P5: web build, headless screenshots (home top and recommendations, search, product, cart, orders at 360/412/768) in D:\Tools\shots\phase12bfix with photos loaded; gates: analyze clean, 172 tests pass, APK debug built.
