@@ -186,3 +186,13 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Bagian "formulir yang tersisa" sudah dikerjakan di 14a (validasi blur, fokus ke galat, ritme, penjaga kirim ganda); hanya formulir kontak yang ditambah action keyboard dan formatter. Login/registrasi tetap inline (keputusan 13b).
 - Tes alur memakai ProviderContainer baru per tes sebagai reset state mock; peran berganti lewat layar login sungguhan.
 - Tidak ada bagian Phase 14 yang dilewati selain yang sudah selesai di 14a (lihat atas).
+
+## Phase 15R (remake mobile)
+- Tab kedua tetap "Telusuri" (web "Produk" = halaman fitur; "Produk" sudah dipakai tab penjual). Status "Belum Bayar" -> "Menunggu" (COD tidak "belum bayar"; sama dengan enum OrderStatus).
+- Galeri foto detail produk: Product hanya punya satu gambar, jadi galeri 1 halaman tanpa indikator (tidak mengarang data). Jumlah pembelian tetap di sheet variasi (tes alur bergantung pada satu stepper), variasi inline hanya pratinjau pilihan.
+- Lencana: diskon (discountPercent), stok habis (stock == 0), rating; ambang "stok menipis" tidak dibuat (akan menjadi angka karangan).
+- Sheet filter: tombol "Terapkan - N produk" nonaktif bila N = 0.
+- Pesanan Saya: label sel memakai FittedBox scaleDown (satu baris) agar tidak pernah terpotong pada skala 2.0; label status satu kata sehingga 2 baris tidak diperlukan.
+- Font Nunito pada field input lama dipertahankan (bukan bagian layar yang dirombak).
+- Selector tes yang diubah (bukan melemahkan): screens_test 'Hallo, Miftahul Fazra!' -> 'Halo, Miftahul!', 'Rekomendasi untuk anda' -> '... Anda', 'SELAMAT DATANG' -> 'Selamat datang'; flow_buyer_test: Home memakai scrollUntilVisible karena carousel turun di bawah strip nilai jual; spacing_test: urutan Beranda baru (titik -> nilai jual -> judul rekomendasi; judul "Semua ikan"; 'Lihat Lebih' -> 'Lihat semua ikan'); admin_flow_test: tab awal admin = Ringkasan, tap 'Pengguna' dulu.
+- Bug yang ditemukan tes dan diperbaiki: Align tanpa heightFactor pada ContentFrame membuat bottomNavigationBar setinggi layar; PillButton beralignment memenuhi tinggi; rute jelajah tidak ada di cabang shell (edit awal salah, tertangkap tes nav).

@@ -78,3 +78,6 @@ Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Va
 - Tes: 224 lulus (195 baseline; +4 di 14a; +25 di `test/flows/`: pembelian COD/NON COD, siklus penjual, tolak/batal/arsip, admin, negatif dan penjaga peran, akun dan toko). Analyze bersih; apk debug berhasil.
 - Admin kini berfungsi di mock (`MockAdminRemote`); sebelumnya hanya empty-state. Peta alur: `docs/flow-map.md` (Works 35, Partial 4, Stub 1, Missing 3). Checklist manual: `docs/smoke-test.md`.
 - Belum diuji: tiga tab admin selain Pengguna secara visual (tab tidak bisa dipicu lewat URL), mode Supabase.
+
+## Phase 15R
+Remake UI/UX mobile (cabang feature/mobile-remake): komponen sistem baru, shell navigasi menyeluruh, layar pembeli/penjual/admin sesuai docs/mobile-remake.md. Cakupan fungsi tidak berubah; repository dan kontrak tidak disentuh.
