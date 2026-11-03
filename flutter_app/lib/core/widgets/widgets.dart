@@ -554,6 +554,7 @@ void showMsg(BuildContext context, String msg) {
 Future<bool> confirmDialog(BuildContext context, String title, String message, {String yes = 'Ya', String no = 'Batal'}) async {
   final r = await showDialog<bool>(
     context: context,
+    useRootNavigator: true,
     builder: (c) => AlertDialog(
       title: Text(title, style: AppText.semi),
       content: Text(message, style: AppText.body),

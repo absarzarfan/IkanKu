@@ -94,6 +94,15 @@ class CartScreen extends ConsumerWidget {
                     ),
                   ),
               ],
+              AppCard(
+                key: const Key('cart-summary'),
+                margin: const EdgeInsets.only(top: Gap.sm),
+                child: Column(children: [
+                  KeyValueRow('Item dipilih', '$selectedCount'),
+                  KeyValueRow('Subtotal', rupiah(subtotal)),
+                  Align(alignment: Alignment.centerLeft, child: Text('Ongkir dihitung di checkout.', style: AppText.caption.copyWith(color: AppColors.grey))),
+                ]),
+              ),
             ]),
     );
   }

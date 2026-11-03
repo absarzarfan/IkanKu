@@ -32,27 +32,22 @@ Address? _effectiveAddress(WidgetRef ref) {
 typedef _Option<T> = (T value, String title, String hint, Key key);
 
 Future<T?> _pickOption<T>(BuildContext context, {required String title, required List<_Option<T>> options, required T current}) {
-  return showModalBottomSheet<T>(
-    context: context,
-    showDragHandle: true,
-    builder: (c) => SafeArea(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(Space.screenGutter(c), 0, Space.screenGutter(c), Gap.lg),
-        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(title, style: AppText.heading),
-          const SizedBox(height: Gap.sm),
-          for (final o in options)
-            ListTile(
-              key: o.$4,
-              contentPadding: EdgeInsets.zero,
-              minVerticalPadding: Gap.sm,
-              leading: Icon(o.$1 == current ? Icons.radio_button_checked : Icons.radio_button_unchecked, color: o.$1 == current ? AppColors.primary : AppColors.grey),
-              title: Text(o.$2, style: AppText.body),
-              subtitle: Text(o.$3, style: AppText.small),
-              onTap: () => Navigator.pop(c, o.$1),
-            ),
-        ]),
-      ),
+  return BottomSheetScaffold.show<T>(
+    context,
+    builder: (c) => BottomSheetScaffold(
+      title: title,
+      body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        for (final o in options)
+          ListTile(
+            key: o.$4,
+            contentPadding: EdgeInsets.zero,
+            minVerticalPadding: Gap.sm,
+            leading: Icon(o.$1 == current ? Icons.radio_button_checked : Icons.radio_button_unchecked, color: o.$1 == current ? AppColors.primary : AppColors.grey),
+            title: Text(o.$2, style: AppText.body),
+            subtitle: Text(o.$3, style: AppText.small),
+            onTap: () => Navigator.pop(c, o.$1),
+          ),
+      ]),
     ),
   );
 }
@@ -309,8 +304,8 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
             constraints: const BoxConstraints(minHeight: 120),
             width: double.infinity,
             padding: const EdgeInsets.all(Gap.lg),
-            decoration: BoxDecoration(color: AppColors.field, borderRadius: BorderRadius.circular(AppRadius.card)),
-            child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [Icon(_picked ? Icons.check_circle : Icons.upload_file, size: 36, color: _picked ? AppColors.success : AppColors.grey), Text(_picked ? OrdersStrings.proofPicked : OrdersStrings.proofPick, style: AppText.small)])),
+            decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: _picked ? AppColors.success : AppColors.primary.withValues(alpha: 0.4), width: 1.5)),
+            child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [Icon(_picked ? Icons.check_circle : Icons.upload_file, size: 36, color: _picked ? AppColors.success : AppColors.primary), Text(_picked ? OrdersStrings.proofPicked : OrdersStrings.proofPick, style: AppText.small)])),
           ),
         ),
         TextButton(onPressed: () => context.pushReplacement('/order-success/${order.id}'), child: const Text(OrdersStrings.payLater)),

@@ -182,7 +182,7 @@ class SellerOrderDetailScreen extends ConsumerWidget {
   final String orderId;
 
   Future<void> _reject(BuildContext context, WidgetRef ref, Order o) async {
-    final reason = await showDialog<String>(context: context, builder: (_) => const _RejectDialog());
+    final reason = await showDialog<String>(context: context, useRootNavigator: true, builder: (_) => const _RejectDialog());
     if (reason != null) {
       ref.read(ordersProvider.notifier).reject(o.id, reason);
       if (context.mounted) context.pop();

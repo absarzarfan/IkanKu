@@ -65,3 +65,9 @@ Nilai jual (verbatim web): "Ikan Segar Langsung ke Rumah Anda", "Mudah dan Prakt
 4. Penjual: dashboard baru (hero, StatCard, grid aksi, pesanan terbaru), pesanan dengan SegmentedTabs. Produk/pengaturan/form: tema dan thumbnail global saja.
 5. Admin: Ringkasan (StatCard + tautan cepat) + AppBottomBar; daftar memakai ListTile lama.
 Screenshot dilihat (360x800): home, search, detail, seeall (build awal), profil, pesanan, dashboard penjual, produk penjual, admin; 412x915: home; 768x1024: home. Tidak dilihat / tidak diambil: cart (kosong), checkout, welcome, sheet filter, pengaturan penjual, detail/search/profil 412 dan 768 (diambil, belum dibuka), semua form.
+
+## Review animasi (/review-animations, Phase 15R) dan PART 5.2
+- Diperbaiki: transisi halaman memakai easeOutCubic juga saat keluar (sebelumnya easeInCubic); titik banner tidak lagi menganimasikan lebar (warna + AnimatedScale); dialog konfirmasi dan sheet pilihan checkout memakai root navigator (scrim menutupi bar).
+- Dipertahankan dengan alasan: AnimatedSize "Selengkapnya" (tinggi teks, jarang, 220 ms), Pressable simetris 130 ms, Reveal (maks 8 baris, bisa memutar ulang bila baris dibangun ulang), Hero foto produk (tidak dimatikan saat reduced motion: catatan terbuka).
+- PART 5.2 (keranjang, checkout, sukses, pesanan): sheet pilihan checkout kini BottomSheetScaffold (root navigator), kartu ringkasan keranjang (item dipilih, subtotal, catatan ongkir), area unggah bukti dengan bingkai merek. Sudah ada sebelumnya dan sesuai blueprint: item per toko, stepper, urungkan hapus, StepIndicator, total lengket + CTA, SuccessMoment, SegmentedTabs. OrderTimeline (dengan jam) tetap dipakai di detail pesanan; layar ulasan tidak diubah.
+- Belum diverifikasi visual: keranjang berisi, checkout, pembayaran, detail pesanan, ulasan.

@@ -192,13 +192,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         const SizedBox(height: Space.dotsGap),
         Row(key: const Key('home-banner-dots'), mainAxisAlignment: MainAxisAlignment.center, children: [
           for (var i = 0; i < _banners.length; i++)
-            AnimatedContainer(
+            // Hanya warna dan skala (transform) yang dianimasikan; ukuran layout tetap.
+            AnimatedScale(
+              scale: i == _banner ? 1.25 : 1,
               duration: AppMotion.of(context, AppMotion.base),
               curve: AppMotion.curve,
-              margin: const EdgeInsets.symmetric(horizontal: Gap.xs),
-              width: i == _banner ? 18 : 7,
-              height: 6,
-              decoration: BoxDecoration(color: i == _banner ? AppColors.primary : AppColors.greyLight, borderRadius: BorderRadius.circular(AppRadius.chip)),
+              child: AnimatedContainer(
+                duration: AppMotion.of(context, AppMotion.base),
+                curve: AppMotion.curve,
+                margin: const EdgeInsets.symmetric(horizontal: Gap.xs),
+                width: 8,
+                height: 6,
+                decoration: BoxDecoration(color: i == _banner ? AppColors.primary : AppColors.greyLight, borderRadius: BorderRadius.circular(AppRadius.chip)),
+              ),
             ),
         ]),
       ]);

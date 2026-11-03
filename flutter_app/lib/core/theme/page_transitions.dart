@@ -12,7 +12,7 @@ class FadeSlidePageTransitionsBuilder extends PageTransitionsBuilder {
   @override
   Widget buildTransitions<T>(PageRoute<T> route, BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     if (AppMotion.reduced(context)) return child;
-    final curved = CurvedAnimation(parent: animation, curve: AppMotion.curve, reverseCurve: Curves.easeInCubic);
+    final curved = CurvedAnimation(parent: animation, curve: AppMotion.curve, reverseCurve: AppMotion.curve);
     return FadeTransition(
       opacity: curved,
       child: SlideTransition(position: Tween<Offset>(begin: const Offset(0.04, 0), end: Offset.zero).animate(curved), child: child),
