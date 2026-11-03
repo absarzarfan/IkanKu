@@ -520,6 +520,7 @@ class AppBottomBar extends StatelessWidget {
                                       count: i == badgeIndex ? badgeCount : 0,
                                       label: badgeLabel,
                                       badgeKey: Key('nav-badge-$i'),
+                                      lift: 0,
                                       child: Icon(i == index ? it.selectedIcon : it.icon, key: Key('nav-icon-$i'), size: 24, color: i == index ? AppColors.onPrimary : AppColors.grey),
                                     ),
                                   ),

@@ -634,7 +634,10 @@ class AnimatedCheck extends StatelessWidget {
 
 /// Badge hitungan di kanan atas ikon, di LUAR kotak ikon (tidak pernah menimpa glyph): isi 18 dp, cincin putih 2 dp.
 class NavBadge extends StatelessWidget {
-  const NavBadge({super.key, required this.count, required this.child, this.label, this.badgeKey});
+  const NavBadge({super.key, required this.count, required this.child, this.label, this.badgeKey, this.lift = -0.5});
+
+  /// Pergeseran vertikal sebagai pecahan tinggi badge (-0.5 = tengah badge di tepi atas ikon; 0 = rata atas ikon).
+  final double lift;
   final int count;
   final Widget child;
   final String? label;
@@ -649,7 +652,7 @@ class NavBadge extends StatelessWidget {
         child: Align(
           alignment: Alignment.topRight,
           child: FractionalTranslation(
-            translation: const Offset(1, -0.5),
+            translation: Offset(1, lift),
             child: Padding(
               padding: const EdgeInsets.only(left: 2),
               child: Semantics(

@@ -119,9 +119,9 @@ class ProfileScreen extends ConsumerWidget {
             const VGap.title(),
             AppCard(
               padding: const EdgeInsets.symmetric(horizontal: Gap.xs, vertical: Gap.xs),
-              child: Row(key: const Key('orders-row'), crossAxisAlignment: CrossAxisAlignment.start, children: [
+              child: IntrinsicHeight(child: Row(key: const Key('orders-row'), crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 for (final (i, e) in cells.indexed) Expanded(child: OrderStatusCell(icon: e.$1, label: e.$2.label, count: count(e.$2), onTap: () => context.push('/orders?tab=$i'))),
-              ]),
+              ])),
             ),
             StatRow(cards: [
               StatCard(value: '${orders.length}', label: 'Total pesanan', icon: Icons.receipt_long_outlined),
