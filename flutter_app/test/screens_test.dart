@@ -72,7 +72,7 @@ void main() {
     await tester.tap(find.text('Masuk'));
     await tester.pumpAndSettle();
     await loginAs(tester, 'penjual@ikanku.id');
-    expect(find.textContaining('SELAMAT DATANG'), findsOneWidget);
+    expect(find.textContaining('Selamat datang'), findsOneWidget);
     expect(find.byKey(const Key('count-menunggu')), findsOneWidget);
   });
 

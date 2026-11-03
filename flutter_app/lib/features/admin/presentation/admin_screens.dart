@@ -25,26 +25,56 @@ final _adminUsersProvider = FutureProvider.autoDispose.family<List<AppUser>, Str
 final _adminOrdersProvider = FutureProvider.autoDispose<List<AdminOrder>>((ref) async => await ref.read(adminRemoteProvider)?.orders() ?? const []);
 final _adminProductsProvider = FutureProvider.autoDispose.family<List<AdminProduct>, String>((ref, q) async => await ref.read(adminRemoteProvider)?.products(query: q) ?? const []);
 
-class AdminHomeScreen extends ConsumerWidget {
+class AdminHomeScreen extends ConsumerStatefulWidget {
   const AdminHomeScreen({super.key});
+  @override
+  ConsumerState<AdminHomeScreen> createState() => _AdminHomeScreenState();
+}
+
+class _AdminHomeScreenState extends ConsumerState<AdminHomeScreen> {
+  int _i = 0;
+  static const _items = [
+    BarItem(Icons.dashboard_outlined, Icons.dashboard, 'Ringkasan'),
+    BarItem(Icons.people_outline, Icons.people, AdminStrings.users),
+    BarItem(Icons.receipt_long_outlined, Icons.receipt_long, AdminStrings.orders),
+    BarItem(Icons.inventory_2_outlined, Icons.inventory_2, AdminStrings.products),
+  ];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final hasRemote = ref.watch(adminRemoteProvider) != null;
-    return DefaultTabController(
-      length: 3,
-      child: AppScaffold(
-        title: AdminStrings.title,
-        showBack: false,
-        actions: [IconButton(tooltip: AdminStrings.logout, icon: const Icon(Icons.logout, color: Colors.white), onPressed: () => ref.read(authProvider.notifier).logout())],
-        body: !hasRemote
-            ? const EmptyState(AdminStrings.unavailable, icon: Icons.cloud_off)
-            : const Column(children: [
-                TabBar(tabs: [Tab(text: AdminStrings.users), Tab(text: AdminStrings.orders), Tab(text: AdminStrings.products)]),
-                Expanded(child: TabBarView(children: [_UsersTab(), _OrdersTab(), _ProductsTab()])),
-              ]),
-      ),
+    return AppScaffold(
+      title: AdminStrings.title,
+      showBack: false,
+      actions: [IconButton(tooltip: AdminStrings.logout, icon: const Icon(Icons.logout, color: Colors.white), onPressed: () => ref.read(authProvider.notifier).logout())],
+      bottomNavigationBar: hasRemote ? AppBottomBar(items: _items, index: _i, onTap: (i) => setState(() => _i = i)) : null,
+      body: !hasRemote ? const EmptyState(AdminStrings.unavailable, icon: Icons.cloud_off) : IndexedStack(index: _i, children: [_Overview(onOpen: (i) => setState(() => _i = i)), const _UsersTab(), const _OrdersTab(), const _ProductsTab()]),
     );
+  }
+}
+
+/// Ringkasan admin: StatCard pengguna, pesanan, produk (dihitung dari daftar yang ada) + tautan cepat.
+class _Overview extends ConsumerWidget {
+  const _Overview({required this.onOpen});
+  final void Function(int tab) onOpen;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    String n<T>(AsyncValue<List<T>> v) => v.maybeWhen(data: (d) => '${d.length}', orElse: () => '-');
+    return ListView(padding: Space.pad(context), children: [
+      const SectionHeader('Ringkasan', eyebrow: 'Admin'),
+      const VGap.title(),
+      StatRow(cards: [
+        StatCard(value: n(ref.watch(_adminUsersProvider(''))), label: 'Pengguna', icon: Icons.people_outline, onTap: () => onOpen(1)),
+        StatCard(value: n(ref.watch(_adminOrdersProvider)), label: 'Pesanan', icon: Icons.receipt_long_outlined, onTap: () => onOpen(2)),
+        StatCard(value: n(ref.watch(_adminProductsProvider(''))), label: 'Produk', icon: Icons.inventory_2_outlined, onTap: () => onOpen(3)),
+      ]),
+      const VGap.section(),
+      MenuGroup(title: 'Tautan cepat', items: [
+        MenuItem(icon: Icons.people_outline, label: 'Kelola pengguna', hint: 'Cari, aktifkan, atau nonaktifkan', onTap: () => onOpen(1)),
+        MenuItem(icon: Icons.receipt_long_outlined, label: 'Lihat pesanan', hint: 'Semua status', onTap: () => onOpen(2)),
+        MenuItem(icon: Icons.inventory_2_outlined, label: 'Kelola produk', hint: 'Aktifkan atau nonaktifkan', onTap: () => onOpen(3)),
+      ]),
+    ]);
   }
 }
 

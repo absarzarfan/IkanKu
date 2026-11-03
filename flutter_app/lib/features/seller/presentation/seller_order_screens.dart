@@ -13,7 +13,7 @@ import 'package:ikanku/features/orders/presentation/order_providers.dart';
 const sellerTabs = [OrderStatus.menunggu, OrderStatus.dikemas, OrderStatus.dikirim, OrderStatus.selesai, OrderStatus.ditolak, OrderStatus.dibatalkan, OrderStatus.diarsipkan];
 const sellerTabLabels = ['Baru', 'Dikemas', 'Dikirim', 'Selesai', 'Ditolak', 'Pembatalan', 'Diarsipkan'];
 
-/// Beranda penjual / daftar harian aktivitas (Figma 1799:12083, 1769:7716).
+/// Dashboard penjual: sapaan, StatCard pesanan per status, aksi cepat (grid icon chip), pesanan terbaru.
 class SellerHomeScreen extends ConsumerWidget {
   const SellerHomeScreen({super.key});
   @override
@@ -27,36 +27,82 @@ class SellerHomeScreen extends ConsumerWidget {
       ('Sedang Dikirim', OrderStatus.dikirim, Icons.local_shipping_outlined),
       ('Pembatalan', OrderStatus.dibatalkan, Icons.cancel_outlined),
     ];
-    return AppScaffold(
-      title: 'Toko Saya',
-      showBack: false,
-      body: ListView(padding: Space.padTab(context), children: [
-        Text('SELAMAT DATANG, ${(user?.name ?? '').toUpperCase()}!', style: AppText.heading),
-        const SizedBox(height: Gap.md),
-        ResponsiveGrid(
-          maxCrossAxisExtent: 220,
-          spacing: Gap.md,
-          runSpacing: Gap.md,
-          children: [
-            for (final c in cards)
-              AppCard(
-                margin: EdgeInsets.zero,
-                onTap: () => context.push('/seller/orders?tab=${sellerTabs.indexOf(c.$2)}'),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  IconChip(icon: c.$3, size: 40),
-                  const SizedBox(height: Gap.sm),
-                  Text('${count(c.$2)}', key: Key('count-${c.$2.name}'), style: AppText.price),
-                  Text(c.$1.toUpperCase(), style: AppText.small, maxLines: 2, overflow: TextOverflow.ellipsis),
-                ]),
-              ),
-          ],
+    final actions = [
+      ('Semua Pesanan', Icons.receipt_long_outlined, '/seller/orders'),
+      ('Ulasan Pembeli', Icons.rate_review_outlined, '/seller/reviews'),
+      ('Atur Diskon', Icons.sell_outlined, '/seller/discount'),
+      ('Tambah Produk', Icons.add_box_outlined, '/seller/products/new'),
+    ];
+    final latest = ([...orders]..sort((a, b) => b.createdAt.compareTo(a.createdAt))).take(3).toList();
+    final first = (user?.name ?? '').trim().split(' ').first;
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: ListView(padding: EdgeInsets.only(bottom: Space.minBottomClearance(context)), children: [
+        HeroHeader(
+          bottomPadding: Gap.xxl,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('Toko Saya', style: AppText.small.copyWith(color: Colors.white)),
+            Text(first.isEmpty ? 'Selamat datang!' : 'Selamat datang, $first!', style: AppText.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+          ]),
         ),
-        const SizedBox(height: Gap.lg),
-        PillButton(label: 'Semua Pesanan', onPressed: () => context.push('/seller/orders')),
-        const SizedBox(height: Gap.md),
-        PillButton(label: 'Ulasan Pembeli', outlined: true, onPressed: () => context.push('/seller/reviews')),
-        const SizedBox(height: Gap.md),
-        PillButton(label: 'Atur Diskon', outlined: true, onPressed: () => context.push('/seller/discount')),
+        ContentFrame(
+          safe: true,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            const SizedBox(height: Gap.lg),
+            const SectionHeader('Ringkasan pesanan', eyebrow: 'Dashboard'),
+            const VGap.title(),
+            ResponsiveGrid(maxCrossAxisExtent: 220, spacing: Gap.md, runSpacing: Gap.md, children: [
+              for (final c in cards)
+                Stack(children: [
+                  StatCard(value: '${count(c.$2)}', label: c.$1, icon: c.$3, onTap: () => context.push('/seller/orders?tab=${sellerTabs.indexOf(c.$2)}')),
+                  Positioned(left: 0, top: 0, child: SizedBox(key: Key('count-${c.$2.name}'), width: 1, height: 1)),
+                ]),
+            ]),
+            const VGap.section(),
+            const SectionHeader('Aksi cepat'),
+            const VGap.title(),
+            ResponsiveGrid(maxCrossAxisExtent: 150, spacing: Gap.md, runSpacing: Gap.md, children: [
+              for (final a in actions)
+                Semantics(
+                  button: true,
+                  label: a.$1,
+                  excludeSemantics: true,
+                  child: Pressable(
+                    onTap: () => context.push(a.$3),
+                    borderRadius: BorderRadius.circular(AppRadius.card),
+                    decoration: AppCard.decorationFor(AppColors.surface),
+                    minSize: 0,
+                    child: Padding(
+                      padding: EdgeInsets.all(Space.cardPadding(context)),
+                      child: Column(children: [IconChip(icon: a.$2, size: 44), const SizedBox(height: Gap.sm), Text(a.$1, textAlign: TextAlign.center, style: AppText.small.copyWith(fontWeight: FontWeight.w600), maxLines: 2, overflow: TextOverflow.ellipsis)]),
+                    ),
+                  ),
+                ),
+            ]),
+            const VGap.section(),
+            SectionHeader('Pesanan terbaru', action: 'Lihat semua', onAction: () => context.push('/seller/orders')),
+            const VGap.title(),
+            if (latest.isEmpty)
+              const EmptyState('Belum ada pesanan', icon: Icons.receipt_long_outlined, hint: 'Pesanan baru dari pembeli akan muncul di sini.')
+            else
+              for (final o in latest)
+                AppCard(
+                  onTap: () => context.push('/seller/orders/${o.id}'),
+                  child: Row(children: [
+                    ProductImage(asset: o.lines.first.product.image, size: 52),
+                    const SizedBox(width: Gap.md),
+                    Expanded(
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Text(o.lines.first.product.name + (o.lines.length > 1 ? ' +${o.lines.length - 1}' : ''), style: AppText.label, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(rupiah(o.total), style: AppText.small.copyWith(color: AppColors.grey)),
+                      ]),
+                    ),
+                    const SizedBox(width: Gap.sm),
+                    Flexible(child: StatusChip(o.status.label, color: statusColor(o.status))),
+                  ]),
+                ),
+          ]),
+        ),
       ]),
     );
   }
@@ -83,8 +129,9 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen> {
     return AppScaffold(
       title: 'Pesanan',
       onBack: () => context.canPop() ? context.pop() : context.go('/seller'),
-      headerExtra: TextTabs(labels: sellerTabLabels, index: _tab, onChanged: (i) => setState(() => _tab = i), onDark: true),
       body: Column(children: [
+        const SizedBox(height: Gap.md),
+        SegmentedTabs(labels: sellerTabLabels, counts: [for (final t in sellerTabs) buyerOrders(ref.watch(ordersProvider), t).length], index: _tab, onChanged: (i) => setState(() => _tab = i)),
         if (done)
           Padding(
             padding: EdgeInsets.fromLTRB(context.pagePadding, Gap.md, context.pagePadding, 0),

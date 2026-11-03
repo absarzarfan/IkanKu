@@ -11,6 +11,7 @@ void main() {
   testWidgets('admin: panel tampil tanpa pesan Supabase, daftar pengguna, pesanan dengan filter, produk', (tester) async {
     final c = await startApp(tester);
     await switchTo(tester, c, adminEmail);
+    await tapText(tester, 'Pengguna'); // Phase 15R: tab awal admin = Ringkasan
     expect(c.read(routerProvider).state.uri.path, '/admin');
     expect(find.textContaining('memerlukan koneksi Supabase'), findsNothing);
     expect(find.text('Rina Putri'), findsOneWidget);
@@ -36,6 +37,7 @@ void main() {
     final c = await startApp(tester);
     expect(c.read(catalogProvider).byId('nila'), isNotNull);
     await switchTo(tester, c, adminEmail);
+    await tapText(tester, 'Pengguna'); // Phase 15R: tab awal admin = Ringkasan
     await tapText(tester, 'Produk');
     await tester.tap(find.byKey(const Key('product-nila')));
     await tester.pumpAndSettle();
@@ -50,6 +52,7 @@ void main() {
     expect(find.text('Ikan Nila'), findsNothing);
 
     await switchTo(tester, c, adminEmail);
+    await tapText(tester, 'Pengguna'); // Phase 15R: tab awal admin = Ringkasan
     await tapText(tester, 'Produk');
     await tester.tap(find.byKey(const Key('product-nila')));
     await tester.pumpAndSettle();
@@ -59,6 +62,7 @@ void main() {
   testWidgets('admin menonaktifkan pengguna: tidak bisa login (pesan ramah); diaktifkan lagi: bisa login', (tester) async {
     final c = await startApp(tester);
     await switchTo(tester, c, adminEmail);
+    await tapText(tester, 'Pengguna'); // Phase 15R: tab awal admin = Ringkasan
     await tester.tap(find.byKey(const Key('user-b2')));
     await tester.pumpAndSettle();
 
@@ -71,6 +75,7 @@ void main() {
     expect(find.textContaining('dinonaktifkan'), findsOneWidget);
 
     await switchTo(tester, c, adminEmail);
+    await tapText(tester, 'Pengguna'); // Phase 15R: tab awal admin = Ringkasan
     await tester.tap(find.byKey(const Key('user-b2')));
     await tester.pumpAndSettle();
     await switchTo(tester, c, 'rina@ikanku.id');

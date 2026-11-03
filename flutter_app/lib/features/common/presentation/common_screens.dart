@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
 import 'package:ikanku/core/widgets/widgets.dart';
 
-/// Start up page (Figma 528:2181): logo, "Masuk", "Jelajahi Website kami".
+/// Halaman awal: logo, nilai jual dari web, "Masuk" (utama) dan "Daftar" (sekunder).
 class StartupScreen extends StatelessWidget {
   const StartupScreen({super.key});
   @override
@@ -20,11 +20,36 @@ class StartupScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: Gap.xxl),
                   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Padding(padding: const EdgeInsets.symmetric(vertical: Gap.xxxl), child: Image.asset('assets/images/logo.png', width: fluid(context, 220), fit: BoxFit.contain, errorBuilder: (_, _, _) => const SizedBox(height: 96))),
+                    const Text('Belanja Ikan Mudah Dengan IkanKu', textAlign: TextAlign.center, style: AppText.title),
+                    const SizedBox(height: Gap.xl),
+                    for (final (i, t) in ['Ikan Segar Langsung ke Rumah Anda', 'Mudah dan Praktis', 'Jaminan Kesegaran'].indexed)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: Gap.sm),
+                        child: Reveal(
+                          index: i,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(color: AppColors.glass, borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: AppColors.glassBorder)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(Gap.md),
+                              child: Row(children: [
+                                IconChip(icon: const [Icons.local_shipping_outlined, Icons.touch_app_outlined, Icons.verified_outlined][i], glass: true, size: 40),
+                                const SizedBox(width: Gap.md),
+                                Expanded(child: Text(t, style: AppText.label.copyWith(color: Colors.white))),
+                              ]),
+                            ),
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: Gap.xl),
                     PillButton(label: 'Masuk', outlined: true, onPressed: () => context.go('/login')),
                     const SizedBox(height: Gap.md),
                     TextButton(
+                      onPressed: () => context.go('/register'),
+                      child: const Text('Daftar', textAlign: TextAlign.center, style: AppText.bannerButton),
+                    ),
+                    TextButton(
                       onPressed: () => showMsg(context, 'Website IkanKu: alamat belum ditentukan'),
-                      child: const Text('Jelajahi Website kami', textAlign: TextAlign.center, style: AppText.bannerButton),
+                      child: Text('Jelajahi Website kami', textAlign: TextAlign.center, style: AppText.small.copyWith(color: Colors.white)),
                     ),
                   ]),
                 ),
