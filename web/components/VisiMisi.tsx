@@ -2,10 +2,10 @@
 import Image from "next/image";
 import { useRef, useState, type KeyboardEvent } from "react";
 import { Icon, IconChip } from "@/components/icons";
-import { visiMisiTabs, visiMisiUi } from "@/data/visi-misi";
+import type { VisiMisiTab } from "@/data/visi-misi";
 
 // Accessible tablist: roving tabindex, arrow/Home/End keys, underline moves with transform.
-export default function VisiMisi() {
+export default function VisiMisi({ tabs: visiMisiTabs, ui: visiMisiUi, appAlt }: { tabs: VisiMisiTab[]; ui: { tablistLabel: string; heading: string }; appAlt: string }) {
   const [i, setI] = useState(0);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   const n = visiMisiTabs.length;
@@ -22,7 +22,7 @@ export default function VisiMisi() {
   return (
     <section className="container-page flex flex-col items-center gap-10 pb-16 md:flex-row md:items-start md:justify-center">
       <div className="relative h-[320px] w-[234px] shrink-0 overflow-hidden rounded-t-3xl">
-        <Image src="/img/home/phone.png" alt="Aplikasi IkanKu" fill sizes="234px" className="object-cover object-top" />
+        <Image src="/img/home/phone.png" alt={appAlt} fill sizes="234px" className="object-cover object-top" />
       </div>
       <div className="w-full min-w-0 md:max-w-[720px]">
         <p className="text-4xl font-bold text-brand md:text-h1 md:leading-[52px]">{visiMisiUi.heading}</p>
@@ -41,7 +41,7 @@ export default function VisiMisi() {
                 onClick={() => setI(k)}
                 className={`vm-tab inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 px-2 text-sm font-semibold ${i === k ? "text-brand" : "text-muted"}`}
               >
-                <Icon name={t.icon} size={18} />{t.key}
+                <Icon name={t.icon} size={18} />{t.label}
               </button>
             ))}
           </div>

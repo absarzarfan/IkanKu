@@ -16,12 +16,8 @@ export type TeamMember = {
   isPlaceholder?: boolean;
 };
 
-// One-line summaries, shortened from the previous role paragraphs.
-export const roles: { role: TeamRole; desc: string }[] = [
-  { role: "Hustler", desc: "Mendukung pertumbuhan ekonomi lokal dan meningkatkan nilai jual ikan air tawar." },
-  { role: "Designer", desc: "Merancang antarmuka UX/UI yang intuitif bagi pengguna." },
-  { role: "Programmer", desc: "Mengembangkan fitur web dan aplikasi mobile dengan optimal." },
-];
+// Role names are proper nouns (same in every language); the one-line summaries are in the dictionary (key "about.roles").
+export const roles: TeamRole[] = ["Hustler", "Designer", "Programmer"];
 
 export const slugify = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 

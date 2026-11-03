@@ -2,11 +2,10 @@
 import { useState } from "react";
 import { Icon, IconChip } from "@/components/icons";
 import { Bubbles } from "@/components/kit";
-import { faqCategoryOrder, faqs, faqUi, type FaqItem } from "@/data/faq";
+import type { FaqItem, FaqUi } from "@/data/faq";
 
 // Two independent flex columns on md+, one list below md. Each item is one rounded card
 // (button + panel share radius and width). Several items may be open at once.
-const categories = faqCategoryOrder.filter((c) => faqs.some((f) => f.category === c));
 
 function Item({ f, uid, open, onToggle }: { f: FaqItem; uid: string; open: boolean; onToggle: () => void }) {
   const btnId = `faq-btn-${uid}`;
@@ -36,11 +35,11 @@ function Item({ f, uid, open, onToggle }: { f: FaqItem; uid: string; open: boole
   );
 }
 
-export default function Faq() {
+export default function Faq({ faqs, categories, ui }: { faqs: FaqItem[]; categories: { key: string; label: string }[]; ui: FaqUi }) {
   const [open, setOpen] = useState<Set<string>>(() => new Set([faqs[0].id]));
-  const [cat, setCat] = useState<string>(faqUi.all);
+  const [cat, setCat] = useState<string>("*");
   const toggle = (id: string) => setOpen((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
-  const list = cat === faqUi.all ? faqs : faqs.filter((f) => f.category === cat);
+  const list = cat === "*" ? faqs : faqs.filter((f) => f.category === cat);
   const colA = list.filter((_, i) => i % 2 === 0);
   const colB = list.filter((_, i) => i % 2 === 1);
   const render = (items: FaqItem[], prefix: string) => items.map((f) => <Item key={f.id} f={f} uid={`${prefix}-${f.id}`} open={open.has(f.id)} onToggle={() => toggle(f.id)} />);
@@ -49,11 +48,11 @@ export default function Faq() {
     <section id="faq" className="container-page section-y">
       <div className="band-blue relative overflow-hidden rounded-2xl px-6 py-12 shadow-[0_18px_40px_-18px_rgba(5,3,21,.55)] md:px-[64px] md:pb-[80px]">
         <Bubbles />
-        <h2 className="text-3xl font-bold tracking-tight text-white md:text-h1 md:leading-[1.2]">{faqUi.title}</h2>
-        <p className="mt-3 max-w-[60ch] text-white">{faqUi.intro}</p>
-        <div role="group" aria-label={faqUi.filterLabel} className="mt-8 flex flex-wrap gap-2">
-          {[faqUi.all, ...categories].map((c) => (
-            <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className="faq-chip">{c}</button>
+        <h2 className="text-3xl font-bold tracking-tight text-white md:text-h1 md:leading-[1.2]">{ui.title}</h2>
+        <p className="mt-3 max-w-[60ch] text-white">{ui.intro}</p>
+        <div role="group" aria-label={ui.filterLabel} className="mt-8 flex flex-wrap gap-2">
+          {[{ key: "*", label: ui.all }, ...categories].map((c) => (
+            <button key={c.key} type="button" aria-pressed={cat === c.key} onClick={() => setCat(c.key)} className="faq-chip">{c.label}</button>
           ))}
         </div>
         <ul className="mt-8 flex flex-col gap-4 lg:hidden">{render(list, "m")}</ul>

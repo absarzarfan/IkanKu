@@ -3,21 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Kicker } from "@/components/ArticleMeta";
-import { articleUi } from "@/data/article-ui";
-import { ARTICLE_CATEGORIES, articlesByDate, readingMinutes } from "@/lib/articles";
+
+export type ListArticle = { slug: string; href: string; image: string; title: string; category: string; categoryLabel: string; meta: string };
+export type ListLabels = { placeholder: string; searchLabel: string; filterLabel: string; all: string; noResults: string };
 
 // One section per category (thin top rule, small-caps heading, 3-column card row); pills filter by category.
-export default function ArticleList() {
+export default function ArticleList({ articles, categories, labels }: { articles: ListArticle[]; categories: { key: string; label: string }[]; labels: ListLabels }) {
   const [q, setQ] = useState("");
-  const [cat, setCat] = useState<string>(articleUi.filterAll);
+  const [cat, setCat] = useState<string>("*");
 
   const sections = useMemo(() => {
     const term = q.trim().toLowerCase();
-    return ARTICLE_CATEGORIES.map((c) => ({
+    return categories.map((c) => ({
       c,
-      items: articlesByDate.filter((a) => a.category === c && (cat === articleUi.filterAll || cat === c) && a.title.toLowerCase().includes(term)),
+      items: articles.filter((a) => a.category === c.key && (cat === "*" || cat === c.key) && a.title.toLowerCase().includes(term)),
     })).filter((s) => s.items.length > 0);
-  }, [q, cat]);
+  }, [q, cat, articles, categories]);
 
   return (
     <section className="container-page section-y">
@@ -27,36 +28,36 @@ export default function ArticleList() {
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder={articleUi.searchPlaceholder}
-          aria-label={articleUi.searchLabel}
+          placeholder={labels.placeholder}
+          aria-label={labels.searchLabel}
           className="h-[60px] w-full rounded-3xl border border-brand/20 bg-white pl-[68px] pr-6 shadow-sm transition-shadow duration-200 placeholder:text-placeholder focus-visible:outline-2 focus-visible:outline-brand"
         />
       </div>
-      <div role="group" aria-label={articleUi.filterLabel} className="mt-6 flex flex-wrap justify-center gap-3">
-        {[articleUi.filterAll, ...ARTICLE_CATEGORIES].map((c) => (
-          <button key={c} type="button" onClick={() => setCat(c)} aria-pressed={cat === c} className={`inline-flex min-h-11 cursor-pointer items-center rounded-full border border-brand/30 px-5 text-base transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${cat === c ? "bg-brand text-white" : "text-brand hover:bg-brand/10"}`}>
-            {c}
+      <div role="group" aria-label={labels.filterLabel} className="mt-6 flex flex-wrap justify-center gap-3">
+        {[{ key: "*", label: labels.all }, ...categories].map((c) => (
+          <button key={c.key} type="button" onClick={() => setCat(c.key)} aria-pressed={cat === c.key} className={`inline-flex min-h-11 cursor-pointer items-center rounded-full border border-brand/30 px-5 text-base transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${cat === c.key ? "bg-brand text-white" : "text-brand hover:bg-brand/10"}`}>
+            {c.label}
           </button>
         ))}
       </div>
 
-      {sections.length === 0 && <p className="mt-16 text-center">{articleUi.noResults}</p>}
+      {sections.length === 0 && <p className="mt-16 text-center">{labels.noResults}</p>}
       {sections.map(({ c, items }) => (
-        <div key={c} className="mt-14">
+        <div key={c.key} className="mt-14">
           <div className="np-rule flex items-baseline justify-between pt-3">
-            <h2 className="kit-eyebrow !mb-0 !text-base text-ink">{c}</h2>
+            <h2 className="kit-eyebrow !mb-0 !text-base text-ink">{c.label}</h2>
           </div>
           <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((a) => (
               <li key={a.slug}>
-                <Link href={`/artikel/${a.slug}`} className="card card-lift img-zoom group block h-full overflow-hidden">
+                <Link href={a.href} className="card card-lift img-zoom group block h-full overflow-hidden">
                   <div className="relative aspect-[3/2]">
                     <Image src={a.image} alt="" fill sizes="(min-width:1024px) 380px, (min-width:640px) 45vw, 100vw" className="object-cover" />
                   </div>
                   <div className="p-5">
-                    <Kicker a={a} />
+                    <Kicker text={a.categoryLabel} />
                     <h3 className="np-head text-lg font-semibold text-ink">{a.title}</h3>
-                    <p className="mt-3 text-sm text-muted">{a.date} &middot; {readingMinutes(a)} {articleUi.minutesRead}</p>
+                    <p className="mt-3 text-sm text-muted">{a.meta}</p>
                   </div>
                 </Link>
               </li>

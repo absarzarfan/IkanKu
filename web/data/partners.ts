@@ -1,3 +1,5 @@
+import type { Dict } from "@/i18n";
+
 export type Partner = {
   name: string;
   location: string;
@@ -6,14 +8,9 @@ export type Partner = {
   description: string;
 };
 
-// Copy reused from the previous Mitra Kami card; add more partners here.
-export const partners: Partner[] = [
-  {
-    name: "Tibelat Farm",
-    location: "Batam",
-    image: "/img/tentang/tibelat.jpeg",
-    imageAlt: "Tibelat Farm",
-    description:
-      "Tibelat Farm adalah salah satu mitra kami yang berlokasi di Batam. Sebagai usaha budidaya ikan tawar terkemuka, Tibelat Farm berkomitmen untuk menyediakan ikan berkualitas tinggi dengan praktik budidaya yang ramah lingkungan. Dengan fasilitas modern dan tim yang berpengalaman, Tibelat Farm memastikan bahwa setiap ikan yang dihasilkan memenuhi standar mutu terbaik. Kami bangga bermitra dengan Tibelat Farm dalam mendukung sektor perikanan yang berkelanjutan.",
-  },
-];
+// Names and images are language-neutral; location and description come from the dictionary (key "about.partners").
+const structure = [{ id: "tibelat" as const, name: "Tibelat Farm", image: "/img/tentang/tibelat.jpeg" }];
+
+export function buildPartners(d: Dict): Partner[] {
+  return structure.map((p) => ({ name: p.name, image: p.image, ...d.about.partners[p.id] }));
+}

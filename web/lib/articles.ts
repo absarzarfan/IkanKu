@@ -135,3 +135,47 @@ export function relatedArticles(a: Article, n = 3) {
   const others = articlesByDate.filter((x) => x.slug !== a.slug);
   return [...others.filter((x) => x.category === a.category), ...others.filter((x) => x.category !== a.category)].slice(0, n);
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+// Localization (Phase 9b). Dates stay in the Indonesian source format for sorting; display dates use Intl.
+import { articlesEn } from "./articles-en";
+import { intlLocale, type Lang } from "@/i18n/config";
+
+const dateFormatters: Record<Lang, Intl.DateTimeFormat> = {
+  id: new Intl.DateTimeFormat(intlLocale.id, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }),
+  en: new Intl.DateTimeFormat(intlLocale.en, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }),
+};
+
+/** Display date in the active locale ("11 Januari 2024" / "January 11, 2024"). */
+export function formatArticleDate(a: Pick<Article, "date">, lang: Lang) {
+  const [d, m, y] = a.date.toLowerCase().split(" ");
+  return dateFormatters[lang].format(new Date(Date.UTC(Number(y), MONTHS[m] ?? 0, Number(d))));
+}
+
+/** The article in the requested language (same slug, category key, image and date). */
+export function localizeArticle(a: Article, lang: Lang): Article {
+  if (lang === "id") return a;
+  const e = articlesEn[a.slug];
+  if (!e) return a;
+  const sections = [...e.sections];
+  if (e.extra && sections.length > 1) sections.splice(sections.length - 1, 0, e.extra);
+  const text = sections.flatMap((s) => s.paragraphs).join(" ");
+  return { ...a, title: e.title, excerpt: e.excerpt ?? a.excerpt, body: sections, pull: e.pull && text.includes(e.pull) ? e.pull : undefined };
+}
+
+export function articlesFor(lang: Lang) {
+  const all = allArticles.map((x) => localizeArticle(x, lang));
+  const byDate = [...all].sort((x, y) => articleTime(y) - articleTime(x));
+  const get = (slug: string) => all.find((x) => x.slug === slug);
+  return {
+    featured: localizeArticle(featured, lang),
+    all,
+    byDate,
+    get,
+    latest: (n: number) => byDate.slice(0, n),
+    related: (a: Article, n = 3) => {
+      const others = byDate.filter((x) => x.slug !== a.slug);
+      return [...others.filter((x) => x.category === a.category), ...others.filter((x) => x.category !== a.category)].slice(0, n);
+    },
+  };
+}

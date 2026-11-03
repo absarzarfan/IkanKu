@@ -1,47 +1,60 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { pageMetadata } from "@/lib/seo";
+import { getDictionary, hasLocale } from "@/i18n";
 import SiteShell from "@/components/SiteShell";
 import Reveal from "@/components/Reveal";
 import SectionHeader from "@/components/SectionHeader";
 import VisiMisi from "@/components/VisiMisi";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { partners } from "@/data/partners";
+import { buildPartners } from "@/data/partners";
+import { buildVisiMisi } from "@/data/visi-misi";
 import { membersOf, roles } from "@/data/team";
 
-export const metadata: Metadata = { title: "Tentang Kami - IkanKu" };
+export async function generateMetadata({ params }: PageProps<"/[lang]/tentang-kami">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  return pageMetadata(lang, "/tentang-kami", getDictionary(lang).meta.tentang);
+}
 
 const photoExists = (src: string) => existsSync(join(process.cwd(), "public", src));
 const initials = (n: string) => n.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
 
-export default function TentangKamiPage() {
+export default async function TentangKamiPage({ params }: PageProps<"/[lang]/tentang-kami">) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const d = getDictionary(lang);
+  const a = d.about;
+  const partners = buildPartners(d);
   return (
-    <SiteShell>
+    <SiteShell lang={lang}>
       <section className="curve-b relative isolate h-[320px] overflow-hidden md:h-[640px]">
         <Image src="/img/tentang/hero.png" alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-40% to-brand-dark/80" />
       </section>
 
       <section className="tint-soft"><div className="container-page section-y text-center">
-        <h1 className="text-3xl font-bold leading-[1.25] text-brand md:text-h1">Marketplace Ikan Tawar Inovatif<br />Visi Misi dan Tujuan Kami</h1>
-        <p className="mx-auto mt-8 max-w-[670px]">Dengan fokus kepada kebutuhan pengguna, kami berkomitmen menghadirkan solusi inovatif yang meningkatkan nilai jual ikan air tawar, mendukung pertumbuhan ekonomi lokal dan kualitas di setiap transaksi. Kesuksesan Anda dalam mendapatkan produk ikan segar adalah pencapaian tertinggi kami.</p>
-        <p className="mx-auto mt-4 max-w-[670px]">Tim IkanKu dipertemukan melalui program Magang dan Studi Independen Bersertifikat (MSIB) Batch 7 di Infinite Learning.</p>
+        <h1 className="text-3xl font-bold leading-[1.25] text-brand md:text-h1">{a.title1}<br />{a.title2}</h1>
+        <p className="mx-auto mt-8 max-w-[670px]">{a.intro1}</p>
+        <p className="mx-auto mt-4 max-w-[670px]">{a.intro2}</p>
       </div></section>
 
-      <VisiMisi />
+      <VisiMisi tabs={buildVisiMisi(d)} ui={{ tablistLabel: d.visiMisi.tablistLabel, heading: d.visiMisi.heading }} appAlt={d.visiMisi.appAlt} />
 
       <section id="tim-kami" className="scroll-mt-20 bg-brand surface-brand py-3 lg:scroll-mt-24">
         <div className="container-page"><div className="rounded-3xl bg-white px-4 py-3 md:px-8">
-          <h2 className="mb-2 text-center text-3xl font-bold text-brand md:text-h2">Tim Kami</h2>
+          <h2 className="mb-2 text-center text-3xl font-bold text-brand md:text-h2">{a.teamTitle}</h2>
           <div className="space-y-[clamp(6px,1vh,16px)]">
-            {roles.map((r) => (
-              <div key={r.role}>
+            {roles.map((role) => (
+              <div key={role}>
                 <div className="mb-1.5 flex flex-wrap items-baseline gap-x-3">
-                  <h3 className="text-lg font-semibold">{r.role}</h3>
-                  <p className="text-sm text-muted">{r.desc}</p>
+                  <h3 className="text-lg font-semibold">{role}</h3>
+                  <p className="text-sm text-muted">{a.roles[role]}</p>
                 </div>
                 <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
-                  {membersOf(r.role).map((p) => (
+                  {membersOf(role).map((p) => (
                     <li key={p.name} className="card-lift team-card flex flex-col items-center rounded-2xl px-3 py-2.5 text-center text-white" style={{ backgroundImage: "var(--grad-primary)" }}>
                       <div className="team-photo relative shrink-0 overflow-hidden rounded-full ring-[3px] ring-white" style={{ width: "clamp(48px, 6vh, 88px)", height: "clamp(48px, 6vh, 88px)" }}>
                         {photoExists(p.photo) ? (
@@ -62,7 +75,7 @@ export default function TentangKamiPage() {
       </section>
 
       <section id="mitra-kami" className="container-page section-y scroll-mt-20">
-        <SectionHeader eyebrow="Mitra" title="Mitra Kami" />
+        <SectionHeader eyebrow={a.partnersEyebrow} title={a.partnersTitle} />
         <ul className={`mt-10 grid gap-6 ${partners.length > 1 ? "md:grid-cols-2" : ""}`}>
           {partners.map((pt, n) => (
             <li key={pt.name}>
