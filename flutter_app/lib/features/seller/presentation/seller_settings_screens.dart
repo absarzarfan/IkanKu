@@ -15,18 +15,19 @@ class SellerSettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(sellerSettingsProvider);
     final n = ref.read(sellerSettingsProvider.notifier);
-    Widget tile(IconData i, String t, String route) => AppCard(margin: const EdgeInsets.only(bottom: Space.itemGap), onTap: () => context.push(route), child: Row(children: [IconChip(icon: i), const SizedBox(width: Gap.md), Expanded(child: Text(t, style: AppText.body)), const Icon(Icons.chevron_right)]));
     return AppScaffold(
       title: 'Pengaturan',
       showBack: false,
       body: ListView(padding: Space.padTab(context), children: [
         Text(s.shopName, style: AppText.heading),
         const SizedBox(height: Gap.md),
-        tile(Icons.local_shipping_outlined, 'Biaya Ongkir', '/seller/ongkir'),
-        tile(Icons.payments_outlined, 'Metode Pembayaran', '/seller/payment-methods'),
-        tile(Icons.rate_review_outlined, 'Ulasan', '/seller/reviews'),
-        tile(Icons.discount_outlined, 'Diskon', '/seller/discount'),
-        tile(Icons.help_outline, 'Pusat Bantuan', '/seller/help'),
+        MenuGroup(title: 'Toko', items: [
+          MenuItem(icon: Icons.local_shipping_outlined, label: 'Biaya Ongkir', onTap: () => context.push('/seller/ongkir')),
+          MenuItem(icon: Icons.payments_outlined, label: 'Metode Pembayaran', onTap: () => context.push('/seller/payment-methods')),
+          MenuItem(icon: Icons.rate_review_outlined, label: 'Ulasan', onTap: () => context.push('/seller/reviews')),
+          MenuItem(icon: Icons.discount_outlined, label: 'Diskon', onTap: () => context.push('/seller/discount')),
+          MenuItem(icon: Icons.help_outline, label: 'Pusat Bantuan', onTap: () => context.push('/seller/help')),
+        ]),
         const SizedBox(height: Gap.sm),
         const SectionHeader('Metode Pengiriman'),
         SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Kirim'), value: s.deliveryEnabled, onChanged: (v) => n.update(s.copyWith(deliveryEnabled: v || s.pickupEnabled ? v : true))),

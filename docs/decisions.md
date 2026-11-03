@@ -196,3 +196,10 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - Font Nunito pada field input lama dipertahankan (bukan bagian layar yang dirombak).
 - Selector tes yang diubah (bukan melemahkan): screens_test 'Hallo, Miftahul Fazra!' -> 'Halo, Miftahul!', 'Rekomendasi untuk anda' -> '... Anda', 'SELAMAT DATANG' -> 'Selamat datang'; flow_buyer_test: Home memakai scrollUntilVisible karena carousel turun di bawah strip nilai jual; spacing_test: urutan Beranda baru (titik -> nilai jual -> judul rekomendasi; judul "Semua ikan"; 'Lihat Lebih' -> 'Lihat semua ikan'); admin_flow_test: tab awal admin = Ringkasan, tap 'Pengguna' dulu.
 - Bug yang ditemukan tes dan diperbaiki: Align tanpa heightFactor pada ContentFrame membuat bottomNavigationBar setinggi layar; PillButton beralignment memenuhi tinggi; rute jelajah tidak ada di cabang shell (edit awal salah, tertangkap tes nav).
+
+## Phase 16 (polish layout spec)
+- Selector tes yang berubah (bukan melemahkan): polish_test "IconChip: ukuran sesuai" 44 -> 40 (chip ikon hanya 40/48). Tidak ada perubahan lain pada tes lama.
+- EqualHeightGrid menggantikan grid per baris: grid Telusuri kini satu SliverList berisi satu grid (tidak lagi malas per baris; katalog kecil). Alasan: satu tinggi untuk seluruh kelompok.
+- Lencana ProductTile pindah ke foto (diskon, stok habis); chip rating tetap di bawah. ValuePropCard memakai chip ikon solid 48; teks tidak lagi dipotong (maxLines dihapus).
+- Badge bar: pecahan angkat 0 (rata atas ikon) agar tidak keluar dari pil; cap "9+" berlaku untuk semua NavBadge (keranjang, filter) demi konsistensi.
+- Tidak dikerjakan: daftar admin (ListTile polos) tetap; selected icon "Telusuri" sama dengan outline (tidak ada varian terisi pada ikon cari).
