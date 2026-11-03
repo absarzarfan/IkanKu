@@ -49,7 +49,7 @@ class ProductFeaturedCard extends StatelessWidget {
             child: Stack(fit: StackFit.expand, children: [
               KeyedSubtree(key: photoKey, child: _heroed(heroScope, p, productPicture(p.image, cacheWidth: 500))),
               const DecoratedBox(decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.bottomCenter, end: Alignment.center, colors: [AppColors.photoShade, AppColors.photoShadeClear]))),
-              Positioned(left: Gap.sm, top: Gap.sm, right: Gap.sm, child: Row(children: [_ratingPill(p, onPhoto: true), const Spacer(), ...productBadges(p, onPhoto: true)])),
+              Positioned(left: Gap.sm, top: Gap.sm, right: Gap.sm, child: Wrap(spacing: Gap.xs, runSpacing: Gap.xs, children: [_ratingPill(p, onPhoto: true), ...productBadges(p, onPhoto: true)])),
               Positioned(
                 left: Gap.md,
                 right: Gap.md,

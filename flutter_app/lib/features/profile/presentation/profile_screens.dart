@@ -304,7 +304,7 @@ class AddressListScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'Alamat',
       body: ListView(padding: Space.pad(context), children: [
-        if (list.isEmpty) const Padding(padding: EdgeInsets.symmetric(vertical: Gap.xxxl), child: EmptyState('Belum ada alamat', icon: Icons.location_off_outlined, hint: 'Tambahkan alamat agar pesananmu bisa dikirim.')),
+        if (list.isEmpty) const Padding(padding: EdgeInsets.symmetric(vertical: Gap.xxxl), child: EmptyState('Belum ada alamat', icon: Icons.location_off_outlined, hint: 'Tambahkan alamat agar pesanan Anda bisa dikirim.')),
         for (final a in list)
           AppCard(
             onTap: pick

@@ -26,7 +26,7 @@ class HeroHeader extends StatelessWidget {
           decoration: BoxDecoration(gradient: AppGradients.surface, borderRadius: const BorderRadius.vertical(bottom: Radius.elliptical(400, AppRadius.headerCurve))),
           child: Stack(children: [
             const HeaderDecor(),
-            Padding(padding: EdgeInsets.only(top: top, bottom: bottomPadding + half), child: ContentFrame(safe: true, child: child)),
+            Padding(padding: EdgeInsets.only(top: top, bottom: bottomPadding + half), child: ContentFrame(safe: true, child: SizedBox(width: double.infinity, child: child))),
           ]),
         ),
       ),
@@ -150,9 +150,9 @@ class FilterChipBar extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: Gap.md, right: Gap.sm),
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Text(l, style: AppText.small.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
+                      Text(l, style: AppText.small.copyWith(color: AppColors.primaryDark, fontWeight: FontWeight.w600)),
                       const SizedBox(width: Gap.xs),
-                      const Icon(Icons.close, size: 16, color: AppColors.primary),
+                      Icon(Icons.close, size: 16, color: AppColors.primaryDark),
                     ]),
                   ),
                 ),
@@ -303,7 +303,7 @@ class MenuGroup extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.card),
             child: Column(children: [
               for (final (i, it) in items.indexed) ...[
-                if (i > 0) const Divider(height: 1, indent: 72),
+                if (i > 0) const Divider(height: 1, indent: 72, color: AppColors.border),
                 Semantics(
                   button: true,
                   label: it.label,
@@ -519,4 +519,29 @@ class AppBottomBar extends StatelessWidget {
           ),
         ),
       );
+}
+
+/// Grid sel sama tinggi (IntrinsicHeight per baris), [columns] kolom; sel kosong mengisi sisa baris.
+class EqualGrid extends StatelessWidget {
+  const EqualGrid({super.key, required this.columns, required this.children, this.spacing = Space.itemGap});
+  final int columns;
+  final List<Widget> children;
+  final double spacing;
+  @override
+  Widget build(BuildContext context) {
+    final rows = (children.length / columns).ceil();
+    return Column(children: [
+      for (var r = 0; r < rows; r++) ...[
+        if (r > 0) SizedBox(height: spacing),
+        IntrinsicHeight(
+          child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            for (var c = 0; c < columns; c++) ...[
+              if (c > 0) SizedBox(width: spacing),
+              Expanded(child: r * columns + c < children.length ? children[r * columns + c] : const SizedBox.shrink()),
+            ],
+          ]),
+        ),
+      ],
+    ]);
+  }
 }

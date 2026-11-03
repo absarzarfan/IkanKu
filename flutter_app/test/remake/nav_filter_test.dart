@@ -73,4 +73,13 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('$n produk ditemukan'), findsOneWidget);
   });
+
+  testWidgets('galeri /dev/gallery ada di debug+mock dan render komponen', (tester) async {
+    final c = await startApp(tester);
+    await switchTo(tester, c, buyerEmail);
+    c.read(routerProvider).go('/dev/gallery');
+    await tester.pumpAndSettle();
+    expect(find.text('Galeri komponen'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }

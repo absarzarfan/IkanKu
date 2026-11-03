@@ -10,6 +10,7 @@ import 'package:ikanku/features/auth/domain/auth.dart';
 import 'package:ikanku/features/auth/presentation/auth_providers.dart';
 import 'package:ikanku/features/auth/presentation/auth_screens.dart';
 import 'package:ikanku/features/cart/presentation/cart_screen.dart';
+import 'package:ikanku/features/dev/gallery_screen.dart';
 import 'package:ikanku/features/catalog/presentation/catalog_screens.dart';
 import 'package:ikanku/features/common/presentation/common_screens.dart';
 import 'package:ikanku/features/orders/presentation/buyer_order_screens.dart';
@@ -33,6 +34,7 @@ bool _isAdminPath(String p) => p == '/admin' || p.startsWith('/admin/');
 
 /// Logika redirect murni (dapat diuji): peran dan status login menentukan rute yang boleh diakses.
 String? computeRedirect(AppUser? user, String path) {
+  if (path == '/dev/gallery') return devGalleryEnabled ? null : '/home';
   if (user == null) return _publicPaths.contains(path) ? null : '/login';
   if (_guestOnly.contains(path)) {
     // Alur registrasi menyelesaikan dirinya sendiri lewat state login.
@@ -68,6 +70,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/offline', builder: (_, _) => const OfflineScreen()),
       GoRoute(path: '/pick-kecamatan', builder: (_, _) => const PickKecamatanScreen()),
       GoRoute(path: '/admin', builder: (_, _) => const AdminHomeScreen()),
+      if (devGalleryEnabled) GoRoute(path: '/dev/gallery', builder: (_, _) => const ComponentGalleryScreen()),
 
       // Pembeli: shell dengan bottom nav Beranda / Telusuri / Profil.
       StatefulShellRoute.indexedStack(

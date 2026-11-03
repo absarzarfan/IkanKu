@@ -13,7 +13,7 @@ class OrdersStrings {
   static const shippingTitle = 'Metode pengiriman';
   static const paymentTitle = 'Metode pembayaran';
   static const shipSend = 'Kirim';
-  static const shipSendHint = 'Dikirim ke alamat pilihanmu';
+  static const shipSendHint = 'Dikirim ke alamat pilihan Anda';
   static const shipPickup = 'Jemput';
   static const shipPickupHint = 'Ambil sendiri, tanpa ongkir';
   static const payTransfer = 'Transfer';
@@ -46,8 +46,8 @@ class OrdersStrings {
   // Sukses
   static const successTitle = 'Pesanan berhasil dibuat';
   static const nextTitle = 'Langkah berikutnya';
-  static const nextPayProof = 'Selesaikan pembayaran dan unggah bukti transfer agar penjual dapat memeriksa pesananmu.';
-  static const nextProcessing = 'Penjual akan memproses pesananmu. Pantau statusnya di halaman Pesanan.';
+  static const nextPayProof = 'Selesaikan pembayaran dan unggah bukti transfer agar penjual dapat memeriksa pesanan Anda.';
+  static const nextProcessing = 'Penjual akan memproses pesanan Anda. Pantau statusnya di halaman Pesanan.';
   static const summaryTitle = 'Ringkasan pesanan';
   static const viewOrders = 'Lihat pesanan';
   static const shopAgain = 'Belanja lagi';
@@ -57,7 +57,7 @@ class OrdersStrings {
   static const ordersTitle = 'Pesanan Saya';
   static const tabs = ['Menunggu', 'Dikemas', 'Dikirim', 'Selesai', 'Ditolak'];
   static String emptyTab(String tab) => 'Belum ada pesanan ${tab.toLowerCase()}';
-  static const emptyHint = 'Pesanan yang kamu buat akan muncul di sini.';
+  static const emptyHint = 'Pesanan yang Anda buat akan muncul di sini.';
   static String variation(String v) => 'Variasi: $v';
   static const payNow = 'Bayar Sekarang';
   static const cancel = 'Batal';
@@ -87,7 +87,7 @@ class OrdersStrings {
   // Ulasan
   static const reviewTitle = 'Beri Ulasan';
   static const reviewAsk = 'Bagaimana pengalamanmu?';
-  static const reviewHint = 'Tulis ulasanmu (opsional)';
+  static const reviewHint = 'Tulis ulasan Anda (opsional)';
   static const reviewNeedStars = 'Pilih jumlah bintang dulu';
   static const reviewSend = 'Kirim';
   static const reviewSent = 'Ulasan terkirim, terima kasih!';

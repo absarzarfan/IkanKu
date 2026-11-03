@@ -51,7 +51,7 @@ class SellerHomeScreen extends ConsumerWidget {
             const SizedBox(height: Gap.lg),
             const SectionHeader('Ringkasan pesanan', eyebrow: 'Dashboard'),
             const VGap.title(),
-            ResponsiveGrid(maxCrossAxisExtent: 220, spacing: Gap.md, runSpacing: Gap.md, children: [
+            EqualGrid(columns: context.isCompact ? 2 : 4, children: [
               for (final c in cards)
                 Stack(children: [
                   StatCard(value: '${count(c.$2)}', label: c.$1, icon: c.$3, onTap: () => context.push('/seller/orders?tab=${sellerTabs.indexOf(c.$2)}')),
@@ -61,7 +61,7 @@ class SellerHomeScreen extends ConsumerWidget {
             const VGap.section(),
             const SectionHeader('Aksi cepat'),
             const VGap.title(),
-            ResponsiveGrid(maxCrossAxisExtent: 150, spacing: Gap.md, runSpacing: Gap.md, children: [
+            EqualGrid(columns: 2, children: [
               for (final a in actions)
                 Semantics(
                   button: true,

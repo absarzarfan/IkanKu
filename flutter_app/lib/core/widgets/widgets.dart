@@ -445,7 +445,7 @@ class EmptyState extends StatelessWidget {
 
 /// Galat dengan tombol "Coba lagi".
 class ErrorState extends StatelessWidget {
-  const ErrorState({super.key, this.message = 'Belum bisa dimuat. Periksa koneksi internetmu, lalu coba lagi.', required this.onRetry});
+  const ErrorState({super.key, this.message = 'Belum bisa dimuat. Periksa koneksi internet Anda, lalu coba lagi.', required this.onRetry});
   final String message;
   final VoidCallback onRetry;
   @override
@@ -499,7 +499,8 @@ class SectionHeader extends StatelessWidget {
         children: [
           Expanded(child: SectionTitle(title, eyebrow: eyebrow)),
           if (action != null)
-            Flexible(
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.42),
               child: InkWell(
               onTap: onAction,
               child: ConstrainedBox(

@@ -2,7 +2,7 @@
 class CartStrings {
   static const title = 'Keranjang';
   static const empty = 'Keranjang masih kosong';
-  static const emptyHint = 'Pilih ikan favoritmu, lalu tambahkan ke keranjang.';
+  static const emptyHint = 'Pilih ikan favorit Anda, lalu tambahkan ke keranjang.';
   static const shopNow = 'Belanja sekarang';
   static const selectAll = 'Semua';
   static const total = 'Total';
