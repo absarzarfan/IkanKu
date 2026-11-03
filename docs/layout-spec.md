@@ -9,7 +9,7 @@ Token di `flutter_app/lib/core/layout/layout.dart` (nilai) dan `equal_height.dar
 | ProductFeaturedCard | lebar dari peek, rasio 0.78 | sama | sama | tinggi otomatis sama (rasio tetap) |
 | ProductTile (grid) | kolom 2 | 3 | 4 | SEMUA sel satu tinggi (EqualHeightGrid): sel tertinggi |
 | ProductRow | thumbnail 84 persegi | 84 | 84 | tinggi = thumbnail + padding kartu |
-| StatCard tinggi minimum | 140 | 148 | 152 | |
+| StatCard tinggi minimum | 120 | 128 | 132 | kartu dengan label 2 baris menaikkan tinggi seluruh kelompok |
 | Sel "Pesanan Saya" tinggi minimum | 72 | 76 | 80 | ikon 24 + slot badge 20 + label |
 | MenuRow tinggi minimum | 60 | 60 | 60 | divider sejajar teks: indent 12 + 40 + 12 = 64 |
 | Kartu kategori tinggi minimum | 60 | 64 | 68 | |
@@ -58,3 +58,7 @@ Satu tingkat kartu saja (tidak ada kartu di dalam kartu); data yang sama tidak t
 - animation-performance: (1) hanya transform + opacity (AnimatedScale); pil memakai dekorasi statis, bukan animasi lebar. (2) tinggi grid dihitung sekali per layout (EqualHeightGrid), tanpa pengukuran per frame.
 - improve-animations: (1) tidak ada gerak baru selain skala ikon bar. (2) inventaris tetap: Pressable, Reveal, Skeleton, AnimatedCheck, indikator banner.
 - frontend-design: (1) satu hal memorable tetap hero melengkung; chip ikon solid memberi titik fokus pada nilai jual dan aksi cepat tanpa warna baru. (2) kartu mengikuti satu aturan jenis-konten -> komponen, bukan SaaS-kit seragam.
+
+## Verifikasi visual (Phase 16, D:\Tools\shots\phase16)
+Dilihat (360x800): Beranda, Telusuri, pesanan, profil, dashboard penjual (dua kali, setelah StatCard diturunkan ke min 120), admin. Beranda: kartu nilai jual kini satu tinggi, chip ikon solid bergradien, peek 28 dp konsisten di kategori dan nilai jual, bar bawah dengan pil gradien dan badge di sisi ikon. Profil: badge "Pesanan Saya" di slot kanan ikon (tidak menyentuh glyph atau tepi sel), divider menu sejajar teks. Penjual: StatCard dan aksi cepat satu tinggi, chip ikon solid 48. Admin: StatCard satu tinggi, bar 4 item.
+Diambil tetapi TIDAK dibuka: detail produk, keranjang (kosong), checkout (kosong), produk penjual, 412x915 (Beranda, Telusuri, profil, dashboard penjual), 768x1024 (Beranda, Telusuri, profil, dashboard penjual).

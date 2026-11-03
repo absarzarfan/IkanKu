@@ -81,3 +81,6 @@ Varian yang digabung: Alamat 1..30, Sign in N, Login N, Detail Produk, Bayar, Va
 
 ## Phase 15R
 Remake UI/UX mobile (cabang feature/mobile-remake): komponen sistem baru, shell navigasi menyeluruh, layar pembeli/penjual/admin sesuai docs/mobile-remake.md. Cakupan fungsi tidak berubah; repository dan kontrak tidak disentuh.
+
+## Phase 16
+Polish tata letak: token tetap di lib/core/layout, kelompok sama tinggi, chip ikon bervarian, bottom bar gradien (docs/layout-spec.md). Fungsi tidak berubah.

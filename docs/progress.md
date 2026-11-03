@@ -125,3 +125,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 ## Phase 16 (polish layout spec) - feature/mobile-polish2
 - PART 0: cabang dari origin/feature/mobile-remake (ad5aa6f). Baseline: analyze bersih, 241 tes lulus.
 - PART 2-6 (Phase 16): docs/layout-spec.md + token lib/core/layout, EqualHeightGrid, IconChip 3 varian x 2 ukuran, bottom bar gradien, 12 kelompok sama tinggi, MenuGroup pengaturan penjual; 286 tes lulus (baseline 241).
+- PART 7 (Phase 16): gerbang: analyze bersih, 286 tes lulus (baseline 241), apk debug berhasil; screenshot di D:\Tools\shots\phase16.

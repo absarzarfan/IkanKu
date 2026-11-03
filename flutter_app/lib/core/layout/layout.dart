@@ -31,7 +31,7 @@ class Layout {
   /// Tinggi minimum tetap; kelompok mengambil tinggi anggota tertinggi (teks membungkus, tidak dipotong).
   static double heroContentMin(WidthClass w) => switch (w) { WidthClass.compact => 56, WidthClass.medium => 64, WidthClass.expanded => 72 };
   static double valuePropMin(WidthClass w) => switch (w) { WidthClass.compact => 128, WidthClass.medium => 136, WidthClass.expanded => 144 };
-  static double statCardMin(WidthClass w) => switch (w) { WidthClass.compact => 140, WidthClass.medium => 148, WidthClass.expanded => 152 };
+  static double statCardMin(WidthClass w) => switch (w) { WidthClass.compact => 120, WidthClass.medium => 128, WidthClass.expanded => 132 };
   static double orderCellMin(WidthClass w) => switch (w) { WidthClass.compact => 72, WidthClass.medium => 76, WidthClass.expanded => 80 };
   static double menuRowMin(WidthClass w) => 60;
   static double categoryCardMin(WidthClass w) => switch (w) { WidthClass.compact => 60, WidthClass.medium => 64, WidthClass.expanded => 68 };
