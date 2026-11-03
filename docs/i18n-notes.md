@@ -18,3 +18,6 @@ Diterapkan 10 saran konservatif dari pack bagian C; saran "sudah aman" (nomor 2,
 | inovasi-teknologi-budidaya | Inovasi paling berguna ketika... | Inovasi berguna ketika... |
 | inovasi-teknologi-budidaya | ...memberi manfaat yang paling nyata. | ...memberi manfaat nyata. |
 | pokdakan-dan-poklahsar | Semua kegiatan ini bergantung pada... | Kegiatan ini bergantung pada... |
+
+## Teks baru pada versi Indonesia (bukan perubahan teks lama)
+Deskripsi meta (Produk, Artikel, Tentang Kami, Hubungi Kami), halaman 404 (judul, teks, tombol), label bahasa ("Bahasa", "Ganti bahasa ke ..."), aria "Tutup menu". Tanggal "13 Sep 2024" kini "13 September 2024" (format Intl).

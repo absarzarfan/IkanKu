@@ -19,7 +19,7 @@ export const en: Dict = {
     logoAlt: "IkanKu",
     phoneAlt: "The IkanKu app screen",
     appAlt: "The IkanKu app",
-    readingTime: "{n} min read",
+    readingTime: "{n} min read",
   },
   nav: {
     home: "Home",
@@ -57,7 +57,7 @@ export const en: Dict = {
   },
   cta: { heading: "Join Us" },
   home: {
-    heroLine1: "Buying Fish Made Easy",
+    heroLine1: "Easy Fish Shopping",
     heroLine2: "With IkanKu",
     whatIsImageAlt: "Fresh fish in a box",
     whatIsTitle: "What is IkanKu?",

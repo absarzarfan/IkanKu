@@ -71,3 +71,4 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 
 ## Phase 9b (web dwibahasa) - feature/web-i18n
 - PART 0: cabang dari web-final (= tag web-acc-1). Jawaban tim: tidak ada (semua kosong, approval-answers.md tidak ada). 10 saran penulisan ulang artikel AI diterapkan (docs/i18n-notes.md).
+- PART 1-4 (Phase 9b): web dwibahasa id/en (app/[lang], proxy.ts, i18n/*, LanguageSwitcher, 275 kunci per bahasa, 13 artikel dengan terjemahan). PART 5: build, lint, check:i18n lulus; redirect, cookie, hreflang, 26 halaman artikel + 10 halaman utama = 200; scan kata Indonesia di /en bersih; chunk JS 837 KB (18 file) -> 785 KB (20 file).

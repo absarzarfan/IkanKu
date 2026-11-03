@@ -17,7 +17,7 @@ export const id = {
     logoAlt: "IkanKu",
     phoneAlt: "Tampilan aplikasi IkanKu",
     appAlt: "Aplikasi IkanKu",
-    readingTime: "{n} menit baca",
+    readingTime: "{n} menit baca",
   },
   nav: {
     home: "Beranda",

@@ -96,3 +96,15 @@ Mengikuti Figma untuk UI. Jika frame Figma tidak dibaca (kuota), UI mengikuti in
 - oxipng is not installed on this machine, so the lossless PNG step was skipped (no image changed).
 - docs/image-licenses.md and docs/approval-pack.md are generated from repo data only (scripts in D:\Tools\scripts); no source, licence or answer was invented. Article files untouched.
 - Orange CTA label set back to #ffffff on the user's explicit request (supersedes option B). Contrast is 2.06 to 3.22:1 (below AA 4.5:1); accepted risk. Single token `--color-on-cta` in globals.css controls every `.btn-cta`.
+
+## Phase 9b (web dwibahasa)
+- Arsitektur: segmen app/[lang] (id default, en) + proxy.ts (Next 16) untuk redirect URL lama; tanpa paket i18n. Kamus bertipe i18n/id.ts (sumber kunci) dan i18n/en.ts (tipe Dict = bentuk id.ts dengan nilai string); getDictionary(lang) di server; hanya string yang dibutuhkan dikirim sebagai props ke komponen client. Placeholder {n} diganti fmt(). Alasan: paling sederhana, statis (generateStaticParams), tanpa runtime tambahan.
+- Dua root layout: app/[lang]/layout.tsx (html lang dinamis) dan app/admin/layout.tsx (lang="id", tanpa prefix). app/layout.tsx dihapus. Halaman tak dikenal di dalam locale (mis. /id/xyz) memakai 404 bawaan Next (tanpa root layout); not-found.tsx di [lang] melayani notFound() dari artikel yang tidak ada.
+- Preferensi locale: cookie NEXT_LOCALE (nilai valid) menang, lalu Accept-Language (q-value, subtag utama), lalu id. Redirect 307. Matcher proxy: tanpa _next, admin, api, dan path berekstensi (pelajaran: "\\." di matcher hilang; dipakai [.]).
+- hreflang dan canonical lewat metadata API (alternates), relatif terhadap metadataBase = NEXT_PUBLIC_SITE_URL (bawaan http://localhost:3000; domain produksi tidak diketahui, harus diatur).
+- Format: tanggal lewat Intl.DateTimeFormat (id-ID "13 September 2024" / en-US "September 13, 2024"; "13 Sep 2024" di data kini tampil "13 September 2024"); label baca: "{n} menit baca" / "{n} min read" dengan NBSP; rupiah tidak ada di web (tidak ada harga) jadi tidak ada perubahan format; bila muncul tetap gaya Indonesia "Rp 30.000".
+- Terjemahan Inggris judul artikel: judul Indonesia terpotong ("Budidaya Ikan Air Tawar Mengguna....") sehingga versi Inggris juga terpotong ("Freshwater Fish Farming Using...."); kata terpotong dibuang, tidak dilengkapi (tidak mengarang judul penuh). Excerpt artikel unggulan tetap terpotong ("With...").
+- Catatan artikel: semua isi artikel adalah draf AI, sehingga halaman Inggris menampilkan "Written with AI assistance"; "Translated from Indonesian" aktif otomatis (data-driven, aiGenerated=false) untuk artikel asli di masa depan.
+- Teks baru (bukan terjemahan): deskripsi meta halaman (produk, artikel, tentang, hubungi) dan teks 404 dalam Indonesia dan Inggris, disusun dari salinan yang sudah ada; label tombol bahasa; aria "Tutup menu" (sebelumnya selalu "Buka menu").
+- FAQ Indonesia masih menyebut tab pesanan "Belum Bayar" (aplikasi mobile sudah "Menunggu"); tidak diubah karena menunggu konfirmasi tim.
+- Hero Inggris: "Easy Fish Shopping / With IkanKu" (versi "Buying Fish Made Easy" membungkus jadi 3 baris).
