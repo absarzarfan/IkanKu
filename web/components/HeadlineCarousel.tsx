@@ -66,7 +66,7 @@ export default function HeadlineCarousel({ items, labels, priorityFirst = true }
       <ul ref={trackRef} onScroll={onScroll} aria-live={auto ? "off" : "polite"} className="hc-track flex snap-x snap-mandatory overflow-x-auto">
         {items.map((a, k) => (
           <li key={a.slug} role="group" aria-roledescription="slide" aria-label={fmt(labels.slideLabel, { n: k + 1, total: n })} inert={k !== i} className="relative h-[540px] w-full shrink-0 snap-center md:h-[560px]">
-            <Link href={a.href} className="img-zoom block h-full w-full text-white focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white">
+            <Link scroll={false} href={a.href} className="img-zoom block h-full w-full text-white focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white">
               {a.width >= 1000 ? (
                 <Image src={a.image} alt="" fill sizes="(min-width:1280px) 1200px, 100vw" priority={priorityFirst && k === 0} loading={priorityFirst && k === 0 ? undefined : "lazy"} className="object-cover" />
               ) : (

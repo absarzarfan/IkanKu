@@ -1,12 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { SCROLL_KEY } from "@/components/ScrollManager";
 import { LOCALE_COOKIE, localeHref, locales, stripLocale, type Lang } from "@/i18n/config";
 
 type Labels = { label: string; names: Record<Lang, string>; switchTo: string; text?: string };
-
-const SCROLL_KEY = "lang-switch-scroll";
 
 function remember(l: Lang) {
   document.cookie = `${LOCALE_COOKIE}=${l}; path=/; max-age=31536000; samesite=lax`;
@@ -17,19 +15,6 @@ function remember(l: Lang) {
 /** Compact "ID | EN" segmented control (navbar) or a small text switcher (footer). Keeps the current page. */
 export default function LanguageSwitcher({ lang, labels, variant = "segmented" }: { lang: Lang; labels: Labels; variant?: "segmented" | "text" }) {
   const path = stripLocale(usePathname());
-  useEffect(() => {
-    let y: string | null = null;
-    try { y = sessionStorage.getItem(SCROLL_KEY); sessionStorage.removeItem(SCROLL_KEY); } catch {}
-    if (y === null) return;
-    const top = Number(y);
-    const html = document.documentElement;
-    const prev = html.style.scrollBehavior;
-    html.style.scrollBehavior = "auto"; // no smooth animation while restoring
-    const restore = () => window.scrollTo(0, top);
-    restore();
-    const id = requestAnimationFrame(() => { restore(); requestAnimationFrame(() => { restore(); html.style.scrollBehavior = prev; }); });
-    return () => cancelAnimationFrame(id);
-  }, []);
   const hrefFor = (l: Lang) => localeHref(l, path);
   const aria = (l: Lang) => labels.switchTo.replace("{name}", labels.names[l]);
 

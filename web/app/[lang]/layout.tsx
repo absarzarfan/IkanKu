@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, locales } from "@/i18n/config";
 import { montserrat, poppins } from "@/lib/fonts";
+import ScrollManager from "@/components/ScrollManager";
 import "../globals.css";
 
 // Absolute base for canonical and hreflang URLs. Set NEXT_PUBLIC_SITE_URL in production (the real domain is unknown here).
@@ -18,7 +19,10 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   if (!hasLocale(lang)) notFound();
   return (
     <html lang={lang} className={`${poppins.variable} ${montserrat.variable}`}>
-      <body className="min-h-screen flex flex-col overflow-x-hidden">{children}</body>
+      <body className="min-h-screen flex flex-col overflow-x-hidden">
+        <ScrollManager />
+        {children}
+      </body>
     </html>
   );
 }

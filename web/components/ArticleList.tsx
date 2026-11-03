@@ -50,7 +50,7 @@ export default function ArticleList({ articles, categories, labels }: { articles
           <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((a) => (
               <li key={a.slug}>
-                <Link href={a.href} className="card card-lift img-zoom group block h-full overflow-hidden">
+                <Link scroll={false} href={a.href} className="card card-lift img-zoom group block h-full overflow-hidden">
                   <div className="relative aspect-[3/2]">
                     <Image src={a.image} alt="" fill sizes="(min-width:1024px) 380px, (min-width:640px) 45vw, 100vw" className="object-cover" />
                   </div>
