@@ -48,7 +48,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final cat = ref.watch(catalogProvider);
     final user = ref.watch(authProvider);
     final cartCount = ref.watch(cartCountProvider);
-    final recs = ([...cat.products]..sort((a, b) => b.rating.compareTo(a.rating))).take(6).toList();
+    final recs = cat.products.take(6).toList();
     final grid = cat.products.take(6).toList();
     return Scaffold(
       backgroundColor: AppColors.background,

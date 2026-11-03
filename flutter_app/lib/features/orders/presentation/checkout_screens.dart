@@ -331,9 +331,7 @@ class OrderSuccessScreen extends ConsumerWidget {
       body: SafeArea(
         child: ContentFrame(padded: false, child: ListView(padding: Space.pad(context), children: [
           const SizedBox(height: Gap.xxl),
-          const Center(child: AnimatedCheck()),
-          const SizedBox(height: Gap.md),
-          Center(child: Text(OrdersStrings.successTitle, style: AppText.heading, textAlign: TextAlign.center)),
+          const Center(child: SuccessMoment(title: OrdersStrings.successTitle)),
           const SizedBox(height: Gap.xl),
           if (order != null) ...[
             AppCard(

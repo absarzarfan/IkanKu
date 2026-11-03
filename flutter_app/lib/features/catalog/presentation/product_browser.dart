@@ -195,7 +195,7 @@ class _ProductBrowserState extends ConsumerState<ProductBrowser> {
               preferred: 170,
               min: 150,
               max: 220,
-              children: [for (final p in ([...cat.products]..sort((a, b) => b.rating.compareTo(a.rating))).take(6)) ProductFeaturedCard(product: p, heroScope: '${widget.heroScope}-rail')],
+              children: [for (final p in cat.products.take(6)) ProductFeaturedCard(product: p, heroScope: '${widget.heroScope}-rail')],
             ),
           ),
           SliverToBoxAdapter(child: Padding(padding: EdgeInsets.fromLTRB(g, Gap.xl, g, 0), child: const SectionHeader(CatalogStrings.allFish))),

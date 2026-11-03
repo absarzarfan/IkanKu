@@ -22,7 +22,7 @@ Color statusColor(OrderStatus s) => switch (s) {
       OrderStatus.diarsipkan => AppColors.grey,
     };
 
-/// Pesanan Saya: tab Belum Bayar/Dikemas/Dikirim/Selesai/Ditolak (Figma 1044:5000 dst), dengan hitungan per tab.
+/// Pesanan Saya: tab Menunggu/Dikemas/Dikirim/Selesai/Ditolak (Figma 1044:5000 dst), dengan hitungan per tab.
 class BuyerOrdersScreen extends ConsumerStatefulWidget {
   const BuyerOrdersScreen({super.key, this.initialTab = 0});
   final int initialTab;
@@ -40,10 +40,16 @@ class _BuyerOrdersScreenState extends ConsumerState<BuyerOrdersScreen> {
     return AppScaffold(
       title: OrdersStrings.ordersTitle,
       onBack: () => context.canPop() ? context.pop() : context.go('/home'),
-      headerExtra: TextTabs(labels: _buyerTabLabels, counts: [for (final s in buyerTabs) buyerOrders(all, s).length], index: _tab, onChanged: (i) => setState(() => _tab = i), onDark: true),
-      body: items.isEmpty
-          ? EmptyState(OrdersStrings.emptyTab(_buyerTabLabels[_tab]), icon: Icons.receipt_long_outlined, hint: OrdersStrings.emptyHint)
-          : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: Space.pad(context), children: [for (final (i, o) in items.indexed) _OrderCard(order: o, index: i)]),
+      body: Column(children: [
+        const SizedBox(height: Gap.md),
+        SegmentedTabs(labels: _buyerTabLabels, counts: [for (final s in buyerTabs) buyerOrders(all, s).length], index: _tab, onChanged: (i) => setState(() => _tab = i)),
+        const SizedBox(height: Gap.sm),
+        Expanded(
+          child: items.isEmpty
+              ? EmptyState(OrdersStrings.emptyTab(_buyerTabLabels[_tab]), icon: Icons.receipt_long_outlined, hint: OrdersStrings.emptyHint)
+              : RefreshableList(onRefresh: () async => ref.invalidate(ordersProvider), padding: Space.pad(context), children: [for (final (i, o) in items.indexed) _OrderCard(order: o, index: i)]),
+        ),
+      ]),
     );
   }
 }
@@ -53,6 +59,33 @@ Future<void> _confirmCancel(BuildContext context, OrdersNotifier n, Order order)
   if (ok) {
     HapticFeedback.lightImpact();
     n.cancel(order.id);
+  }
+}
+
+/// Strip thumbnail persegi bertumpuk (maks 3), cincin putih di antara tumpukan.
+class _ThumbStrip extends StatelessWidget {
+  const _ThumbStrip({required this.images});
+  final List<String> images;
+  @override
+  Widget build(BuildContext context) {
+    const side = 56.0, step = 22.0;
+    final shown = images.take(3).toList();
+    return ExcludeSemantics(
+      child: SizedBox(
+        width: side + step * (shown.length - 1),
+        height: side,
+        child: Stack(children: [
+          for (var i = shown.length - 1; i >= 0; i--)
+            Positioned(
+              left: i * step,
+              child: DecoratedBox(
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.thumb + 2), border: Border.all(color: Colors.white, width: 2)),
+                child: ProductImage(asset: shown[i], size: side - 4),
+              ),
+            ),
+        ]),
+      ),
+    );
   }
 }
 
@@ -69,7 +102,7 @@ class _OrderCard extends ConsumerWidget {
       onTap: () => context.push(order.status == OrderStatus.ditolak ? '/orders/${order.id}/rejected' : '/orders/${order.id}'),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          ProductImage(asset: l.product.image, size: 64),
+          _ThumbStrip(images: [for (final x in order.lines) x.product.image]),
           const SizedBox(width: Gap.md),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -55,7 +55,7 @@ class OrdersStrings {
 
   // Daftar pesanan
   static const ordersTitle = 'Pesanan Saya';
-  static const tabs = ['Belum Bayar', 'Dikemas', 'Dikirim', 'Selesai', 'Ditolak'];
+  static const tabs = ['Menunggu', 'Dikemas', 'Dikirim', 'Selesai', 'Ditolak'];
   static String emptyTab(String tab) => 'Belum ada pesanan ${tab.toLowerCase()}';
   static const emptyHint = 'Pesanan yang kamu buat akan muncul di sini.';
   static String variation(String v) => 'Variasi: $v';

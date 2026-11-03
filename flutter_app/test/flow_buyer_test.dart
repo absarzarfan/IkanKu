@@ -20,7 +20,7 @@ void main() {
     expect(c.read(routerProvider).state.uri.path, '/home');
 
     // Buka produk dari Home.
-    await tester.ensureVisible(find.text('Ikan Nila').first);
+    await tester.scrollUntilVisible(find.text('Ikan Nila'), 200, scrollable: find.byType(Scrollable).first);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Ikan Nila').first);
     await tester.pumpAndSettle();

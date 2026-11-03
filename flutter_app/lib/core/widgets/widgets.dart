@@ -334,7 +334,7 @@ class ProductImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(radius ?? size / 2),
+      borderRadius: BorderRadius.circular(radius ?? AppRadius.thumb),
       child: productPicture(asset, width: size, height: size, cacheWidth: (size * 3).round()),
     );
   }
@@ -499,13 +499,14 @@ class SectionHeader extends StatelessWidget {
         children: [
           Expanded(child: SectionTitle(title, eyebrow: eyebrow)),
           if (action != null)
-            InkWell(
+            Flexible(
+              child: InkWell(
               onTap: onAction,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: AppSize.buttonSmall, minWidth: AppSize.buttonSmall),
-                child: Align(alignment: Alignment.centerRight, widthFactor: 1, child: Padding(padding: const EdgeInsets.only(left: Gap.md), child: Text(action!, style: AppText.body.copyWith(color: AppColors.primary)))),
+                child: Align(alignment: Alignment.centerRight, widthFactor: 1, child: Padding(padding: const EdgeInsets.only(left: Gap.md), child: Text(action!, textAlign: TextAlign.end, maxLines: 2, style: AppText.body.copyWith(color: AppColors.primary)))),
               ),
-            ),
+            )),
         ],
       );
 }

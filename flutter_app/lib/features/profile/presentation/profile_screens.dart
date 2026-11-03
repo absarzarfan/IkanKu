@@ -6,57 +6,139 @@ import 'package:ikanku/core/theme/app_theme.dart';
 import 'package:ikanku/core/utils/format.dart';
 import 'package:ikanku/core/widgets/widgets.dart';
 import 'package:ikanku/features/auth/domain/auth.dart';
+import 'package:ikanku/features/orders/domain/orders.dart';
+import 'package:ikanku/features/orders/presentation/order_providers.dart';
 import 'package:ikanku/features/auth/presentation/auth_providers.dart';
 import 'package:ikanku/features/auth/presentation/auth_screens.dart';
 import 'package:ikanku/features/profile/domain/profile.dart';
 import 'package:ikanku/features/profile/presentation/profile_providers.dart';
+
+/// Sel "Pesanan Saya": ikon + badge hitungan + label yang membungkus (maks 2 baris), lebar sama (Expanded).
+class OrderStatusCell extends StatelessWidget {
+  const OrderStatusCell({super.key, required this.icon, required this.label, required this.count, required this.onTap});
+  final IconData icon;
+  final String label;
+  final int count;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Semantics(
+        button: true,
+        label: count > 0 ? '$label, $count pesanan' : label,
+        excludeSemantics: true,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.icon),
+          onTap: onTap,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: AppSize.buttonLarge),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: Gap.sm, horizontal: 2),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                NavBadge(count: count, badgeKey: Key('order-cell-badge-$label'), child: Icon(icon, size: 26, color: AppColors.primary)),
+                const SizedBox(height: Gap.xs),
+                FittedBox(fit: BoxFit.scaleDown, child: Text(label, textAlign: TextAlign.center, maxLines: 1, style: AppText.caption.copyWith(color: AppColors.text))),
+              ]),
+            ),
+          ),
+        ),
+      );
+}
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authProvider);
-    Widget tile(IconData icon, String label, String route) => AppCard(margin: const EdgeInsets.only(bottom: Space.itemGap), onTap: () => context.push(route), child: Row(children: [IconChip(icon: icon), const SizedBox(width: Gap.md), Expanded(child: Text(label, style: AppText.body)), const Icon(Icons.chevron_right)]));
-    return AppScaffold(
-      title: 'Profil',
-      showBack: false,
-      body: ListView(padding: Space.padTab(context), children: [
-        Row(children: [
-          const CircleAvatar(radius: 36, backgroundColor: AppColors.field, child: Icon(Icons.person, size: 40, color: AppColors.grey)),
-          const SizedBox(width: Gap.lg),
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(user?.name ?? '-', style: AppText.heading), Text(user?.email ?? '', style: AppText.small), Text(user?.phone ?? '', style: AppText.small)])),
-        ]),
-        const SizedBox(height: Gap.xl),
-        const SectionHeader('Pesanan Saya'),
-        const SizedBox(height: Gap.sm),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          for (final (i, e) in [(Icons.account_balance_wallet_outlined, 'Belum Bayar'), (Icons.inventory_2_outlined, 'Dikemas'), (Icons.local_shipping_outlined, 'Dikirim'), (Icons.check_circle_outline, 'Selesai'), (Icons.cancel_outlined, 'Ditolak')].indexed)
-            Expanded(child: InkWell(onTap: () => context.push('/orders?tab=$i'), child: Padding(padding: const EdgeInsets.symmetric(vertical: Gap.sm), child: Column(children: [Icon(e.$1, color: AppColors.primary), FittedBox(fit: BoxFit.scaleDown, child: Text(e.$2, style: AppText.caption))])))),
-        ]),
-        const SizedBox(height: Gap.sm),
-        tile(Icons.receipt_long_outlined, 'Semua Pesanan', '/orders'),
-        const SizedBox(height: Gap.md),
-        const SectionHeader('Akun'),
-        const SizedBox(height: Gap.sm),
-        tile(Icons.person_outline, 'Data Profil', '/profile/data'),
-        tile(Icons.location_on_outlined, 'Alamat', '/addresses'),
-        tile(Icons.lock_outline, 'Ganti Kata Sandi', '/profile/password'),
-        tile(Icons.email_outlined, 'Ubah Email', '/profile/email'),
-        tile(Icons.phone_android, 'Ubah Nomor Ponsel', '/profile/phone'),
-        const SizedBox(height: Gap.md),
-        const SectionHeader('Bantuan'),
-        const SizedBox(height: Gap.sm),
-        tile(Icons.help_outline, 'Pusat Bantuan', '/help'),
-        const SizedBox(height: Gap.md),
-        PillButton(
-          label: 'Keluar',
-          color: AppColors.danger,
-          outlined: true,
-          onPressed: () async {
-            if (await confirmDialog(context, 'Keluar dari akun?', 'Kamu perlu masuk lagi untuk berbelanja.', yes: 'Keluar', no: 'Batal')) {
-              ref.read(authProvider.notifier).logout();
-            }
-          },
+    final orders = ref.watch(ordersProvider);
+    final addresses = ref.watch(addressProvider);
+    int count(OrderStatus s) => orders.where((o) => o.status == s).length;
+    final active = orders.where((o) => o.status == OrderStatus.menunggu || o.status == OrderStatus.dikemas || o.status == OrderStatus.dikirim).length;
+    final reviews = orders.where((o) => o.review != null).length;
+    // Kelengkapan profil dari field yang ada: nama, email, ponsel, alamat.
+    final fields = [(user?.name ?? '').trim().isNotEmpty, (user?.email ?? '').trim().isNotEmpty, (user?.phone ?? '').trim().isNotEmpty, addresses.isNotEmpty];
+    final done = fields.where((e) => e).length;
+    final g = Space.screenGutter(context);
+    const cells = [(Icons.hourglass_top_outlined, OrderStatus.menunggu), (Icons.inventory_2_outlined, OrderStatus.dikemas), (Icons.local_shipping_outlined, OrderStatus.dikirim), (Icons.check_circle_outline, OrderStatus.selesai), (Icons.cancel_outlined, OrderStatus.ditolak)];
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: ListView(padding: EdgeInsets.only(bottom: Space.minBottomClearance(context)), children: [
+        HeroHeader(
+          bottomPadding: Gap.xxl,
+          child: Row(children: [
+            Container(
+              width: AppSize.avatar,
+              height: AppSize.avatar,
+              decoration: BoxDecoration(color: AppColors.glass, borderRadius: BorderRadius.circular(AppRadius.card), border: Border.all(color: AppColors.glassBorder)),
+              child: const ExcludeSemantics(child: Icon(Icons.person, size: 36, color: Colors.white)),
+            ),
+            const SizedBox(width: Gap.lg),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(user?.name ?? '-', style: AppText.heading.copyWith(color: Colors.white), maxLines: 1, overflow: TextOverflow.ellipsis),
+                Text(user?.email ?? '', style: AppText.small.copyWith(color: Colors.white), maxLines: 1, overflow: TextOverflow.ellipsis),
+                Text(user?.phone ?? '', style: AppText.small.copyWith(color: Colors.white), maxLines: 1, overflow: TextOverflow.ellipsis),
+              ]),
+            ),
+          ]),
+        ),
+        ContentFrame(
+          safe: true,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            const SizedBox(height: Gap.lg),
+            if (done < fields.length)
+              AppCard(
+                onTap: () => context.push('/profile/data'),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(children: [const Expanded(child: Text('Lengkapi profil Anda', style: AppText.label)), Text('${done * 100 ~/ fields.length}%', style: AppText.label.copyWith(color: AppColors.primary))]),
+                  const SizedBox(height: Gap.sm),
+                  ClipRRect(borderRadius: BorderRadius.circular(6), child: LinearProgressIndicator(key: const Key('profile-completeness'), value: done / fields.length, minHeight: 8, color: AppColors.primary, backgroundColor: AppColors.surfaceTint)),
+                  const SizedBox(height: Gap.xs),
+                  Text('$done dari ${fields.length} data terisi', style: AppText.caption.copyWith(color: AppColors.grey)),
+                ]),
+              ),
+            SectionHeader('Pesanan Saya', action: 'Semua pesanan', onAction: () => context.push('/orders')),
+            const VGap.title(),
+            AppCard(
+              padding: const EdgeInsets.symmetric(horizontal: Gap.xs, vertical: Gap.xs),
+              child: Row(key: const Key('orders-row'), crossAxisAlignment: CrossAxisAlignment.start, children: [
+                for (final (i, e) in cells.indexed) Expanded(child: OrderStatusCell(icon: e.$1, label: e.$2.label, count: count(e.$2), onTap: () => context.push('/orders?tab=$i'))),
+              ]),
+            ),
+            StatRow(cards: [
+              StatCard(value: '${orders.length}', label: 'Total pesanan', icon: Icons.receipt_long_outlined),
+              StatCard(value: '$active', label: 'Pesanan aktif', icon: Icons.local_shipping_outlined),
+              StatCard(value: '$reviews', label: 'Ulasan diberikan', icon: Icons.star_outline),
+            ]),
+            const VGap.section(),
+            MenuGroup(title: 'Akun', items: [
+              MenuItem(icon: Icons.person_outline, label: 'Data Profil', onTap: () => context.push('/profile/data')),
+              MenuItem(icon: Icons.location_on_outlined, label: 'Alamat', onTap: () => context.push('/addresses')),
+              MenuItem(icon: Icons.lock_outline, label: 'Ganti Kata Sandi', onTap: () => context.push('/profile/password')),
+              MenuItem(icon: Icons.email_outlined, label: 'Ubah Email', onTap: () => context.push('/profile/email')),
+              MenuItem(icon: Icons.phone_android, label: 'Ubah Nomor Ponsel', onTap: () => context.push('/profile/phone')),
+            ]),
+            const VGap.section(),
+            MenuGroup(title: 'Bantuan', items: [
+              MenuItem(icon: Icons.help_outline, label: 'Pusat Bantuan', hint: 'Pertanyaan yang sering diajukan', onTap: () => context.push('/help')),
+            ]),
+            const VGap.section(),
+            Semantics(
+              button: true,
+              label: 'Keluar',
+              excludeSemantics: true,
+              child: Pressable(
+                onTap: () async {
+                  if (await confirmDialog(context, 'Keluar dari akun?', 'Anda perlu masuk lagi untuk berbelanja.', yes: 'Keluar', no: 'Batal')) {
+                    ref.read(authProvider.notifier).logout();
+                  }
+                },
+                borderRadius: BorderRadius.circular(AppRadius.pill),
+                decoration: BoxDecoration(color: AppColors.dangerSoft, borderRadius: BorderRadius.circular(AppRadius.pill), border: Border.all(color: AppColors.danger)),
+                minSize: AppSize.button,
+                child: Center(child: Padding(padding: const EdgeInsets.symmetric(vertical: Gap.md), child: Row(mainAxisSize: MainAxisSize.min, children: [const Icon(Icons.logout, color: AppColors.danger, size: 20), const SizedBox(width: Gap.sm), Text('Keluar', style: AppText.buttonLabel.copyWith(color: AppColors.danger))]))),
+              ),
+            ),
+            SizedBox(height: g),
+          ]),
         ),
       ]),
     );
