@@ -13,6 +13,33 @@ import 'package:ikanku/features/orders/presentation/order_providers.dart';
 const sellerTabs = [OrderStatus.menunggu, OrderStatus.dikemas, OrderStatus.dikirim, OrderStatus.selesai, OrderStatus.ditolak, OrderStatus.dibatalkan, OrderStatus.diarsipkan];
 const sellerTabLabels = ['Baru', 'Dikemas', 'Dikirim', 'Selesai', 'Ditolak', 'Pembatalan', 'Diarsipkan'];
 
+/// Aksi cepat: chip ikon solid + label; tinggi minimum dari token, grup setinggi anggota tertinggi.
+class QuickActionTile extends StatelessWidget {
+  const QuickActionTile({super.key, required this.icon, required this.label, required this.onTap});
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Semantics(
+        button: true,
+        label: label,
+        excludeSemantics: true,
+        child: Pressable(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.card),
+          decoration: AppCard.decorationFor(AppColors.surface),
+          minSize: 0,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: double.infinity, minHeight: Layout.quickActionMin(context.widthClass)),
+            child: Padding(
+              padding: EdgeInsets.all(Space.cardPadding(context)),
+              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [IconChip(icon: icon, variant: IconChipVariant.solid, size: Layout.iconChipLg), const SizedBox(height: Gap.sm), Text(label, textAlign: TextAlign.center, style: AppText.small.copyWith(fontWeight: FontWeight.w600))]),
+            ),
+          ),
+        ),
+      );
+}
+
 /// Dashboard penjual: sapaan, StatCard pesanan per status, aksi cepat (grid icon chip), pesanan terbaru.
 class SellerHomeScreen extends ConsumerWidget {
   const SellerHomeScreen({super.key});
@@ -63,21 +90,7 @@ class SellerHomeScreen extends ConsumerWidget {
             const VGap.title(),
             EqualGrid(columns: 2, children: [
               for (final a in actions)
-                Semantics(
-                  button: true,
-                  label: a.$1,
-                  excludeSemantics: true,
-                  child: Pressable(
-                    onTap: () => context.push(a.$3),
-                    borderRadius: BorderRadius.circular(AppRadius.card),
-                    decoration: AppCard.decorationFor(AppColors.surface),
-                    minSize: 0,
-                    child: Padding(
-                      padding: EdgeInsets.all(Space.cardPadding(context)),
-                      child: Column(children: [IconChip(icon: a.$2, size: 44), const SizedBox(height: Gap.sm), Text(a.$1, textAlign: TextAlign.center, style: AppText.small.copyWith(fontWeight: FontWeight.w600), maxLines: 2, overflow: TextOverflow.ellipsis)]),
-                    ),
-                  ),
-                ),
+                QuickActionTile(icon: a.$2, label: a.$1, onTap: () => context.push(a.$3)),
             ]),
             const VGap.section(),
             SectionHeader('Pesanan terbaru', action: 'Lihat semua', onAction: () => context.push('/seller/orders')),

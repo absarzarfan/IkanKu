@@ -13,56 +13,20 @@ import 'package:ikanku/features/catalog/presentation/product_cards.dart';
 import 'package:ikanku/features/catalog/presentation/search_filter.dart';
 
 /// Jumlah kolom grid per kelas lebar: 2 compact, 3 medium, 4 expanded.
-int gridColumnsFor(WidthClass w) => switch (w) { WidthClass.compact => 2, WidthClass.medium => 3, WidthClass.expanded => 4 };
+int gridColumnsFor(WidthClass w) => Layout.gridColumns(w);
 
-/// Satu baris grid: sel sama tinggi (IntrinsicHeight), sel kosong mengisi sisa kolom.
-Widget productGridRow(List<Product> products, int r, int cols, String? heroScope, {Key? firstKey}) => IntrinsicHeight(
-      child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        for (var c = 0; c < cols; c++) ...[
-          if (c > 0) const SizedBox(width: Space.itemGap),
-          Expanded(
-            child: r * cols + c < products.length
-                ? KeyedSubtree(key: r == 0 && c == 0 ? firstKey : null, child: ProductTile(product: products[r * cols + c], heroScope: heroScope))
-                : const SizedBox.shrink(),
-          ),
-        ],
-      ]),
-    );
-
-/// Grid sliver, dibangun malas per baris.
-class ProductGridRows extends StatelessWidget {
-  const ProductGridRows({super.key, required this.products, this.heroScope});
-  final List<Product> products;
-  final String? heroScope;
-  @override
-  Widget build(BuildContext context) {
-    final cols = gridColumnsFor(context.widthClass);
-    final rows = (products.length / cols).ceil();
-    return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: Space.screenGutter(context)),
-      sliver: SliverList.separated(
-        itemCount: rows,
-        separatorBuilder: (_, _) => const SizedBox(height: Space.itemGap),
-        itemBuilder: (_, r) => Reveal(index: r, child: productGridRow(products, r, cols, heroScope)),
-      ),
-    );
-  }
-}
-
-/// Grid non-sliver (untuk ListView, mis. Beranda).
+/// Grid produk: semua sel SATU tinggi (sel tertinggi; nama membungkus, tidak dipotong).
 class ProductGrid extends StatelessWidget {
   const ProductGrid({super.key, required this.products, this.heroScope, this.firstKey});
   final List<Product> products;
   final String? heroScope;
   final Key? firstKey;
   @override
-  Widget build(BuildContext context) {
-    final cols = gridColumnsFor(context.widthClass);
-    final rows = (products.length / cols).ceil();
-    return Column(children: [
-      for (var r = 0; r < rows; r++) ...[if (r > 0) const SizedBox(height: Space.itemGap), productGridRow(products, r, cols, heroScope, firstKey: firstKey)],
-    ]);
-  }
+  Widget build(BuildContext context) => EqualHeightGrid(
+        columns: gridColumnsFor(context.widthClass),
+        spacing: Space.itemGap,
+        children: [for (final (i, p) in products.indexed) KeyedSubtree(key: i == 0 ? firstKey : null, child: ProductTile(product: p, heroScope: heroScope))],
+      );
 }
 
 /// Komponen daftar bersama Telusuri dan layar "Lihat semua": pencarian tersemat, filter, urutan, grid/daftar.
@@ -192,9 +156,6 @@ class _ProductBrowserState extends ConsumerState<ProductBrowser> {
           SliverToBoxAdapter(child: Padding(padding: EdgeInsets.fromLTRB(g, Gap.xl, g, Gap.md), child: const SectionHeader(CatalogStrings.recommendations, eyebrow: CatalogStrings.recoEyebrow))),
           SliverToBoxAdapter(
             child: HorizontalCardList(
-              preferred: 170,
-              min: 150,
-              max: 220,
               children: [for (final p in cat.products.take(6)) ProductFeaturedCard(product: p, heroScope: '${widget.heroScope}-rail')],
             ),
           ),
@@ -236,7 +197,7 @@ class _ProductBrowserState extends ConsumerState<ProductBrowser> {
             ),
           )
         else if (_grid)
-          ProductGridRows(products: results, heroScope: widget.heroScope)
+          SliverPadding(padding: EdgeInsets.symmetric(horizontal: g), sliver: SliverList(delegate: SliverChildListDelegate([ProductGrid(products: results, heroScope: widget.heroScope)])))
         else
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: g),

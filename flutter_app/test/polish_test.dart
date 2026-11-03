@@ -89,8 +89,8 @@ void main() {
 
   testWidgets('IconChip: dikeluarkan dari semantics, ukuran sesuai', (tester) async {
     final h = tester.ensureSemantics();
-    await tester.pumpWidget(const MaterialApp(home: Scaffold(body: Center(child: IconChip(icon: Icons.home, size: 44)))));
-    expect(tester.getSize(find.byType(IconChip)), const Size(44, 44));
+    await tester.pumpWidget(const MaterialApp(home: Scaffold(body: Center(child: IconChip(icon: Icons.home, size: 40)))));
+    expect(tester.getSize(find.byType(IconChip)), const Size(40, 40));
     expect(find.descendant(of: find.byType(IconChip), matching: find.byType(ExcludeSemantics)), findsWidgets);
     h.dispose();
   });

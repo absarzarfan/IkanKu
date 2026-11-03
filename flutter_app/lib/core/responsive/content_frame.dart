@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ikanku/core/layout/layout.dart';
 import 'package:ikanku/core/responsive/breakpoints.dart';
 import 'package:ikanku/core/responsive/spacing.dart';
 
@@ -51,13 +52,16 @@ class ResponsiveGrid extends StatelessWidget {
   }
 }
 
-/// Daftar kartu horizontal: tinggi dari isi, item pertama sejajar margin layar (`screenGutter`),
-/// jarak antar item `gap`, item berikut mengintip, bayangan tidak terpotong (Clip.none).
-/// Tempatkan di luar padding halaman: widget ini mengatur sendiri inset kiri/kanan (berisi pemusatan 560 dp).
+/// Daftar kartu horizontal (Phase 16): item pertama sejajar `screenGutter`, lebar item dari token
+/// ([Layout.carouselItems] item penuh + [Layout.peek] terlihat), SEMUA item setinggi item tertinggi
+/// (IntrinsicHeight + stretch; teks membungkus). Tempatkan di luar padding halaman.
 class HorizontalCardList extends StatelessWidget {
-  const HorizontalCardList({super.key, required this.children, this.gap = Space.itemGap, this.preferred = 160, this.min = 120, this.max = 220});
+  const HorizontalCardList({super.key, required this.children, this.gap = Space.itemGap, this.items});
   final List<Widget> children;
-  final double gap, preferred, min, max;
+  final double gap;
+
+  /// Menimpa jumlah item penuh yang terlihat (bawaan: menurut kelas lebar).
+  final int? items;
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +69,17 @@ class HorizontalCardList extends StatelessWidget {
       final g = Space.screenGutter(context);
       final frame = c.maxWidth < kContentMaxWidth ? c.maxWidth : kContentMaxWidth;
       final inset = (c.maxWidth - frame) / 2 + g;
-      final w = peekItemWidth(frame, inset: 2 * g, gap: gap, preferred: preferred, min: min, max: max);
+      final n = items ?? Layout.carouselItems(context.widthClass);
+      final w = Layout.carouselItemWidth(frame, g, n, gap);
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
         padding: EdgeInsets.symmetric(horizontal: inset),
-        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          for (final (i, ch) in children.indexed) ...[if (i > 0) SizedBox(width: gap), SizedBox(width: w, child: ch)],
-        ]),
+        child: IntrinsicHeight(
+          child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            for (final (i, ch) in children.indexed) ...[if (i > 0) SizedBox(width: gap), SizedBox(width: w, child: ch)],
+          ]),
+        ),
       );
     });
   }

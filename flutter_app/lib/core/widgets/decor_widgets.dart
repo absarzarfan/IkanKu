@@ -1,28 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:ikanku/core/layout/layout.dart';
 import 'package:ikanku/core/theme/app_theme.dart';
 
-/// Chip ikon (web .icon-chip): kotak membulat; tint gradien merek di permukaan terang,
-/// putih transparan dengan ikon putih di atas latar biru.
+/// Varian chip ikon: tint (gradien merek rendah, ikon biru), solid (gradien merek penuh, ikon putih),
+/// onBlue (putih translusen di atas latar biru).
+enum IconChipVariant { tint, solid, onBlue }
+
+/// Chip ikon (web .icon-chip): kotak membulat, TEPAT dua ukuran (40 dan 48; nilai lain dibulatkan).
 class IconChip extends StatelessWidget {
-  const IconChip({super.key, required this.icon, this.glass = false, this.size = 44, this.color});
+  const IconChip({super.key, required this.icon, this.variant = IconChipVariant.tint, this.glass = false, this.size = Layout.iconChipMd, this.color, this.ring = false});
   final IconData icon;
+  final IconChipVariant variant;
+
+  /// Kompatibilitas lama: sama dengan [IconChipVariant.onBlue].
   final bool glass;
   final double size;
   final Color? color;
 
+  /// Cincin tipis 1 px (merek 12%).
+  final bool ring;
+
+  static double snap(double s) => s >= 46 ? Layout.iconChipLg : Layout.iconChipMd;
+
   @override
   Widget build(BuildContext context) {
+    final v = glass ? IconChipVariant.onBlue : variant;
+    final s = snap(size);
+    final solid = v == IconChipVariant.solid;
+    final onBlue = v == IconChipVariant.onBlue;
+    final fg = onBlue || solid ? AppColors.onPrimary : (color ?? AppColors.primary);
     return ExcludeSemantics(
       child: Container(
-        width: size,
-        height: size,
+        width: s,
+        height: s,
         decoration: BoxDecoration(
-          gradient: glass ? null : AppGradients.chipTint,
-          color: glass ? AppColors.glass : null,
-          border: glass ? Border.all(color: AppColors.glassBorder) : null,
+          gradient: onBlue ? null : (solid && color == null ? AppGradients.primary : (solid ? LinearGradient(colors: [color!, color!]) : AppGradients.chipTint)),
+          color: onBlue ? AppColors.glass : null,
+          border: onBlue ? Border.all(color: AppColors.glassBorder) : (ring ? Border.all(color: AppColors.border) : null),
           borderRadius: BorderRadius.circular(AppRadius.icon),
         ),
-        child: Icon(icon, size: size * 0.5, color: glass ? AppColors.onPrimary : (color ?? AppColors.primary)),
+        // Sorot sangat halus di kiri atas (tanpa pendar).
+        foregroundDecoration: solid ? BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.icon), gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.center, colors: [Color(0x26FFFFFF), Color(0x00FFFFFF)])) : null,
+        child: Icon(icon, size: s * 0.5, color: fg),
       ),
     );
   }

@@ -65,16 +65,19 @@ class ValuePropCard extends StatelessWidget {
   final String title;
   final String? body;
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-        decoration: AppCard.decorationFor(AppColors.surface),
-        child: Padding(
-          padding: EdgeInsets.all(Space.cardPadding(context)),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            IconChip(icon: icon),
-            const SizedBox(height: Gap.md),
-            Text(title, style: AppText.label, maxLines: 4, overflow: TextOverflow.ellipsis),
-            if (body != null) ...[const SizedBox(height: Gap.xs), Text(body!, style: AppText.small.copyWith(color: AppColors.grey))],
-          ]),
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: BoxConstraints(minHeight: Layout.valuePropMin(context.widthClass)),
+        child: DecoratedBox(
+          decoration: AppCard.decorationFor(AppColors.surface),
+          child: Padding(
+            padding: EdgeInsets.all(Space.cardPadding(context)),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              IconChip(icon: icon, variant: IconChipVariant.solid, size: Layout.iconChipLg),
+              const SizedBox(height: Gap.md),
+              Text(title, style: AppText.label),
+              if (body != null) ...[const SizedBox(height: Gap.xs), Text(body!, style: AppText.small.copyWith(color: AppColors.grey))],
+            ]),
+          ),
         ),
       );
 }
@@ -91,9 +94,9 @@ class StatCard extends StatelessWidget {
     final body = Padding(
       padding: EdgeInsets.all(Space.cardPadding(context)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        if (icon != null) ...[IconChip(icon: icon!, size: 36), const SizedBox(height: Gap.sm)],
-        Text(value, style: AppText.price.copyWith(color: AppColors.primary), maxLines: 1, overflow: TextOverflow.ellipsis),
-        Text(label, style: AppText.small.copyWith(color: AppColors.grey), maxLines: 3, overflow: TextOverflow.ellipsis),
+        if (icon != null) ...[IconChip(icon: icon!, size: Layout.iconChipMd), const SizedBox(height: Gap.sm)],
+        FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: Text(value, style: AppText.price.copyWith(color: AppColors.primary), maxLines: 1)),
+        Text(label, style: AppText.small.copyWith(color: AppColors.grey)),
       ]),
     );
     return Semantics(
@@ -102,8 +105,8 @@ class StatCard extends StatelessWidget {
       excludeSemantics: true,
       button: onTap != null,
       child: onTap == null
-          ? DecoratedBox(decoration: AppCard.decorationFor(AppColors.surface), child: SizedBox(width: double.infinity, child: body))
-          : Pressable(onTap: onTap, borderRadius: BorderRadius.circular(AppRadius.card), decoration: AppCard.decorationFor(AppColors.surface), minSize: 0, child: SizedBox(width: double.infinity, child: body)),
+          ? DecoratedBox(decoration: AppCard.decorationFor(AppColors.surface), child: ConstrainedBox(constraints: BoxConstraints(minWidth: double.infinity, minHeight: Layout.statCardMin(context.widthClass)), child: body))
+          : Pressable(onTap: onTap, borderRadius: BorderRadius.circular(AppRadius.card), decoration: AppCard.decorationFor(AppColors.surface), minSize: 0, child: ConstrainedBox(constraints: BoxConstraints(minWidth: double.infinity, minHeight: Layout.statCardMin(context.widthClass)), child: body)),
     );
   }
 }
@@ -303,7 +306,7 @@ class MenuGroup extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.card),
             child: Column(children: [
               for (final (i, it) in items.indexed) ...[
-                if (i > 0) const Divider(height: 1, indent: 72, color: AppColors.border),
+                if (i > 0) const Divider(height: 1, indent: Gap.md + Layout.iconChipMd + Gap.md, color: AppColors.border),
                 Semantics(
                   button: true,
                   label: it.label,
@@ -313,11 +316,11 @@ class MenuGroup extends StatelessWidget {
                     child: InkWell(
                       onTap: it.onTap,
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(minHeight: 60),
+                        constraints: BoxConstraints(minHeight: Layout.menuRowMin(context.widthClass)),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: Gap.md, vertical: Gap.sm),
                           child: Row(children: [
-                            IconChip(icon: it.icon, size: 40, color: it.destructive ? AppColors.danger : null),
+                            IconChip(icon: it.icon, size: Layout.iconChipMd, color: it.destructive ? AppColors.danger : null),
                             const SizedBox(width: Gap.md),
                             Expanded(
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -462,8 +465,9 @@ class BarItem {
   final String label;
 }
 
-/// Bottom bar putih: pil terpilih bertint merek, badge di kanan atas ikon (di luar kotak ikon),
-/// mengikuti safe area, label membungkus (tidak terpotong pada skala teks 2.0).
+/// Bottom bar putih: item terpilih = pil gradien merek berisi ikon terisi + label putih; item lain label abu-abu
+/// tetap terlihat. Seluruh item adalah area sentuh (min 48 x 64). Ikon membesar 1.0 -> 1.08 (150 ms) dan haptic ringan
+/// saat pindah tab. Badge di kanan atas KOTAK IKON (bukan pil), tidak menyentuh pil, glyph, atau label; hitungan maks "9+".
 class AppBottomBar extends StatelessWidget {
   const AppBottomBar({super.key, required this.items, required this.index, required this.onTap, this.badgeIndex, this.badgeCount = 0, this.badgeLabel});
   final List<BarItem> items;
@@ -479,69 +483,70 @@ class AppBottomBar extends StatelessWidget {
         decoration: const BoxDecoration(color: AppColors.surface, border: Border(top: BorderSide(color: AppColors.border)), boxShadow: AppShadow.card),
         child: SafeArea(
           top: false,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: AppSize.navBar),
-            child: IntrinsicHeight(
-              child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                for (final (i, it) in items.indexed)
-                  Expanded(
-                    child: Semantics(
-                      selected: i == index,
-                      button: true,
-                      label: it.label,
-                      excludeSemantics: true,
-                      child: InkWell(
-                        onTap: () => onTap(i),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Gap.sm, vertical: Gap.xs),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: Layout.navItemMinHeight),
+              child: IntrinsicHeight(
+                child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  for (final (i, it) in items.indexed)
+                    Expanded(
+                      child: Semantics(
+                        selected: i == index,
+                        button: true,
+                        label: it.label,
+                        excludeSemantics: true,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Gap.xs, vertical: Gap.sm),
-                          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                            AnimatedContainer(
-                              duration: AppMotion.of(context, AppMotion.fast),
-                              curve: AppMotion.curve,
-                              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 4),
-                              decoration: BoxDecoration(color: i == index ? AppColors.surfaceTint : Colors.transparent, borderRadius: BorderRadius.circular(AppRadius.pill)),
-                              child: NavBadge(
-                                count: i == badgeIndex ? badgeCount : 0,
-                                label: badgeLabel,
-                                badgeKey: Key('nav-badge-$i'),
-                                child: Icon(i == index ? it.selectedIcon : it.icon, key: Key('nav-icon-$i'), size: 24, color: i == index ? AppColors.primaryDark : AppColors.grey),
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: Pressable(
+                            key: Key('nav-item-$i'),
+                            onTap: () {
+                              if (i != index && !AppMotion.reduced(context)) HapticFeedback.selectionClick();
+                              onTap(i);
+                            },
+                            borderRadius: BorderRadius.circular(AppRadius.pill),
+                            decoration: BoxDecoration(gradient: i == index ? AppGradients.primary : null, borderRadius: BorderRadius.circular(AppRadius.pill)),
+                            minSize: 0,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(minWidth: Layout.navItemMinWidth, minHeight: Layout.navItemMinHeight - Gap.sm),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: Gap.xs, vertical: Gap.xs),
+                                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                  AnimatedScale(
+                                    scale: i == index ? 1.08 : 1.0,
+                                    duration: AppMotion.of(context, AppMotion.fast),
+                                    curve: AppMotion.curve,
+                                    child: NavBadge(
+                                      count: i == badgeIndex ? badgeCount : 0,
+                                      label: badgeLabel,
+                                      badgeKey: Key('nav-badge-$i'),
+                                      child: Icon(i == index ? it.selectedIcon : it.icon, key: Key('nav-icon-$i'), size: 24, color: i == index ? AppColors.onPrimary : AppColors.grey),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(it.label, key: Key('nav-label-$i'), textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.caption.copyWith(fontWeight: i == index ? FontWeight.w600 : FontWeight.w400, color: i == index ? AppColors.onPrimary : AppColors.grey)),
+                                ]),
                               ),
                             ),
-                            const SizedBox(height: 2),
-                            Text(it.label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.caption.copyWith(fontWeight: i == index ? FontWeight.w600 : FontWeight.w400, color: i == index ? AppColors.primaryDark : AppColors.grey)),
-                          ]),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              ]),
+                ]),
+              ),
             ),
           ),
         ),
       );
 }
 
-/// Grid sel sama tinggi (IntrinsicHeight per baris), [columns] kolom; sel kosong mengisi sisa baris.
+/// Grid sel sama tinggi untuk SELURUH kelompok (satu tinggi untuk semua baris), [columns] kolom.
 class EqualGrid extends StatelessWidget {
-  const EqualGrid({super.key, required this.columns, required this.children, this.spacing = Space.itemGap});
+  const EqualGrid({super.key, required this.columns, required this.children, this.spacing = Space.itemGap, this.minHeight = 0});
   final int columns;
   final List<Widget> children;
   final double spacing;
+  final double minHeight;
   @override
-  Widget build(BuildContext context) {
-    final rows = (children.length / columns).ceil();
-    return Column(children: [
-      for (var r = 0; r < rows; r++) ...[
-        if (r > 0) SizedBox(height: spacing),
-        IntrinsicHeight(
-          child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            for (var c = 0; c < columns; c++) ...[
-              if (c > 0) SizedBox(width: spacing),
-              Expanded(child: r * columns + c < children.length ? children[r * columns + c] : const SizedBox.shrink()),
-            ],
-          ]),
-        ),
-      ],
-    ]);
-  }
+  Widget build(BuildContext context) => EqualHeightGrid(columns: columns, spacing: spacing, minHeight: minHeight, children: children);
 }

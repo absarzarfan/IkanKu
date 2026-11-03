@@ -108,7 +108,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     ]),
                     const Divider(height: Gap.xxl),
                     Row(children: [
-                      const IconChip(icon: Icons.storefront_outlined, size: 44),
+                      const IconChip(icon: Icons.storefront_outlined, size: 40),
                       const SizedBox(width: Gap.md),
                       Expanded(child: Text(p.sellerName, style: AppText.semi, maxLines: 2, overflow: TextOverflow.ellipsis)),
                       Flexible(child: TextButton(onPressed: () => context.push('/shop/${Uri.encodeComponent(p.sellerName)}'), child: const Text(CatalogStrings.visitShop, textAlign: TextAlign.center))),

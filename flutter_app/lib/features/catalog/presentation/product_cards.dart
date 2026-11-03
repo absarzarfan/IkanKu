@@ -89,13 +89,26 @@ class ProductTile extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(pad),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            _heroed(heroScope, p, AspectRatio(aspectRatio: 1.15, child: ClipRRect(borderRadius: BorderRadius.circular(AppRadius.thumb), child: productPicture(p.image, cacheWidth: 400)))),
+            _heroed(
+              heroScope,
+              p,
+              AspectRatio(
+                aspectRatio: 1.15,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppRadius.thumb),
+                  child: Stack(fit: StackFit.expand, children: [
+                    productPicture(p.image, cacheWidth: 400),
+                    Positioned(left: Gap.xs, top: Gap.xs, right: Gap.xs, child: Wrap(spacing: Gap.xs, runSpacing: Gap.xs, children: productBadges(p, onPhoto: true))),
+                  ]),
+                ),
+              ),
+            ),
             const SizedBox(height: Gap.sm),
             Text(p.name, style: AppText.label, maxLines: 2, overflow: TextOverflow.ellipsis),
             const SizedBox(height: Gap.xs),
             Text(rupiah(p.startingPrice), style: AppText.semi.copyWith(color: AppColors.primary), maxLines: 1, overflow: TextOverflow.ellipsis),
             const SizedBox(height: Gap.sm),
-            Wrap(spacing: Gap.xs, runSpacing: Gap.xs, children: [_ratingPill(p), ...productBadges(p)]),
+            Align(alignment: Alignment.centerLeft, child: _ratingPill(p)),
           ]),
         ),
       ),
@@ -112,7 +125,7 @@ class ProductRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = product;
-    final side = fluid(context, 84);
+    const side = Layout.rowThumb;
     return AppCard(
       revealIndex: index,
       onTap: () => _open(context, p, heroScope),

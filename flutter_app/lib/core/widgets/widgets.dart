@@ -13,6 +13,8 @@ export 'package:ikanku/core/responsive/content_frame.dart';
 export 'package:ikanku/core/widgets/decor_widgets.dart';
 export 'package:ikanku/core/widgets/motion_widgets.dart';
 export 'package:ikanku/core/responsive/spacing.dart';
+export 'package:ikanku/core/layout/equal_height.dart';
+export 'package:ikanku/core/layout/layout.dart';
 export 'package:ikanku/core/widgets/remake_widgets.dart';
 
 /// Layout standar: kotak biru melengkung di atas (Figma "kotak"), judul, tombol kembali.
@@ -640,7 +642,7 @@ class NavBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (count <= 0) return child;
-    final text = count > 99 ? '99+' : '$count';
+    final text = count > 9 ? '9+' : '$count';
     return Stack(clipBehavior: Clip.none, children: [
       child,
       Positioned.fill(
@@ -648,7 +650,9 @@ class NavBadge extends StatelessWidget {
           alignment: Alignment.topRight,
           child: FractionalTranslation(
             translation: const Offset(1, -0.5),
-            child: Semantics(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 2),
+              child: Semantics(
               label: label == null ? text : '$count $label',
               excludeSemantics: true,
               child: Container(
@@ -659,7 +663,7 @@ class NavBadge extends StatelessWidget {
                 decoration: BoxDecoration(color: AppColors.danger, shape: text.length > 1 ? BoxShape.rectangle : BoxShape.circle, borderRadius: text.length > 1 ? BorderRadius.circular(AppSize.badge) : null, border: Border.all(color: Colors.white, width: 2)),
                 child: Text(text, style: AppText.caption.copyWith(color: Colors.white, fontWeight: FontWeight.w700, height: 1.1)),
               ),
-            ),
+            )),
           ),
         ),
       ),

@@ -61,7 +61,7 @@ class CartScreen extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: Gap.sm),
                   child: Row(children: [
-                    const IconChip(icon: Icons.storefront, size: 32),
+                    const IconChip(icon: Icons.storefront, size: 40),
                     const SizedBox(width: Gap.sm),
                     Expanded(child: Text(shop.key, style: AppText.label, maxLines: 1, overflow: TextOverflow.ellipsis)),
                   ]),

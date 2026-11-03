@@ -83,24 +83,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               safe: true,
               child: HorizontalCardList(
                 key: const Key('home-categories'),
-                preferred: 140,
-                min: 130,
-                max: 200,
                 children: [
                   for (final c in _cats)
-                    Pressable(
-                      onTap: () => context.push('/category/${c.$1}'),
-                      borderRadius: BorderRadius.circular(AppRadius.card),
-                      decoration: AppCard.decorationFor(AppColors.surface),
-                      child: Padding(
-                        padding: const EdgeInsets.all(Gap.sm),
-                        child: Row(children: [
-                          ProductImage(asset: c.$2, size: fluid(context, 44), radius: AppRadius.icon),
-                          const SizedBox(width: Gap.sm + 2),
-                          Expanded(child: Text(c.$1, style: AppText.label, maxLines: 2, overflow: TextOverflow.ellipsis)),
-                        ]),
-                      ),
-                    ),
+                    CategoryCard(name: c.$1, asset: c.$2, onTap: () => context.push('/category/${c.$1}')),
                 ],
               ),
             ),
@@ -112,9 +97,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               safe: true,
               child: HorizontalCardList(
                 key: const Key('home-valueprops'),
-                preferred: 150,
-                min: 140,
-                max: 200,
                 children: [for (final (i, t) in CatalogStrings.valueProps.indexed) ValuePropCard(icon: _valueIcons[i], title: t)],
               ),
             ),
@@ -128,9 +110,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 padded: false,
                 safe: true,
                 child: HorizontalCardList(
-                  preferred: 170,
-                  min: 150,
-                  max: 220,
                   children: [
                     for (final (i, p) in recs.indexed)
                       ProductFeaturedCard(product: p, heroScope: 'home-rail', photoKey: i < 2 ? Key('home-reco-photo-$i') : null, cardKey: i < 2 ? Key('home-reco-card-$i') : null),
@@ -210,6 +189,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ]);
 }
 
+/// Kartu kategori (Beranda): thumbnail persegi + nama; tinggi minimum dari token, grup setinggi anggota tertinggi.
+class CategoryCard extends StatelessWidget {
+  const CategoryCard({super.key, required this.name, required this.asset, required this.onTap});
+  final String name;
+  final String asset;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Semantics(
+        button: true,
+        label: name,
+        excludeSemantics: true,
+        child: Pressable(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.card),
+          decoration: AppCard.decorationFor(AppColors.surface),
+          minSize: 0,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: Layout.categoryCardMin(context.widthClass)),
+            child: Padding(
+              padding: const EdgeInsets.all(Gap.sm),
+              child: Row(children: [
+                ProductImage(asset: asset, size: 44, radius: AppRadius.icon),
+                const SizedBox(width: Gap.sm + 2),
+                Expanded(child: Text(name, style: AppText.label)),
+              ]),
+            ),
+          ),
+        ),
+      );
+}
+
 class _HomeSearch extends StatelessWidget {
   const _HomeSearch();
   @override
@@ -243,7 +253,7 @@ class ShopScreen extends ConsumerWidget {
       body: ListView(padding: Space.pad(context), children: [
         AppCard(
           child: Row(children: [
-            const IconChip(icon: Icons.storefront_outlined, size: 52),
+            const IconChip(icon: Icons.storefront_outlined, size: 48),
             const SizedBox(width: Gap.md),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(name, style: AppText.semi), Text('${items.length} produk', style: AppText.small.copyWith(color: AppColors.grey))])),
           ]),

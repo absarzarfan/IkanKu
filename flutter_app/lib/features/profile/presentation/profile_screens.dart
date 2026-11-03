@@ -29,11 +29,31 @@ class OrderStatusCell extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.icon),
           onTap: onTap,
           child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: AppSize.buttonLarge),
+            constraints: BoxConstraints(minHeight: Layout.orderCellMin(context.widthClass)),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: Gap.sm, horizontal: 2),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                NavBadge(count: count, badgeKey: Key('order-cell-badge-$label'), child: Icon(icon, size: 26, color: AppColors.primary)),
+                // Slot badge tetap di kanan ikon: glyph tidak pernah tertimpa dan badge tidak melewati tepi sel.
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Icon(icon, key: Key('order-cell-icon-$label'), size: 24, color: AppColors.primary),
+                  SizedBox(
+                    width: 20,
+                    height: 24,
+                    child: count > 0
+                        ? Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              key: Key('order-cell-badge-$label'),
+                              constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                              padding: const EdgeInsets.symmetric(horizontal: 3),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(color: AppColors.danger, borderRadius: BorderRadius.circular(9), border: Border.all(color: Colors.white, width: 1)),
+                              child: Text(count > 9 ? '9+' : '$count', style: AppText.caption.copyWith(color: Colors.white, fontWeight: FontWeight.w700, height: 1.1, fontSize: 10)),
+                            ),
+                          )
+                        : null,
+                  ),
+                ]),
                 const SizedBox(height: Gap.xs),
                 FittedBox(fit: BoxFit.scaleDown, child: Text(label, textAlign: TextAlign.center, maxLines: 1, style: AppText.caption.copyWith(color: AppColors.text))),
               ]),
