@@ -45,7 +45,7 @@ export const articleBodies: Record<string, ArticleBody> = {
         "Kincir juga perlu dirawat agar bekerja dengan baik, misalnya memeriksa bagian yang berputar dan sambungan listrik agar aman digunakan.",
       ] },
       { heading: "Penutup", paragraphs: [
-        "Budidaya ikan air tawar adalah kombinasi antara pengamatan, perawatan, dan peralatan yang tepat. Alat sederhana yang digunakan dengan benar dapat membantu kolam tetap sehat dan hasil panen lebih terjaga.",
+        "Budidaya ikan air tawar adalah kombinasi antara pengamatan, perawatan, dan peralatan yang tepat. Alat sederhana yang digunakan dengan benar dapat membantu menjaga kondisi kolam dan hasil panen.",
       ] },
     ],
   },
@@ -148,7 +148,7 @@ export const articleBodies: Record<string, ArticleBody> = {
         "Pembangunan di tepi sungai, pengeringan rawa, atau perubahan aliran air dapat mengubah tempat ikan mencari makan dan berkembang biak. Ketika habitat berubah, tidak semua ikan mampu menyesuaikan diri.",
       ] },
       { heading: "Pencemaran", paragraphs: [
-        "Limbah rumah tangga dan kegiatan lain yang masuk ke perairan dapat menurunkan kualitas air. Air yang tercemar mengganggu ikan dan organisme lain yang menjadi bagian dari rantai makanan.",
+        "Limbah rumah tangga dan kegiatan lain yang masuk ke perairan dapat memengaruhi kualitas air. Air yang tercemar mengganggu ikan dan organisme lain yang menjadi bagian dari rantai makanan.",
       ] },
       { heading: "Penangkapan yang tidak terkendali", paragraphs: [
         "Penangkapan yang berlebihan membuat populasi ikan sulit pulih. Karena itu aturan setempat dan kebiasaan menangkap secukupnya menjadi bagian dari menjaga perairan.",
@@ -166,7 +166,7 @@ export const articleBodies: Record<string, ArticleBody> = {
         "Pertanyaan tentang mana yang lebih baik, ikan laut atau ikan air tawar, sering muncul ketika orang memilih lauk. Foto pada artikel ini menampilkan beragam ikan yang dijajakan di pasar, mengingatkan bahwa pilihan di lapangan sangat banyak.",
       ] },
       { heading: "Jenis ikan lebih menentukan daripada asalnya", paragraphs: [
-        "Setiap jenis ikan memiliki karakter yang berbeda, baik rasa, tekstur, maupun kandungan gizinya. Karena itu, sulit menyimpulkan bahwa satu kelompok pasti lebih baik daripada yang lain hanya dari asalnya.",
+        "Setiap jenis ikan memiliki karakter yang berbeda, baik rasa, tekstur, maupun kandungan gizinya. Karena itu, asal ikan saja belum cukup untuk menyimpulkan kelompok mana yang lebih baik.",
       ] },
       { heading: "Kesegaran dan penanganan", paragraphs: [
         "Ikan yang segar dan ditangani dengan baik lebih menentukan kualitas hidangan. Ikan perlu disimpan dalam kondisi dingin dan tidak dibiarkan terlalu lama di suhu ruang.",
@@ -184,7 +184,7 @@ export const articleBodies: Record<string, ArticleBody> = {
     excerpt: "Lele adalah ikan air tawar yang populer di dapur dan di kolam budidaya.",
     sections: [
       { paragraphs: [
-        "Lele termasuk ikan air tawar yang sangat dikenal di Indonesia. Foto pada artikel ini memperlihatkan sekumpulan lele dengan kumis khasnya. Popularitasnya terlihat dari banyaknya warung dan rumah makan yang menjadikannya menu utama.",
+        "Lele termasuk ikan air tawar yang dikenal di Indonesia. Foto pada artikel ini memperlihatkan sekumpulan lele dengan kumis khasnya. Popularitasnya terlihat dari banyaknya warung dan rumah makan yang menjadikannya menu utama.",
       ] },
       { heading: "Ciri umum", paragraphs: [
         "Lele memiliki tubuh memanjang dengan kulit licin dan sungut di sekitar mulut. Sungut ini membantu ikan mencari makan di perairan yang keruh atau gelap.",
@@ -238,7 +238,7 @@ export const articleBodies: Record<string, ArticleBody> = {
         "Teknologi tidak selalu berarti mesin. Pencatatan jadwal tebar, pemberian pakan, dan panen membantu pembudidaya merencanakan usaha dan mengenali masalah lebih awal.",
       ] },
       { heading: "Penutup", paragraphs: [
-        "Inovasi paling berguna ketika sesuai dengan kebutuhan dan kemampuan pembudidaya. Teknologi yang sederhana, dirawat dengan baik, dan digunakan dengan benar sering kali memberi manfaat yang paling nyata.",
+        "Inovasi berguna ketika sesuai dengan kebutuhan dan kemampuan pembudidaya. Teknologi yang sederhana, dirawat dengan baik, dan digunakan dengan benar sering kali memberi manfaat nyata.",
       ] },
     ],
   },

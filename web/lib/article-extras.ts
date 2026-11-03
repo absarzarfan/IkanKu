@@ -30,7 +30,7 @@ export const articleExtras: Record<string, ArticleSection> = {
   "5-jenis-ikan-air-tawar": {
     heading: "Menyesuaikan jenis dengan kebutuhan",
     paragraphs: [
-      "Memilih jenis ikan sebaiknya disesuaikan dengan tujuannya. Untuk lauk harian, pembeli dapat memilih jenis yang dagingnya cocok dengan cara memasak yang disukai. Bagi pembudidaya, pilihan jenis dipengaruhi oleh ukuran kolam, sumber air, dan pasar di sekitarnya. Berbincang dengan pembudidaya atau penjual setempat sering menjadi cara terbaik untuk mengetahui jenis yang tersedia dan cocok.",
+      "Memilih jenis ikan sebaiknya disesuaikan dengan tujuannya. Untuk lauk harian, pembeli dapat memilih jenis yang dagingnya cocok dengan cara memasak yang disukai. Bagi pembudidaya, pilihan jenis dipengaruhi oleh ukuran kolam, sumber air, dan pasar di sekitarnya. Berbincang dengan pembudidaya atau penjual setempat dapat membantu mengetahui jenis yang tersedia dan cocok.",
     ],
   },
   "5-fakta-ikan-mujair": {
@@ -42,7 +42,7 @@ export const articleExtras: Record<string, ArticleSection> = {
   "ikan-air-tawar-terancam": {
     heading: "Apa yang dapat dilakukan",
     paragraphs: [
-      "Upaya menjaga perairan dimulai dari hal yang dekat. Membuang sampah pada tempatnya, tidak membuang limbah ke sungai, dan menjaga tepi perairan tetap hijau membantu menjaga rumah ikan. Bagi pemancing, melepas kembali ikan yang masih kecil dapat membantu populasi tetap lestari. Masyarakat dan pelaku usaha juga dapat bekerja sama menjaga aliran air agar tetap sehat.",
+      "Upaya menjaga perairan dimulai dari hal yang dekat. Membuang sampah pada tempatnya, tidak membuang limbah ke sungai, dan menjaga tepi perairan tetap hijau membantu menjaga rumah ikan. Bagi pemancing, melepas kembali ikan yang masih kecil dapat membantu populasi tetap lestari. Masyarakat dan pelaku usaha juga dapat bekerja sama menjaga kualitas aliran air.",
     ],
   },
   "ikan-laut-atau-air-tawar": {
@@ -54,7 +54,7 @@ export const articleExtras: Record<string, ArticleSection> = {
   "ikan-lele-jenis-air-tawar": {
     heading: "Pakan dan kebersihan kolam",
     paragraphs: [
-      "Lele memakan berbagai jenis makanan, tetapi pemberian pakan tetap perlu dijaga agar tidak berlebihan. Sisa pakan yang tidak termakan dapat membuat air cepat kotor. Pembudidaya biasanya mengganti sebagian air secara berkala dan membersihkan kolam agar ikan tetap sehat. Pencatatan sederhana tentang jadwal pakan dan pergantian air membantu pembudidaya menjaga kolam tetap terkendali.",
+      "Lele memakan berbagai jenis makanan, tetapi pemberian pakan tetap perlu dijaga agar tidak berlebihan. Sisa pakan yang tidak termakan dapat membuat air cepat kotor. Pembudidaya biasanya mengganti sebagian air secara berkala dan membersihkan kolam untuk menjaga kondisi ikan. Pencatatan sederhana tentang jadwal pakan dan pergantian air membantu pembudidaya menjaga kolam tetap terkendali.",
     ],
   },
   "perbedaan-perikanan-air-payau": {
@@ -78,7 +78,7 @@ export const articleExtras: Record<string, ArticleSection> = {
   "pokdakan-dan-poklahsar": {
     heading: "Contoh kegiatan kelompok",
     paragraphs: [
-      "Kegiatan kelompok dapat berupa pertemuan rutin untuk membahas masalah kolam, pembelian bersama kebutuhan budidaya, hingga pelatihan sederhana tentang pengolahan ikan. Kelompok pengolah dapat mencoba membuat produk dari ikan agar hasil panen memiliki pilihan pemasaran yang lebih beragam. Semua kegiatan ini bergantung pada kemauan anggota untuk saling berbagi dan menjaga kepercayaan.",
+      "Kegiatan kelompok dapat berupa pertemuan rutin untuk membahas masalah kolam, pembelian bersama kebutuhan budidaya, hingga pelatihan sederhana tentang pengolahan ikan. Kelompok pengolah dapat mencoba membuat produk dari ikan agar hasil panen memiliki pilihan pemasaran yang lebih beragam. Kegiatan ini bergantung pada kemauan anggota untuk saling berbagi dan menjaga kepercayaan.",
     ],
   },
 };

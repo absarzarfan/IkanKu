@@ -68,3 +68,6 @@ Branch: `feature/flutter-web` (push ke `origin`, tidak pernah ke `upstream`). Fi
 - Phase 11 P7-8: approval-pack.md (110 lines, 19 flagged sentences), data/site.ts for download link and QR.
 - Phase 11 P9: verified (build, lint, 19 pages + 48 images 200, Tim Kami fits, screenshots in D:\Tools\shots\phase11).
 - Phase 11 follow-up: CTA label back to white (user request).
+
+## Phase 9b (web dwibahasa) - feature/web-i18n
+- PART 0: cabang dari web-final (= tag web-acc-1). Jawaban tim: tidak ada (semua kosong, approval-answers.md tidak ada). 10 saran penulisan ulang artikel AI diterapkan (docs/i18n-notes.md).
