@@ -1,17 +1,35 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { LOCALE_COOKIE, localeHref, locales, stripLocale, type Lang } from "@/i18n/config";
 
 type Labels = { label: string; names: Record<Lang, string>; switchTo: string; text?: string };
 
+const SCROLL_KEY = "lang-switch-scroll";
+
 function remember(l: Lang) {
   document.cookie = `${LOCALE_COOKIE}=${l}; path=/; max-age=31536000; samesite=lax`;
+  // Keep the reading position: the language switch must not move the page.
+  try { sessionStorage.setItem(SCROLL_KEY, String(window.scrollY)); } catch {}
 }
 
 /** Compact "ID | EN" segmented control (navbar) or a small text switcher (footer). Keeps the current page. */
 export default function LanguageSwitcher({ lang, labels, variant = "segmented" }: { lang: Lang; labels: Labels; variant?: "segmented" | "text" }) {
   const path = stripLocale(usePathname());
+  useEffect(() => {
+    let y: string | null = null;
+    try { y = sessionStorage.getItem(SCROLL_KEY); sessionStorage.removeItem(SCROLL_KEY); } catch {}
+    if (y === null) return;
+    const top = Number(y);
+    const html = document.documentElement;
+    const prev = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto"; // no smooth animation while restoring
+    const restore = () => window.scrollTo(0, top);
+    restore();
+    const id = requestAnimationFrame(() => { restore(); requestAnimationFrame(() => { restore(); html.style.scrollBehavior = prev; }); });
+    return () => cancelAnimationFrame(id);
+  }, []);
   const hrefFor = (l: Lang) => localeHref(l, path);
   const aria = (l: Lang) => labels.switchTo.replace("{name}", labels.names[l]);
 
@@ -22,7 +40,7 @@ export default function LanguageSwitcher({ lang, labels, variant = "segmented" }
         {locales.map((l, k) => (
           <span key={l} className="inline-flex items-center gap-2">
             {k > 0 && <span aria-hidden="true">|</span>}
-            <Link href={hrefFor(l)} hrefLang={l} lang={l} aria-current={l === lang ? "true" : undefined} aria-label={aria(l)} onClick={() => remember(l)} className={`inline-flex min-h-11 items-center px-1 ${l === lang ? "font-semibold text-brand" : "link-u"}`}>
+            <Link href={hrefFor(l)} scroll={false} hrefLang={l} lang={l} aria-current={l === lang ? "true" : undefined} aria-label={aria(l)} onClick={() => remember(l)} className={`inline-flex min-h-11 items-center px-1 ${l === lang ? "font-semibold text-brand" : "link-u"}`}>
               {labels.names[l]}
             </Link>
           </span>
@@ -36,6 +54,7 @@ export default function LanguageSwitcher({ lang, labels, variant = "segmented" }
         <Link
           key={l}
           href={hrefFor(l)}
+          scroll={false}
           hrefLang={l}
           lang={l}
           aria-current={l === lang ? "true" : undefined}
