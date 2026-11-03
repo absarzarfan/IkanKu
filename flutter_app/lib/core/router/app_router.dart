@@ -77,11 +77,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             GoRoute(path: '/home', builder: (_, _) => const HomeScreen()),
             GoRoute(path: '/recommendations', builder: (_, _) => const RecommendationsScreen()),
             GoRoute(path: '/category/:name', builder: (_, s) => CategoryScreen(category: s.pathParameters['name']!)),
-                ]),
+            GoRoute(path: '/shop/:name', builder: (_, s) => ShopScreen(name: s.pathParameters['name']!)),
+          ]),
           StatefulShellBranch(routes: [GoRoute(path: '/search', builder: (_, _) => const SearchScreen())]),
           StatefulShellBranch(routes: [
             GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
-                        GoRoute(path: '/help', builder: (_, _) => const HelpCenterScreen()),
+            GoRoute(path: '/orders', builder: (_, s) => BuyerOrdersScreen(initialTab: int.tryParse(s.uri.queryParameters['tab'] ?? '') ?? 0)),
+            GoRoute(path: '/addresses', builder: (_, s) => AddressListScreen(pick: s.uri.queryParameters['pick'] == '1')),
+            GoRoute(path: '/help', builder: (_, _) => const HelpCenterScreen()),
           ]),
         ],
       ),
@@ -90,7 +93,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/checkout', builder: (_, _) => const CheckoutScreen()),
       GoRoute(path: '/payment/:id', builder: (_, s) => PaymentScreen(orderId: s.pathParameters['id']!)),
       GoRoute(path: '/order-success/:id', builder: (_, s) => OrderSuccessScreen(orderId: s.pathParameters['id']!)),
-      GoRoute(path: '/orders', builder: (_, s) => BuyerOrdersScreen(initialTab: int.tryParse(s.uri.queryParameters['tab'] ?? '') ?? 0)),
       GoRoute(path: '/orders/:id', builder: (_, s) => OrderDetailScreen(orderId: s.pathParameters['id']!)),
       GoRoute(path: '/orders/:id/rejected', builder: (_, s) => OrderRejectedScreen(orderId: s.pathParameters['id']!)),
       GoRoute(path: '/orders/:id/review', builder: (_, s) => ReviewScreen(orderId: s.pathParameters['id']!)),
@@ -99,7 +101,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/profile/password', builder: (_, _) => const ChangePasswordScreen()),
       GoRoute(path: '/profile/email', builder: (_, _) => const ChangeContactScreen(isEmail: true)),
       GoRoute(path: '/profile/phone', builder: (_, _) => const ChangeContactScreen(isEmail: false)),
-      GoRoute(path: '/addresses', builder: (_, s) => AddressListScreen(pick: s.uri.queryParameters['pick'] == '1')),
       GoRoute(path: '/addresses/add', builder: (_, _) => const AddAddressScreen()),
 
       // Penjual: shell Beranda / Produk / Pengaturan.
@@ -108,7 +109,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         branches: [
           StatefulShellBranch(routes: [
             GoRoute(path: '/seller', builder: (_, _) => const SellerHomeScreen()),
-                      ]),
+            GoRoute(path: '/seller/orders', builder: (_, s) => SellerOrdersScreen(initialTab: int.tryParse(s.uri.queryParameters['tab'] ?? '') ?? 0)),
+            GoRoute(path: '/seller/reviews', builder: (_, _) => const SellerReviewsScreen()),
+          ]),
           StatefulShellBranch(routes: [GoRoute(path: '/seller/products', builder: (_, _) => const SellerProductsScreen())]),
           StatefulShellBranch(routes: [
             GoRoute(path: '/seller/settings', builder: (_, _) => const SellerSettingsScreen()),
@@ -116,10 +119,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           ]),
         ],
       ),
-      GoRoute(path: '/seller/orders', builder: (_, s) => SellerOrdersScreen(initialTab: int.tryParse(s.uri.queryParameters['tab'] ?? '') ?? 0)),
       GoRoute(path: '/seller/orders/:id', builder: (_, s) => SellerOrderDetailScreen(orderId: s.pathParameters['id']!)),
       GoRoute(path: '/seller/orders/:id/ship', builder: (_, s) => ShipProofScreen(orderId: s.pathParameters['id']!)),
-      GoRoute(path: '/seller/reviews', builder: (_, _) => const SellerReviewsScreen()),
       GoRoute(path: '/seller/products/new', builder: (_, _) => const ProductFormScreen()),
       GoRoute(path: '/seller/products/:id', builder: (_, s) => SellerProductDetailScreen(productId: s.pathParameters['id']!)),
       GoRoute(path: '/seller/products/:id/edit', builder: (_, s) => ProductFormScreen(productId: s.pathParameters['id'])),
@@ -127,7 +128,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/seller/categories/new', builder: (_, _) => const AddCategoryScreen()),
       GoRoute(path: '/seller/categories/:name/edit', builder: (_, s) => AddCategoryScreen(editing: s.pathParameters['name'])),
       GoRoute(path: '/pick-location', builder: (_, _) => const PickLocationScreen()),
-      GoRoute(path: '/shop/:name', builder: (_, s) => ShopScreen(name: s.pathParameters['name']!)),
       GoRoute(path: '/seller/discount', builder: (_, _) => const DiscountScreen()),
       GoRoute(path: '/seller/ongkir', builder: (_, _) => const OngkirScreen()),
       GoRoute(path: '/seller/payment-methods', builder: (_, _) => const PaymentMethodsScreen()),
