@@ -1,0 +1,11 @@
+# UI Direction (Phase 7 redesign)
+- Konsep: "air jernih": bersih, segar, tepercaya. Putih dan tint biru muda sebagai dasar, pita biru bergradien sebagai penanda bagian penting, satu kurva lembut di dasar hero sebagai ciri khas.
+- Palet tetap: biru #177BCD (token gradien yang ada), oranye HANYA pada tombol "Unduh Aplikasi"; permukaan --color-surface diganti tint biru #F3F8FD.
+- Grid: `.container-page` (max 1440, gutter 24/40/80). Skala spasi 4/8/16/24/32/48/64/96; jarak antar bagian `.section-y` (48/64/80).
+- Tipografi: Poppins (judul + isi) dan Montserrat yang sudah ada. Skala: h1 clamp(36px..60px) bobot 700, h2 clamp(28px..46px) bobot 700, h3 22px bobot 600, isi 16-18px/1.6, kecil 14px. Judul bagian diberi batang gradien 56x4px di bawahnya.
+- Ritme bagian: hero biru-gradien (dasar melengkung) > putih > tint > biru-gradien > putih > tint > pita CTA > footer putih.
+- Kartu: `.card` putih, radius 24px, border biru 12% opasitas, bayangan lembut berlapis dua; kartu interaktif memakai `.card-lift` (naik 2px).
+- Lencana (`.badge`): pil dengan tint biru 12%, teks biru.
+- Citra: rasio konsisten per konteks (1:1 foto tim, 16:9 banner, ponsel 4:5), radius 24px, overlay gradien hanya bila perlu keterbacaan.
+- Gerak: 150-300ms, ease-out (cubic-bezier .23,1,.32,1), hanya transform/opacity/warna; reveal 14px naik + fade, stagger 60ms; hover hanya di perangkat `hover:hover`; semua dimatikan pada prefers-reduced-motion.
+- Tidak ada konten dihapus; teks hanya dirapikan alurnya; tidak ada fakta/angka baru.

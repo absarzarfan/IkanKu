@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+/* Design tokens (Figma: Design System + Web frames). Brand colors are used in the web frames. */
+@theme inline {
+  --color-brand: #1672c4; /* AA: 4.96:1 on white, white on it 4.96:1 */
+  --color-brand-dark: #0072a7;
+  --color-accent: #ff8038;
+  --color-ink: #050315;
+  --color-surface: #f3f8fd;
+  --color-surface-2: #e8f1fa;
+  --color-muted: #4f5868;
+  --color-body: #2f3542;
+  --color-heading: #050315;
+  --color-placeholder: #6b6f78;
+  --color-link: #1672c4;
+  --color-on-blue: #ffffff;
+  --color-on-cta: #ffffff; /* white label on orange, set by the user: 2.06-3.22:1 (below AA) */
+  --color-dot: #d9d9d9;
+
+  --color-cerulean-50: #f0f5fe;
+  --color-cerulean-500: #4373ee;
+  --color-cerulean-600: #3157e3;
+  --color-malibu-500: #06b1f1;
+  --color-malibu-700: #0072a7;
+  --color-malachite-600: #299722;
+  --color-tree-poppy-500: #ff9a0c;
+  --color-red-orange-500: #ff4238;
+  --color-red-orange-600: #ed2015;
+
+  --font-poppins: var(--font-poppins);
+  --font-montserrat: var(--font-montserrat);
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+
+  --text-h1: 46px;
+  --text-h2: 34px;
+  --text-h3: 22px;
+  --text-h4: 18px;
+  --text-display: 60px;
+}
+
+/* Gradient tokens: same hue as the flat brand colors, about +/-6% lightness. */
+:root {
+  --grad-primary: linear-gradient(135deg, hsl(207 80% 43%), hsl(207 80% 35%));
+  --grad-primary-hover: linear-gradient(135deg, hsl(207 80% 40%), hsl(207 80% 32%));
+  --grad-cta: linear-gradient(135deg, hsl(25 100% 67%), hsl(19 100% 55%));
+  --grad-cta-hover: linear-gradient(135deg, hsl(25 100% 63%), hsl(19 100% 51%));
+  --grad-surface: linear-gradient(135deg, hsl(207 80% 43%), hsl(207 80% 36%));
+  --grad-nav: linear-gradient(90deg, #ffffff 0%, #f6fafd 100%);
+  --grad-outline-hover: linear-gradient(135deg, #f3f8fd, #e6f0fa);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Buttons: subtle gradient fill, 150-200ms ease-out, press scale, visible focus. */
+@layer components {
+  .btn-cta, .btn-primary, .btn-outline {
+    cursor: pointer;
+    transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out), transform 150ms var(--ease-out);
+  }
+  .btn-cta { background-image: var(--grad-cta); color: var(--color-on-cta); font-weight: 600; }
+  .btn-cta:hover { background-image: var(--grad-cta-hover); }
+  .btn-primary { background-image: var(--grad-primary); color: #fff; }
+  .btn-primary:hover { background-image: var(--grad-primary-hover); }
+  .btn-outline { background-color: #fff; }
+  .btn-outline:hover { background-image: var(--grad-outline-hover); }
+  .btn-cta:active, .btn-primary:active, .btn-outline:active { transform: scale(0.98); }
+  .btn-cta:focus-visible, .btn-primary:focus-visible, .btn-outline:focus-visible {
+    outline: 2px solid var(--color-brand); outline-offset: 2px;
+  }
+  .surface-brand { background-image: var(--grad-surface); }
+  .nav-grad { background-image: var(--grad-nav); }
+  .card-lift { transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out); }
+  .team-photo { transition: box-shadow 200ms var(--ease-out); }
+  .tab-chip, .footer-link { transition: color 180ms var(--ease-out), background-color 180ms var(--ease-out), border-color 180ms var(--ease-out); }
+}
+/* Hover effects only where a real hover exists (touch never gets sticky hover). */
+@media (hover: hover) and (pointer: fine) {
+  .card-lift:hover { transform: translateY(-2px); box-shadow: 0 8px 18px -6px rgba(5, 3, 21, 0.12); }
+  .team-card:hover .team-photo { box-shadow: 0 0 0 4px #fff, 0 6px 14px rgba(5, 3, 21, 0.25); }
+  .footer-link:hover, .tab-chip:hover { color: var(--color-link); }
+}
+/* Hero entrance on first load: opacity + 14px rise, staggered with --d. */
+@keyframes hero-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.hero-in { animation: hero-in 450ms var(--ease-out) var(--d, 0ms) backwards; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-cta, .btn-primary, .btn-outline, .card-lift, .team-photo, .tab-chip, .footer-link { transition: none; }
+  .btn-cta:active, .btn-primary:active, .btn-outline:active { transform: none; }
+  .hero-in { animation: none; }
+}
+
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.5) transparent; }
+
+/* Type scale (shared by all routes): h1 46 / h2 34 / h3 22, body 16 at 1.6, readable paragraph width. */
+@layer base {
+  body { font-size: 1rem; line-height: 1.6; }
+  h1, h2, h3, h4 { line-height: 1.25; text-wrap: balance; color: var(--color-heading); }
+  .text-white h1, .text-white h2, .text-white h3, .band-blue h1, .band-blue h2, .band-blue h3 { color: inherit; }
+  p { max-width: 72ch; }
+  small { font-size: 0.875rem; }
+}
+
+/* Shared page grid: header, every section and footer use the same edges. */
+@layer components {
+  .container-page { margin-inline: auto; width: 100%; max-width: 1440px; padding-inline: 1.5rem; }
+  .section-y { padding-block: 3rem; }
+}
+@media (min-width: 768px) {
+  .container-page { padding-inline: 2.5rem; }
+  .section-y { padding-block: 4rem; }
+}
+@media (min-width: 1024px) {
+  .container-page { padding-inline: 80px; }
+  .section-y { padding-block: 5rem; }
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Section system: white / tint / blue-gradient bands, one soft curve under the hero. */
+@layer components {
+  .band-white { background: #fff; }
+  .band-tint { background: var(--color-surface); }
+  .band-blue { background-image: var(--grad-surface); color: #fff; position: relative; isolation: isolate; }
+  .band-blue::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(60% 80% at 85% 0%, rgba(255,255,255,.14), transparent 70%); pointer-events: none; }
+  .curve-b { border-bottom-left-radius: 50% clamp(24px, 4vw, 56px); border-bottom-right-radius: 50% clamp(24px, 4vw, 56px); }
+  .section-title { text-align: center; font-weight: 700; line-height: 1.15; font-size: clamp(1.75rem, 1.2rem + 2vw, 2.875rem); }
+  .section-title::after { content: ""; display: block; width: 56px; height: 4px; margin: 14px auto 0; border-radius: 4px; background-image: var(--grad-primary); }
+  .band-blue .section-title::after { background: #fff; opacity: .85; }
+  .card { background: #fff; border-radius: 24px; border: 1px solid rgba(22,114,196,.12); box-shadow: 0 1px 2px rgba(5,3,21,.04), 0 12px 28px -16px rgba(22,114,196,.28); }
+  .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 2px 12px; font-size: .875rem; color: #0d5599; background: color-mix(in srgb, var(--color-brand) 12%, white); }
+  .glass-card { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: 20px; }
+}
+
+/* Scroll reveal (CSS + IntersectionObserver, see components/Reveal.tsx): small rise + fade, staggered via --d. */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 400ms var(--ease-out) var(--d, 0ms), transform 400ms var(--ease-out) var(--d, 0ms); }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (hover: hover) and (pointer: fine) {
+  .link-u { background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size 200ms var(--ease-out); }
+  .link-u:hover { background-size: 100% 2px; }
+  .img-zoom img { transition: transform 300ms var(--ease-out); }
+  .img-zoom:hover img { transform: scale(1.03); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .link-u, .img-zoom img { transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* Icon chip: rounded square, tinted on light surfaces, translucent white on blue gradients. */
+@layer components {
+  .icon-chip { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 14px; transition: transform 200ms var(--ease-out), background-color 200ms var(--ease-out); }
+  .icon-chip-tint { color: var(--color-brand); background-image: linear-gradient(135deg, color-mix(in srgb, var(--color-brand) 16%, white), color-mix(in srgb, var(--color-brand) 7%, white)); }
+  .icon-chip-glass { color: #fff; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.28); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-lift:hover .icon-chip, .group:hover .icon-chip { transform: scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) { .icon-chip { transition: none; } .card-lift:hover .icon-chip, .group:hover .icon-chip { transform: none; } }
+
+/* Slider controls: 44px hit area, visible focus ring. */
+@layer components {
+  .slider-btn, .slider-dot { display: inline-grid; place-items: center; height: 44px; cursor: pointer; border-radius: 999px; transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out), transform 150ms var(--ease-out); }
+  .slider-btn { width: 44px; color: var(--color-brand); }
+  .slider-dot { min-width: 28px; padding-inline: 4px; }
+  .slider-btn:active, .slider-dot:active { transform: scale(0.96); }
+  .slider-btn:focus-visible, .slider-dot:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+}
+@media (hover: hover) and (pointer: fine) { .slider-btn:hover { background: color-mix(in srgb, var(--color-brand) 10%, white); } }
+@media (prefers-reduced-motion: reduce) { .slider-btn, .slider-dot { transition: none; } }
+
+/* Enrichment kit (Phase 9a): decorative only, fixed sizes, no transitions needed. */
+@layer components {
+  .kit-wave { height: 40px; width: 100%; line-height: 0; pointer-events: none; }
+  .kit-wave svg { display: block; width: 100%; height: 100%; }
+  .kit-wave-flip { transform: rotate(180deg); }
+  .kit-bubbles { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; opacity: .1; pointer-events: none; }
+  .kit-eyebrow { font-family: var(--font-montserrat), sans-serif; font-size: .8125rem; font-weight: 600; letter-spacing: .08em; font-variant-caps: all-small-caps; margin-bottom: .5rem; }
+  .tint-soft { background: linear-gradient(180deg, color-mix(in srgb, var(--color-brand) 5%, white), #fff); }
+  .kit-frame { position: relative; overflow: hidden; border-radius: 1.5rem; box-shadow: 0 18px 36px -24px rgba(5,3,21,.45); }
+  .kit-frame-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,3,21,.78) 0%, rgba(5,3,21,.35) 45%, transparent 75%); }
+  .kit-timeline { position: relative; display: grid; gap: 1.5rem; }
+  .kit-timeline li { position: relative; display: flex; gap: 1rem; align-items: flex-start; }
+  .kit-timeline li:not(:last-child)::before { content: ""; position: absolute; left: 17px; top: 38px; bottom: -1.5rem; width: 2px; background: color-mix(in srgb, var(--color-brand) 25%, white); }
+  .kit-step-num { display: inline-grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border-radius: 999px; background: var(--color-brand); color: #fff; font-weight: 700; font-size: .9375rem; }
+  .kit-timeline-dark li:not(:last-child)::before { background: rgba(255,255,255,.35); }
+  .kit-timeline-dark .kit-step-num { background: #fff; color: var(--color-brand); }
+}
+
+/* FAQ (Phase 9a): one rounded card per item, height animated via grid-template-rows 0fr to 1fr. */
+@layer components {
+  .faq-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 250ms var(--ease-out); }
+  .faq-panel[data-open="true"] { grid-template-rows: 1fr; }
+  .faq-panel > div { min-height: 0; overflow: hidden; }
+  .faq-chip { display: inline-flex; min-height: 44px; cursor: pointer; align-items: center; border-radius: 999px; padding-inline: 1.125rem; font-size: .9375rem; color: #fff; border: 1px solid rgba(255,255,255,.55); transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out); }
+  .faq-chip[aria-pressed="true"] { background: #fff; color: var(--color-brand); border-color: #fff; font-weight: 600; }
+  .faq-btn:focus-visible { outline: 2px solid var(--color-brand); outline-offset: -3px; }
+  .faq-chip:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+}
+@media (hover: hover) and (pointer: fine) { .faq-chip[aria-pressed="false"]:hover { background: rgba(255,255,255,.16); } }
+@media (prefers-reduced-motion: reduce) { .faq-panel, .faq-chip { transition: none; } }
+
+/* Visi/Misi tabs (Phase 9a): underline moves with transform, panel cross-fades (opacity + 8px translate, 200ms). */
+@layer components {
+  .vm-underline { position: absolute; left: 0; bottom: -1px; width: calc(100% / 3); height: 3px; background: var(--color-brand); border-radius: 3px; transition: transform 250ms var(--ease-out); }
+  .vm-tab { transition: color 180ms var(--ease-out); }
+  .vm-tab:focus-visible { outline: 2px solid var(--color-brand); outline-offset: -2px; border-radius: 8px; }
+  .vm-panel { animation: vm-in 200ms var(--ease-out); }
+}
+@keyframes vm-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (hover: hover) and (pointer: fine) { .vm-tab:hover { color: var(--color-brand); } }
+@media (prefers-reduced-motion: reduce) { .vm-underline, .vm-tab { transition: none; } .vm-panel { animation: none; } }
+
+/* Headline carousel + newspaper front page (Phase 9a). */
+@layer components {
+  .hc-track { scrollbar-width: none; overscroll-behavior-x: contain; }
+  .hc-track::-webkit-scrollbar { display: none; }
+  .hc-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; cursor: pointer; border-radius: 999px; background: rgba(255,255,255,.14); transition: background-color 180ms var(--ease-out), transform 150ms var(--ease-out); }
+  .hc-btn:active { transform: scale(0.96); }
+  .hc-btn:focus-visible, .slider-dot:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .np-rule { border-top: 1px solid rgba(5,3,21,.7); }
+  .np-rule-thick { border-top: 3px double rgba(5,3,21,.8); }
+  .np-head { line-height: 1.12; letter-spacing: -.01em; text-wrap: balance; }
+  .dropcap > section:first-child > p:first-of-type::first-letter { float: left; font-family: var(--font-montserrat), sans-serif; font-weight: 700; font-size: 3.6em; line-height: .85; padding: .08em .12em 0 0; color: var(--color-brand); }
+}
+@media (hover: hover) and (pointer: fine) { .hc-btn:hover { background: rgba(255,255,255,.28); } }
+@media (prefers-reduced-motion: reduce) { .hc-btn { transition: none; } }
+
+/* Phase 10 polish: selection, focus, disabled, anchors, text rhythm, skip link. */
+::selection { background: color-mix(in srgb, var(--color-brand) 22%, transparent); color: inherit; }
+.band-blue ::selection, .surface-brand ::selection { background: rgba(255,255,255,.3); color: #fff; }
+[id] { scroll-margin-top: 7rem; }
+p, li, blockquote { text-wrap: pretty; }
+.tnum, time, .kit-step-num, .badge { font-variant-numeric: tabular-nums; }
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+.band-blue :where(a, button, input, select, textarea):focus-visible, .surface-brand :where(a, button, input, select, textarea):focus-visible { outline-color: #fff; }
+a.card, .card-lift, button:not(:disabled), [role="tab"], select { cursor: pointer; }
+.card-lift:active { transform: translateY(0) scale(.995); }
+button:disabled, .btn-cta[aria-disabled="true"], .btn-primary[aria-disabled="true"] { cursor: not-allowed; opacity: .55; }
+.skip-link { position: fixed; left: 1rem; top: 1rem; z-index: 100; transform: translateY(-200%); background: #fff; color: var(--color-brand); padding: .75rem 1.25rem; border-radius: .75rem; font-weight: 600; box-shadow: 0 8px 24px rgba(5,3,21,.3); }
+.skip-link:focus { transform: none; }
+.spin { animation: spin 800ms linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }

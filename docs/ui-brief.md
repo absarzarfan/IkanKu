@@ -1,0 +1,12 @@
+# UI Brief (web polish, Phase 5)
+- Produk: IkanKu adalah marketplace ikan air tawar: pembeli memesan ikan segar langsung dari peternak lewat aplikasi (belum ada backend, data mock).
+- Pengguna: pembeli (utama, publik), penjual/peternak (lewat aplikasi), admin (kelola artikel di /admin).
+- Nada bahasa: ramah, jelas, lugas, memakai "Anda"; tanpa janji atau angka yang tidak ada di sumber.
+- Warna: biru utama #177BCD, oranye CTA #FF8038 hanya untuk aksi unduh; latar abu muda #EEEEEE, kartu putih.
+- Gradien: sangat halus (+/-6% lightness, hue tetap); tanpa glow, blur, atau bayangan besar.
+- Tipografi: Poppins (isi/judul) + Montserrat yang sudah ada; satu skala: h1 46, h2 34, h3 22, body 16-18, small 14.
+- Body line-height 1.5-1.7; lebar paragraf maksimal sekitar 65-75ch.
+- Spasi: kontainer `.container-page` dan `.section-y` dipakai semua rute; kelipatan 4/8px.
+- Gerak: 150-200ms ease-out, hanya transform/opacity/warna; :active scale 0.98; hormati prefers-reduced-motion.
+- Aksesibilitas: fokus terlihat (focus-visible ring), target sentuh nyaman, kontras teks dilaporkan.
+- Konten: artikel dan data produk tidak diubah; perubahan copy dicatat di docs/ui-polish.md.
